@@ -1,0 +1,65 @@
+{
+  "bases": [
+    {
+      "id": "base-01",
+      "nombre": "Círculo",
+      "modelo": "modelos/base-01.glb",
+      "thumbnail": "img/addons/base-circulo.svg"
+    },
+    {
+      "id": "base-02",
+      "nombre": "Hexágono",
+      "modelo": "modelos/base-02.glb",
+      "thumbnail": "img/addons/base-hexagono.svg"
+    },
+    {
+      "id": "base-03",
+      "nombre": "Flor",
+      "modelo": "modelos/base-03.glb",
+      "thumbnail": "img/addons/base-flor.svg"
+    }
+  ],
+  "manecillas": [
+    {
+      "id": "man-01",
+      "nombre": "Divertido",
+      "modelo": "modelos/manecillas-01.glb",
+      "thumbnail": "img/addons/man-divertido.svg"
+    },
+    {
+      "id": "man-02",
+      "nombre": "Moderno",
+      "modelo": "modelos/manecillas-02.glb",
+      "thumbnail": "img/addons/man-moderno.svg"
+    }
+  ],
+  "addons": [
+    {
+      "id": "addon-arabigos",
+      "nombre": "Arábigos",
+      "tipo": "texto",
+      "valores": ["1","2","3","4","5","6","7","8","9","10","11","12"],
+      "thumbnail": "img/addons/addon-arabigos.svg"
+    },
+    {
+      "id": "addon-romanos",
+      "nombre": "Romanos",
+      "tipo": "texto",
+      "valores": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"],
+      "thumbnail": "img/addons/addon-romanos.svg"
+    },
+    {
+      "id": "addon-letras",
+      "nombre": "Letras",
+      "tipo": "texto",
+      "valores": ["UNA","DOS","TRES","CUAT","CINC","SEIS","SIET","OCHO","NUEV","DIEZ","ONCE","DOCE"],
+      "thumbnail": "img/addons/addon-letras.svg"
+    },
+    {
+      "id": "addon-emojis",
+      "nombre": "Emojis",
+      "tipo": "primitiva",
+      "thumbnail": "img/addons/addon-emojis.svg"
+    }
+  ]
+}

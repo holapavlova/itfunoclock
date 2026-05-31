@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>It's Fun o'clock — Configurador</title>
+  <meta name="description" content="Configura tu reloj 3D personalizado. Elige base, manecillas y add-ons.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Martian+Mono:wght@800&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Configurador ─────────────────────────────────────── -->
+  <main class="configurador">
+
+    <!-- Columna izquierda: Visor 3D -->
+    <section class="visor" aria-label="Visor 3D del reloj">
+      <div id="canvas-container"></div>
+
+      <span class="visor-logo">It's Fun o'clock</span>
+      <span class="visor-hint">Arrastra para rotar · Scroll para zoom</span>
+
+      <!-- Loading overlay -->
+      <div id="loading-overlay" role="status" aria-live="polite">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <span class="loading-text">Cargando reloj…</span>
+      </div>
+    </section>
+
+    <!-- Columna derecha: Panel de personalización -->
+    <aside class="panel" aria-label="Panel de personalización">
+
+      <div class="panel-header">
+        <h1>Configura tu reloj</h1>
+        <p>Elige base, manecillas y add-ons</p>
+      </div>
+
+      <!-- Tabs -->
+      <nav class="tabs" role="tablist" aria-label="Secciones del configurador">
+        <button class="tab-btn active" data-tab="base"       role="tab" aria-selected="true"  aria-controls="tab-base">Base</button>
+        <button class="tab-btn"        data-tab="manecillas" role="tab" aria-selected="false" aria-controls="tab-manecillas">Manecillas</button>
+        <button class="tab-btn"        data-tab="addons"     role="tab" aria-selected="false" aria-controls="tab-addons">Add-ons</button>
+      </nav>
+
+      <!-- Tab: Base -->
+      <div id="tab-base" class="tab-content active" role="tabpanel" aria-labelledby="tab-base">
+        <p class="tab-label">Forma de la caja</p>
+        <div id="grid-bases" class="opciones-grid" role="list"></div>
+      </div>
+
+      <!-- Tab: Manecillas -->
+      <div id="tab-manecillas" class="tab-content" role="tabpanel" aria-labelledby="tab-manecillas">
+        <p class="tab-label">Estilo de agujas</p>
+        <div id="grid-manecillas" class="opciones-grid" role="list"></div>
+      </div>
+
+      <!-- Tab: Add-ons -->
+      <div id="tab-addons" class="tab-content" role="tabpanel" aria-labelledby="tab-addons">
+        <p class="tab-label">Marcadores de hora</p>
+        <div id="grid-addons" class="opciones-grid" role="list"></div>
+      </div>
+
+      <!-- Footer del panel -->
+      <footer class="panel-footer">
+        <button id="btn-randomize" class="btn-randomize" type="button" aria-label="Selección aleatoria">
+          🎲 Randomize
+        </button>
+        <button id="btn-resumen" class="btn-resumen" type="button">
+          Generar resumen del pedido →
+        </button>
+      </footer>
+
+    </aside>
+  </main>
+
+  <!-- ── Modal: Resumen del pedido ────────────────────────── -->
+  <div id="resumen-modal" role="dialog" aria-modal="true" aria-labelledby="resumen-titulo">
+    <div class="resumen-card">
+      <h2 id="resumen-titulo">Tu reloj personalizado</h2>
+
+      <img id="resumen-imagen" class="resumen-preview" alt="Captura del reloj configurado">
+
+      <div class="resumen-item">
+        <span class="resumen-item-label">Base</span>
+        <span id="resumen-base" class="resumen-item-valor">—</span>
+      </div>
+      <div class="resumen-item">
+        <span class="resumen-item-label">Manecillas</span>
+        <span id="resumen-manecillas" class="resumen-item-valor">—</span>
+      </div>
+      <div class="resumen-item">
+        <span class="resumen-item-label">Add-ons</span>
+        <span id="resumen-addon" class="resumen-item-valor">—</span>
+      </div>
+
+      <div class="resumen-acciones">
+        <button id="btn-imprimir"       class="btn-primary"  type="button">Descargar / Imprimir</button>
+        <button id="btn-cerrar-resumen" class="btn-outline"  type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ES Modules -->
+  <script type="module" src="js/main.js"></script>
+
+</body>
+</html>

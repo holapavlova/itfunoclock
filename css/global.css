@@ -1,0 +1,51 @@
+body {
+  background-color: var(--color-blanco-roto);
+}
+
+/* Botón primario */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 12px var(--spacing-lg);
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  border-radius: var(--radius-pill);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background: var(--color-azul);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Botón secundario / outline */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 10px var(--spacing-lg);
+  background: transparent;
+  color: var(--color-negro);
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  border: 2px solid var(--color-negro);
+  border-radius: var(--radius-pill);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-outline:hover {
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  transform: translateY(-1px);
+}
