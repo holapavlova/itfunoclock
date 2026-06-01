@@ -1,5 +1,7 @@
 import { initEscena, cargarModeloMaestro, cambiarBase, cambiarManecillas, cambiarAddons, cambiarColorBase, cambiarColorHora, cambiarColorMinuto, capturarCanvas } from './escena3d.js';
 
+// Paleta de colores disponibles en el configurador.
+// Para añadir o cambiar un color: añade/edita un objeto { id, nombre, hex } aquí.
 const PALETA = [
   { id: 'blanco',   nombre: 'Blanco',   hex: '#FFFFFF' },
   { id: 'negro',    nombre: 'Negro',    hex: '#1A1A1A' },
@@ -11,6 +13,9 @@ const PALETA = [
 ];
 
 let piezas = null;
+
+// Estado actual del configurador — se guarda en localStorage automáticamente.
+// colorBase/Hora/Minuto son hex strings; los demás son IDs del piezas.json.
 let config = { base: null, manecillas: null, addon: null, colorBase: null, colorHora: null, colorMinuto: null };
 
 // ── Init ─────────────────────────────────────────────────────────
@@ -25,11 +30,13 @@ export async function initConfigurador() {
   initTabs();
 
   try {
-    await cargarModeloMaestro('modelos/reloj-maestro.glb');
+    await cargarModeloMaestro('modelos/reloj-maestro.glb'); // ruta al GLB único
   } catch (err) {
     console.warn('[configurador] No se pudo cargar reloj-maestro.glb:', err);
   }
 
+  // Si hay config guardada en localStorage la usa; si no, aplica los primeros de cada lista
+  // y los colores por defecto (blanco para la base, negro para las manecillas).
   const guardada = cargarConfiguracion();
   aplicarSeleccion(guardada ?? {
     base:        piezas.bases[0].id,
@@ -49,6 +56,7 @@ export async function initConfigurador() {
 }
 
 // ── Cargar JSON ───────────────────────────────────────────────────
+// piezas.json define las opciones del panel: bases, manecillas y add-ons.
 async function cargarPiezas() {
   const res = await fetch('data/piezas.json');
   return res.json();
@@ -57,7 +65,7 @@ async function cargarPiezas() {
 // ── Renderizar opciones en el panel ──────────────────────────────
 function renderizarOpciones(piezas) {
   renderizarGrid('grid-bases',       piezas.bases,      'base');
-  renderizarGrid('grid-manecillas',  piezas.manecillas, 'manecillas', 'col-2');
+  renderizarGrid('grid-manecillas',  piezas.manecillas, 'manecillas', 'col-2'); // col-2 = grid de 2 columnas
   renderizarGrid('grid-addons',      piezas.addons,     'addon');
 }
 
@@ -70,9 +78,8 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
   items.forEach(item => {
     const card = document.createElement('button');
     card.className = 'opcion-card';
-    card.dataset.id = item.id;
-    card.dataset.categoria = categoria;
-    card.setAttribute('aria-label', item.nombre);
+    card.dataset.id = item.id;           // debe coincidir con el id en piezas.json
+    card.dataset.categoria = categoria;  // base | manecillas | addon
 
     const thumb = item.thumbnail
       ? `<img class="thumb" src="${item.thumbnail}" alt="${item.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
@@ -84,11 +91,13 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
       <span class="opcion-nombre">${item.nombre}</span>
     `;
 
+    card.setAttribute('aria-label', item.nombre);
     card.addEventListener('click', () => seleccionar(categoria, item.id));
     container.appendChild(card);
   });
 }
 
+// Emojis de fallback cuando no hay thumbnail — actualiza si cambias los IDs del JSON
 function getIconForItem(item) {
   if (item.id === 'base_01')          return '⭕';
   if (item.id === 'base_02')          return '⬡';
@@ -107,6 +116,8 @@ function getIconForItem(item) {
 }
 
 // ── Colores ───────────────────────────────────────────────────────
+// Renderiza los círculos de color en los contenedores del HTML.
+// Los IDs de los contenedores deben existir en index.html.
 function initColores() {
   renderizarSwatches('colores-base',   'colorBase');
   renderizarSwatches('colores-hora',   'colorHora');
@@ -119,7 +130,7 @@ function renderizarSwatches(containerId, categoria) {
   PALETA.forEach(({ nombre, hex }) => {
     const btn = document.createElement('button');
     btn.className = 'color-swatch';
-    btn.dataset.id = hex;
+    btn.dataset.id = hex;              // el "id" de un color es su valor hex
     btn.dataset.categoria = categoria;
     btn.style.background = hex;
     btn.setAttribute('aria-label', nombre);
@@ -147,9 +158,12 @@ function seleccionar(categoria, id) {
   aplicarSeleccion({ [categoria]: id });
 }
 
+// Punto central de toda actualización del configurador.
+// Recibe un objeto parcial con solo las claves que cambian.
 function aplicarSeleccion(parcial) {
   Object.assign(config, parcial);
 
+  // Actualiza el estado visual seleccionado (tanto cards como swatches de color)
   Object.keys(parcial).forEach(categoria => {
     const id = parcial[categoria];
     document.querySelectorAll(`[data-categoria="${categoria}"]`).forEach(el => {
@@ -157,11 +171,12 @@ function aplicarSeleccion(parcial) {
     });
   });
 
+  // Aplica cambios al modelo 3D
   if (parcial.base !== undefined)        cambiarBase(config.base);
   if (parcial.manecillas !== undefined)  cambiarManecillas(config.manecillas);
   if (parcial.addon !== undefined)       cambiarAddons(config.addon);
-  if (parcial.colorBase !== undefined && config.colorBase)   cambiarColorBase(config.colorBase);
-  if (parcial.colorHora !== undefined && config.colorHora)   cambiarColorHora(config.colorHora);
+  if (parcial.colorBase !== undefined && config.colorBase)     cambiarColorBase(config.colorBase);
+  if (parcial.colorHora !== undefined && config.colorHora)     cambiarColorHora(config.colorHora);
   if (parcial.colorMinuto !== undefined && config.colorMinuto) cambiarColorMinuto(config.colorMinuto);
 
   guardarConfiguracion(config);
@@ -173,14 +188,14 @@ function randomize() {
   btn.style.transform = 'scale(0.95)';
   setTimeout(() => { btn.style.transform = ''; }, 150);
 
-  const color = () => PALETA[Math.floor(Math.random() * PALETA.length)].hex;
+  const colorRandom = () => PALETA[Math.floor(Math.random() * PALETA.length)].hex;
   aplicarSeleccion({
     base:        piezas.bases[Math.floor(Math.random() * piezas.bases.length)].id,
     manecillas:  piezas.manecillas[Math.floor(Math.random() * piezas.manecillas.length)].id,
     addon:       piezas.addons[Math.floor(Math.random() * piezas.addons.length)].id,
-    colorBase:   color(),
-    colorHora:   color(),
-    colorMinuto: color(),
+    colorBase:   colorRandom(),
+    colorHora:   colorRandom(),
+    colorMinuto: colorRandom(),
   });
 }
 
@@ -194,7 +209,7 @@ function generarResumen() {
   document.getElementById('resumen-manecillas').textContent = manecillas?.nombre  ?? '—';
   document.getElementById('resumen-addon').textContent      = addon?.nombre       ?? '—';
 
-  document.getElementById('resumen-imagen').src = capturarCanvas();
+  document.getElementById('resumen-imagen').src = capturarCanvas(); // captura el visor 3D
   document.getElementById('resumen-modal').classList.add('open');
 }
 
@@ -203,6 +218,7 @@ function cerrarResumen() {
 }
 
 // ── localStorage ──────────────────────────────────────────────────
+// La config se guarda automáticamente en cada selección y se restaura al recargar.
 function guardarConfiguracion(cfg) {
   localStorage.setItem('reloj-config', JSON.stringify(cfg));
 }
