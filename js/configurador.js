@@ -1,11 +1,7 @@
-import { initEscena, cargarBase, cargarManecillas, actualizarAddons, capturarCanvas } from './escena3d.js';
+import { initEscena, cargarModeloMaestro, cambiarBase, cambiarManecillas, cambiarAddons, capturarCanvas } from './escena3d.js';
 
 let piezas = null;
-let config = {
-  base:       null,
-  manecillas: null,
-  addon:      null
-};
+let config = { base: null, manecillas: null, addon: null };
 
 // ── Init ─────────────────────────────────────────────────────────
 export async function initConfigurador() {
@@ -13,20 +9,22 @@ export async function initConfigurador() {
   initEscena(container);
 
   piezas = await cargarPiezas();
+
   renderizarOpciones(piezas);
   initTabs();
 
-  const guardada = cargarConfiguracion();
-  if (guardada) {
-    await aplicarSeleccion(guardada, true);
-  } else {
-    // Selección por defecto: primeros elementos de cada categoría
-    await aplicarSeleccion({
-      base:       piezas.bases[0].id,
-      manecillas: piezas.manecillas[0].id,
-      addon:      piezas.addons[0].id
-    }, true);
+  try {
+    await cargarModeloMaestro('modelos/reloj-maestro.glb');
+  } catch (err) {
+    console.warn('[configurador] No se pudo cargar reloj-maestro.glb:', err);
   }
+
+  const guardada = cargarConfiguracion();
+  aplicarSeleccion(guardada ?? {
+    base:       piezas.bases[0].id,
+    manecillas: piezas.manecillas[0].id,
+    addon:      piezas.addons[0].id,
+  });
 
   ocultarLoading();
 
@@ -44,9 +42,9 @@ async function cargarPiezas() {
 
 // ── Renderizar opciones en el panel ──────────────────────────────
 function renderizarOpciones(piezas) {
-  renderizarGrid('grid-bases', piezas.bases, 'base');
-  renderizarGrid('grid-manecillas', piezas.manecillas, 'manecillas', 'col-2');
-  renderizarGrid('grid-addons', piezas.addons, 'addon');
+  renderizarGrid('grid-bases',       piezas.bases,      'base');
+  renderizarGrid('grid-manecillas',  piezas.manecillas, 'manecillas', 'col-2');
+  renderizarGrid('grid-addons',      piezas.addons,     'addon');
 }
 
 function renderizarGrid(containerId, items, categoria, extraClass = '') {
@@ -65,11 +63,10 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
     const thumb = item.thumbnail
       ? `<img class="thumb" src="${item.thumbnail}" alt="${item.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
       : '';
-    const icon = getIconForItem(item);
 
     card.innerHTML = `
       ${thumb}
-      <span class="thumb-placeholder" style="display:${item.thumbnail ? 'none' : 'flex'}">${icon}</span>
+      <span class="thumb-placeholder" style="display:${item.thumbnail ? 'none' : 'flex'}">${getIconForItem(item)}</span>
       <span class="opcion-nombre">${item.nombre}</span>
     `;
 
@@ -79,15 +76,19 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
 }
 
 function getIconForItem(item) {
-  if (item.id.includes('base-01'))         return '⭕';
-  if (item.id.includes('base-02'))         return '⬡';
-  if (item.id.includes('base-03'))         return '✿';
-  if (item.id.includes('man-01'))          return '🎯';
-  if (item.id.includes('man-02'))          return '📐';
-  if (item.id.includes('arabigos'))        return '1';
-  if (item.id.includes('romanos'))         return 'I';
-  if (item.id.includes('letras'))          return 'A';
-  if (item.id.includes('emojis'))          return '●';
+  if (item.id === 'base_01')          return '⭕';
+  if (item.id === 'base_02')          return '⬡';
+  if (item.id === 'base_03')          return '✿';
+  if (item.id === 'base_04')          return '☀';
+  if (item.id === 'base_05')          return '〜';
+  if (item.id === 'manecillas_01')    return '🎯';
+  if (item.id === 'manecillas_02')    return '📐';
+  if (item.id === 'manecillas_03')    return '—';
+  if (item.id === 'slots_arabigos')   return '1';
+  if (item.id === 'slots_romanos')    return 'I';
+  if (item.id === 'slots_dislexicos') return 'p';
+  if (item.id === 'slots_emojis')     return '●';
+  if (item.id === 'slots_letras')     return 'A';
   return '◆';
 }
 
@@ -105,15 +106,13 @@ function initTabs() {
 }
 
 // ── Selección y actualización ─────────────────────────────────────
-async function seleccionar(categoria, id) {
-  await aplicarSeleccion({ [categoria]: id });
+function seleccionar(categoria, id) {
+  aplicarSeleccion({ [categoria]: id });
 }
 
-async function aplicarSeleccion(parcial, silencioso = false) {
-  const anterior = { ...config };
+function aplicarSeleccion(parcial) {
   Object.assign(config, parcial);
 
-  // Actualizar UI seleccionada
   Object.keys(parcial).forEach(categoria => {
     const id = parcial[categoria];
     document.querySelectorAll(`.opcion-card[data-categoria="${categoria}"]`).forEach(card => {
@@ -121,39 +120,24 @@ async function aplicarSeleccion(parcial, silencioso = false) {
     });
   });
 
-  // Cargar modelos 3D que han cambiado
-  const promesas = [];
+  if (parcial.base !== undefined)       cambiarBase(config.base);
+  if (parcial.manecillas !== undefined) cambiarManecillas(config.manecillas);
+  if (parcial.addon !== undefined)      cambiarAddons(config.addon);
 
-  if (parcial.base) {
-    const pieza = piezas.bases.find(b => b.id === parcial.base);
-    if (pieza) promesas.push(cargarBase(pieza.modelo));
-  }
-
-  if (parcial.manecillas) {
-    const pieza = piezas.manecillas.find(m => m.id === parcial.manecillas);
-    if (pieza) promesas.push(cargarManecillas(pieza.modelo));
-  }
-
-  if (parcial.addon !== undefined) {
-    const pieza = piezas.addons.find(a => a.id === parcial.addon);
-    actualizarAddons(pieza || null);
-  }
-
-  await Promise.allSettled(promesas);
   guardarConfiguracion(config);
 }
 
 // ── Randomize ─────────────────────────────────────────────────────
-async function randomize() {
+function randomize() {
   const btn = document.getElementById('btn-randomize');
   btn.style.transform = 'scale(0.95)';
   setTimeout(() => { btn.style.transform = ''; }, 150);
 
-  const baseRandom       = piezas.bases[Math.floor(Math.random() * piezas.bases.length)].id;
-  const manecillasRandom = piezas.manecillas[Math.floor(Math.random() * piezas.manecillas.length)].id;
-  const addonRandom      = piezas.addons[Math.floor(Math.random() * piezas.addons.length)].id;
-
-  await aplicarSeleccion({ base: baseRandom, manecillas: manecillasRandom, addon: addonRandom });
+  aplicarSeleccion({
+    base:       piezas.bases[Math.floor(Math.random() * piezas.bases.length)].id,
+    manecillas: piezas.manecillas[Math.floor(Math.random() * piezas.manecillas.length)].id,
+    addon:      piezas.addons[Math.floor(Math.random() * piezas.addons.length)].id,
+  });
 }
 
 // ── Resumen del pedido ────────────────────────────────────────────
@@ -166,10 +150,7 @@ function generarResumen() {
   document.getElementById('resumen-manecillas').textContent = manecillas?.nombre  ?? '—';
   document.getElementById('resumen-addon').textContent      = addon?.nombre       ?? '—';
 
-  const imageData = capturarCanvas();
-  const img = document.getElementById('resumen-imagen');
-  img.src = imageData;
-
+  document.getElementById('resumen-imagen').src = capturarCanvas();
   document.getElementById('resumen-modal').classList.add('open');
 }
 

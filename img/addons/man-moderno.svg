@@ -1,5 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
-  <line x1="40" y1="40" x2="40" y2="14" stroke="#1A6EFF" stroke-width="3" stroke-linecap="round"/>
-  <line x1="40" y1="40" x2="58" y2="50" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="40" cy="40" r="4" fill="#1A1A1A"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="b" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1196.33 837.11">
+  <defs>
+    <style>
+      .d {
+        fill: #e42c1d;
+      }
+
+      .e {
+        fill: none;
+        stroke: #e42c1d;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 100px;
+      }
+    </style>
+  </defs>
+  <g id="c" data-name="Capa 1">
+    <g>
+      <line class="e" x1="50" y1="50" x2="660.12" y2="787.11"/>
+      <circle class="d" cx="1110.5" cy="417.26" r="85.84"/>
+    </g>
+  </g>
 </svg>
