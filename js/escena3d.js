@@ -235,6 +235,10 @@ function animate() {
 
 // ── Helpers ──────────────────────────────────────────────────────
 function centrarYEscalar(objeto, tamanoObjetivo) {
+  // Los modelos GLB suelen estar en orientación Y-up (tumbados).
+  // Rotamos -90° en X para que la cara del reloj mire hacia la cámara.
+  objeto.rotation.x = -Math.PI / 2;
+
   const box = new THREE.Box3().setFromObject(objeto);
   const size = new THREE.Vector3();
   box.getSize(size);
