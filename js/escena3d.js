@@ -1,4 +1,4 @@
-import * as THREE from './vendors/three.core.min.js';
+import * as THREE from './vendors/three.module.min.js';
 import { OrbitControls } from './vendors/OrbitControls.js';
 import { GLTFLoader } from './vendors/GLTFLoader.js';
 
