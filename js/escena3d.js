@@ -6,7 +6,7 @@ let renderer, scene, camera, controls, loader;
 let modeloBase = null, modeloManecillas = null, grupoAddons = null;
 let manecillaHoras = null, manecillaMinutos = null;
 
-const RADIO_ADDONS = 1.85;
+const RADIO_ADDONS = 1.25;
 
 export function initEscena(container) {
   // Escena
@@ -14,8 +14,8 @@ export function initEscena(container) {
   scene.background = new THREE.Color(0xF5F0E8);
 
   // Cámara
-  camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-  camera.position.set(0, 0, 6);
+  camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+  camera.position.set(0, 0, 8);
 
   // Renderer
   renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -44,8 +44,8 @@ export function initEscena(container) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.07;
   controls.enablePan = false;
-  controls.minDistance = 3;
-  controls.maxDistance = 12;
+  controls.minDistance = 4;
+  controls.maxDistance = 16;
   controls.maxPolarAngle = Math.PI / 1.5;
 
   // GLTFLoader
@@ -98,7 +98,7 @@ export function cargarBase(rutaGlb, onProgress) {
         }
         quitarCuboDemo();
         modeloBase = gltf.scene;
-        centrarYEscalar(modeloBase, 2.8);
+        centrarYEscalar(modeloBase, 2.2);
         modeloBase.traverse(o => { if (o.isMesh) o.castShadow = true; });
         scene.add(modeloBase);
         resolve(modeloBase);
@@ -121,7 +121,7 @@ export function cargarManecillas(rutaGlb, onProgress) {
           manecillaMinutos = null;
         }
         modeloManecillas = gltf.scene;
-        centrarYEscalar(modeloManecillas, 2.8);
+        centrarYEscalar(modeloManecillas, 2.2);
 
         // Detectar manecillas por nombre en el GLB
         modeloManecillas.traverse(o => {
