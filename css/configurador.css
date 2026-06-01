@@ -214,6 +214,38 @@
   background-size: cover;
 }
 
+/* ── Selector de color ─────────────────────────────────────────── */
+.tab-label-color {
+  margin-top: var(--spacing-lg);
+}
+
+.colores-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(26, 26, 26, 0.12);
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.selected {
+  border-color: var(--color-negro);
+  box-shadow: 0 0 0 1px rgba(26, 26, 26, 0.12), 0 0 0 5px rgba(26, 26, 26, 0.12);
+}
+
 /* ── Próximamente badge ────────────────────────────────────────── */
 .opcion-card.coming-soon {
   opacity: 0.4;

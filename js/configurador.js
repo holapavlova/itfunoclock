@@ -1,7 +1,17 @@
-import { initEscena, cargarModeloMaestro, cambiarBase, cambiarManecillas, cambiarAddons, capturarCanvas } from './escena3d.js';
+import { initEscena, cargarModeloMaestro, cambiarBase, cambiarManecillas, cambiarAddons, cambiarColorBase, cambiarColorHora, cambiarColorMinuto, capturarCanvas } from './escena3d.js';
+
+const PALETA = [
+  { id: 'blanco',   nombre: 'Blanco',   hex: '#FFFFFF' },
+  { id: 'negro',    nombre: 'Negro',    hex: '#1A1A1A' },
+  { id: 'amarillo', nombre: 'Amarillo', hex: '#F5B800' },
+  { id: 'celeste',  nombre: 'Celeste',  hex: '#1A6EFF' },
+  { id: 'verde',    nombre: 'Verde',    hex: '#00AA44' },
+  { id: 'rosa',     nombre: 'Rosa',     hex: '#FF4DA6' },
+  { id: 'rojo',     nombre: 'Rojo',     hex: '#FF2D00' },
+];
 
 let piezas = null;
-let config = { base: null, manecillas: null, addon: null };
+let config = { base: null, manecillas: null, addon: null, colorBase: null, colorHora: null, colorMinuto: null };
 
 // ── Init ─────────────────────────────────────────────────────────
 export async function initConfigurador() {
@@ -11,6 +21,7 @@ export async function initConfigurador() {
   piezas = await cargarPiezas();
 
   renderizarOpciones(piezas);
+  initColores();
   initTabs();
 
   try {
@@ -21,9 +32,12 @@ export async function initConfigurador() {
 
   const guardada = cargarConfiguracion();
   aplicarSeleccion(guardada ?? {
-    base:       piezas.bases[0].id,
-    manecillas: piezas.manecillas[0].id,
-    addon:      piezas.addons[0].id,
+    base:        piezas.bases[0].id,
+    manecillas:  piezas.manecillas[0].id,
+    addon:       piezas.addons[0].id,
+    colorBase:   '#FFFFFF',
+    colorHora:   '#1A1A1A',
+    colorMinuto: '#1A1A1A',
   });
 
   ocultarLoading();
@@ -92,6 +106,29 @@ function getIconForItem(item) {
   return '◆';
 }
 
+// ── Colores ───────────────────────────────────────────────────────
+function initColores() {
+  renderizarSwatches('colores-base',   'colorBase');
+  renderizarSwatches('colores-hora',   'colorHora');
+  renderizarSwatches('colores-minuto', 'colorMinuto');
+}
+
+function renderizarSwatches(containerId, categoria) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  PALETA.forEach(({ nombre, hex }) => {
+    const btn = document.createElement('button');
+    btn.className = 'color-swatch';
+    btn.dataset.id = hex;
+    btn.dataset.categoria = categoria;
+    btn.style.background = hex;
+    btn.setAttribute('aria-label', nombre);
+    btn.title = nombre;
+    btn.addEventListener('click', () => seleccionar(categoria, hex));
+    container.appendChild(btn);
+  });
+}
+
 // ── Tabs ──────────────────────────────────────────────────────────
 function initTabs() {
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -115,14 +152,17 @@ function aplicarSeleccion(parcial) {
 
   Object.keys(parcial).forEach(categoria => {
     const id = parcial[categoria];
-    document.querySelectorAll(`.opcion-card[data-categoria="${categoria}"]`).forEach(card => {
-      card.classList.toggle('selected', card.dataset.id === id);
+    document.querySelectorAll(`[data-categoria="${categoria}"]`).forEach(el => {
+      el.classList.toggle('selected', el.dataset.id === id);
     });
   });
 
-  if (parcial.base !== undefined)       cambiarBase(config.base);
-  if (parcial.manecillas !== undefined) cambiarManecillas(config.manecillas);
-  if (parcial.addon !== undefined)      cambiarAddons(config.addon);
+  if (parcial.base !== undefined)        cambiarBase(config.base);
+  if (parcial.manecillas !== undefined)  cambiarManecillas(config.manecillas);
+  if (parcial.addon !== undefined)       cambiarAddons(config.addon);
+  if (parcial.colorBase !== undefined && config.colorBase)   cambiarColorBase(config.colorBase);
+  if (parcial.colorHora !== undefined && config.colorHora)   cambiarColorHora(config.colorHora);
+  if (parcial.colorMinuto !== undefined && config.colorMinuto) cambiarColorMinuto(config.colorMinuto);
 
   guardarConfiguracion(config);
 }
@@ -133,10 +173,14 @@ function randomize() {
   btn.style.transform = 'scale(0.95)';
   setTimeout(() => { btn.style.transform = ''; }, 150);
 
+  const color = () => PALETA[Math.floor(Math.random() * PALETA.length)].hex;
   aplicarSeleccion({
-    base:       piezas.bases[Math.floor(Math.random() * piezas.bases.length)].id,
-    manecillas: piezas.manecillas[Math.floor(Math.random() * piezas.manecillas.length)].id,
-    addon:      piezas.addons[Math.floor(Math.random() * piezas.addons.length)].id,
+    base:        piezas.bases[Math.floor(Math.random() * piezas.bases.length)].id,
+    manecillas:  piezas.manecillas[Math.floor(Math.random() * piezas.manecillas.length)].id,
+    addon:       piezas.addons[Math.floor(Math.random() * piezas.addons.length)].id,
+    colorBase:   color(),
+    colorHora:   color(),
+    colorMinuto: color(),
   });
 }
 

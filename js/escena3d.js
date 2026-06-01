@@ -13,6 +13,9 @@ const ESTILOS_MANECILLAS = {
   'manecillas_03': ['manecilla_hora_03', 'manecilla_minuto_03'],
 };
 
+const GRUPOS_HORA   = Object.values(ESTILOS_MANECILLAS).map(([h]) => h);
+const GRUPOS_MINUTO = Object.values(ESTILOS_MANECILLAS).map(([, m]) => m);
+
 const GRUPOS_ADDONS = [
   'slots_arabigos',
   'slots_romanos',
@@ -128,6 +131,32 @@ export function cambiarAddons(id) {
     if (grupo) grupo.visible = (nombre === id);
   });
 }
+
+// ── Color de elementos ────────────────────────────────────────────
+function aplicarColorGrupo(nombres, hex) {
+  if (!modeloMaestro) return;
+  const color = new THREE.Color(hex);
+  nombres.forEach(nombre => {
+    const obj = modeloMaestro.getObjectByName(nombre);
+    if (!obj) return;
+    obj.traverse(o => {
+      if (!o.isMesh || !o.material) return;
+      if (!o.material._custom) {
+        o.material = o.material.clone();
+        o.material.map        = null;
+        o.material.roughness  = 0.4;
+        o.material.metalness  = 0.1;
+        o.material._custom    = true;
+      }
+      o.material.color.set(color);
+      o.material.needsUpdate = true;
+    });
+  });
+}
+
+export function cambiarColorBase(hex)   { aplicarColorGrupo(BASES, hex); }
+export function cambiarColorHora(hex)   { aplicarColorGrupo(GRUPOS_HORA, hex); }
+export function cambiarColorMinuto(hex) { aplicarColorGrupo(GRUPOS_MINUTO, hex); }
 
 // ── Loop ─────────────────────────────────────────────────────────
 function animate() {
