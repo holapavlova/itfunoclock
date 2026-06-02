@@ -1,0 +1,29 @@
+body {
+  font-family: var(--font-cuerpo);
+  font-weight: 400;
+  color: var(--color-negro);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+
+.label {
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.body-sm {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
