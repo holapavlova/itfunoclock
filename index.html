@@ -88,7 +88,11 @@
   <!-- ── Modal: Resumen del pedido ────────────────────────── -->
   <div id="resumen-modal" role="dialog" aria-modal="true" aria-labelledby="resumen-titulo">
     <div class="resumen-card">
-      <h2 id="resumen-titulo">Tu reloj personalizado</h2>
+
+      <div class="resumen-header">
+        <h2 id="resumen-titulo">Tu reloj personalizado</h2>
+        <span id="resumen-numero" class="resumen-numero"></span>
+      </div>
 
       <img id="resumen-imagen" class="resumen-preview" alt="Captura del reloj configurado">
 
@@ -104,9 +108,30 @@
         <span class="resumen-item-label">Add-ons</span>
         <span id="resumen-addon" class="resumen-item-valor">—</span>
       </div>
+      <div class="resumen-item">
+        <span class="resumen-item-label">Color base</span>
+        <span class="resumen-item-valor resumen-color-valor">
+          <span id="resumen-color-base-chip" class="resumen-color-chip"></span>
+          <span id="resumen-color-base-nombre">—</span>
+        </span>
+      </div>
+      <div class="resumen-item">
+        <span class="resumen-item-label">Color hora</span>
+        <span class="resumen-item-valor resumen-color-valor">
+          <span id="resumen-color-hora-chip" class="resumen-color-chip"></span>
+          <span id="resumen-color-hora-nombre">—</span>
+        </span>
+      </div>
+      <div class="resumen-item">
+        <span class="resumen-item-label">Color minutos</span>
+        <span class="resumen-item-valor resumen-color-valor">
+          <span id="resumen-color-minuto-chip" class="resumen-color-chip"></span>
+          <span id="resumen-color-minuto-nombre">—</span>
+        </span>
+      </div>
 
       <div class="resumen-acciones">
-        <button id="btn-imprimir"       class="btn-primary"  type="button">Descargar / Imprimir</button>
+        <button id="btn-imprimir"       class="btn-primary"  type="button">Guardar como PDF</button>
         <button id="btn-cerrar-resumen" class="btn-outline"  type="button">Cerrar</button>
       </div>
     </div>

@@ -393,9 +393,25 @@
   overflow-y: auto;
 }
 
+.resumen-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
 .resumen-card h2 {
   font-size: 1.5rem;
-  margin-bottom: var(--spacing-lg);
+}
+
+.resumen-numero {
+  font-family: var(--font-titulo);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.35;
+  white-space: nowrap;
 }
 
 .resumen-preview {
@@ -433,9 +449,54 @@
   font-weight: 500;
 }
 
+.resumen-color-valor {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.resumen-color-chip {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(26, 26, 26, 0.15);
+  flex-shrink: 0;
+}
+
 .resumen-acciones {
   display: flex;
   gap: var(--spacing-sm);
+}
+
+/* ── Estilos de impresión / exportar PDF ───────────────────────── */
+@media print {
+  /* Oculta todo excepto el resumen */
+  body > *:not(#resumen-modal) { display: none !important; }
+
+  #resumen-modal {
+    display: block !important;
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+
+  .resumen-card {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    padding: var(--spacing-lg) !important;
+  }
+
+  /* Oculta los botones al imprimir */
+  .resumen-acciones { display: none !important; }
+
+  /* La imagen del reloj ocupa la mitad del ancho para no acaparar la página */
+  .resumen-preview {
+    max-width: 280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+  }
 }
 
 /* ── Responsive — Móvil ────────────────────────────────────────── */

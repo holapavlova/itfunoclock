@@ -205,12 +205,32 @@ function generarResumen() {
   const manecillas = piezas.manecillas.find(m => m.id === config.manecillas);
   const addon      = piezas.addons.find(a => a.id === config.addon);
 
+  document.getElementById('resumen-numero').textContent     = `#${generarNumeroPedido()}`;
   document.getElementById('resumen-base').textContent       = base?.nombre       ?? '—';
   document.getElementById('resumen-manecillas').textContent = manecillas?.nombre  ?? '—';
   document.getElementById('resumen-addon').textContent      = addon?.nombre       ?? '—';
 
-  document.getElementById('resumen-imagen').src = capturarCanvas(); // captura el visor 3D
+  setResumenColor('resumen-color-base',   config.colorBase);
+  setResumenColor('resumen-color-hora',   config.colorHora);
+  setResumenColor('resumen-color-minuto', config.colorMinuto);
+
+  document.getElementById('resumen-imagen').src = capturarCanvas();
   document.getElementById('resumen-modal').classList.add('open');
+}
+
+// Rellena el chip de color y el nombre en el resumen
+function setResumenColor(prefijo, hex) {
+  const entrada = PALETA.find(c => c.hex === hex);
+  document.getElementById(`${prefijo}-chip`).style.background = hex ?? 'transparent';
+  document.getElementById(`${prefijo}-nombre`).textContent    = entrada?.nombre ?? hex ?? '—';
+}
+
+// Número único por pedido: IFO-AAAAMMDD-XXXX
+function generarNumeroPedido() {
+  const now = new Date();
+  const fecha = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+  const aleatorio = String(Math.floor(Math.random() * 9000) + 1000);
+  return `IFO-${fecha}-${aleatorio}`;
 }
 
 function cerrarResumen() {
