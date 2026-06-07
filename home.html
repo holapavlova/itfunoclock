@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Martian+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Martian+Mono:wght@800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/home.css">
@@ -16,297 +16,214 @@
 <body class="home-body">
 
   <!-- ══════════════════════════════════════════════════════════════
-       CORTINA DE TRANSICIÓN ENTRE PÁGINAS
+       NAV
   ══════════════════════════════════════════════════════════════════ -->
-  <div id="page-transition" aria-hidden="true">
-    <span class="pt-label">It's Fun o'clock</span>
-  </div>
+  <nav class="nav-home" aria-label="Navegación principal">
+    <a href="home.html" class="nav-logo">Hola·Pavlova</a>
+    <a href="index.html" class="nav-pill">Personalizador →</a>
+  </nav>
+
 
   <!-- ══════════════════════════════════════════════════════════════
-       LOADER — reloj que gira y desliza hacia arriba
+       LOADER — relojito SVG con manecillas en tiempo real
   ══════════════════════════════════════════════════════════════════ -->
-  <div id="loader">
-    <div class="loader-clock">
-      <svg viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="4" fill="var(--color-rojo)"/>
-        <g id="loader-hand-hora">
-          <rect x="47" y="25" width="6" height="25" rx="3" fill="var(--color-blanco-roto)"/>
-        </g>
-        <g id="loader-hand-minuto">
-          <rect x="48" y="10" width="4" height="40" rx="2" fill="var(--color-rojo)"/>
-        </g>
-      </svg>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════
-       HUD INDUSTRIAL — marco de esquinas + reloj en vivo + índice
-  ══════════════════════════════════════════════════════════════════ -->
-  <div class="tech-frame" aria-hidden="true">
-    <span class="corner corner--tl"></span>
-    <span class="corner corner--tr"></span>
-    <span class="corner corner--bl"></span>
-    <span class="corner corner--br"></span>
-  </div>
-  <div class="tech-hud" aria-hidden="true">
-    <span class="hud-left">IFO · BCN · 41.3851°N</span>
-    <span class="hud-clock" id="hud-clock">00:00:00</span>
-    <span class="hud-right"><b id="hud-index">01</b> / 06 — <span id="hud-section">INICIO</span></span>
+  <div id="loader" role="status" aria-label="Cargando">
+    <svg id="loader-clock" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="36" cy="36" r="33" stroke="white" stroke-width="2" opacity="0.2"/>
+      <circle cx="36" cy="36" r="30" stroke="white" stroke-width="1.5"/>
+      <line x1="36" y1="7"  x2="36" y2="11" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="36" y1="61" x2="36" y2="65" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="7"  y1="36" x2="11" y2="36" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="61" y1="36" x2="65" y2="36" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <g id="loader-hand-hora" style="transform-origin:36px 36px">
+        <line x1="36" y1="36" x2="36" y2="17" stroke="white" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g id="loader-hand-minuto" style="transform-origin:36px 36px">
+        <line x1="36" y1="36" x2="36" y2="11" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+      </g>
+      <circle cx="36" cy="36" r="3" fill="white"/>
+    </svg>
+    <span id="loader-label">Cargando</span>
   </div>
 
 
   <!-- ══════════════════════════════════════════════════════════════
-       CONTENIDO PRINCIPAL — el fondo cambia de color con el scroll
+       HERO — letras outline multicolor
   ══════════════════════════════════════════════════════════════════ -->
-  <main id="home-main">
-
-    <!-- NAV -->
-    <nav class="nav-home" aria-label="Navegación principal">
-      <a href="home.html" class="nav-logo">Hola·Pavlova</a>
-      <a href="index.html" class="nav-pill" data-transition>Personalizador →</a>
-    </nav>
-
-    <!-- ── BLOQUE: ES HORA DE [palabra] ───────────────────────────── -->
-    <section id="block-timefor" class="block-timefor" data-section="ES HORA DE" data-index="01">
-      <span class="sec-label">[ 01 — MANIFIESTO / ÍNDICE ]</span>
-      <div class="timefor-ring" aria-hidden="true"></div>
-
-      <div class="timefor-inner">
-        <h2 class="timefor-static">Es hora de</h2>
-
-        <div class="timefor-rotator">
-          <button class="timefor-arrow" id="timefor-prev" aria-label="Palabra anterior">
-            <svg width="40" height="20" viewBox="0 0 40 20" fill="none"><path d="M20 0L40 20H0L20 0Z" fill="currentColor"/></svg>
-          </button>
-
-          <div class="timefor-window">
-            <div id="timefor-word" class="timefor-word">PARAR</div>
-          </div>
-
-          <button class="timefor-arrow" id="timefor-next" aria-label="Palabra siguiente">
-            <svg width="40" height="20" viewBox="0 0 40 20" fill="none"><path d="M20 20L0 0H40L20 20Z" fill="currentColor"/></svg>
-          </button>
-        </div>
+  <section class="hero">
+    <div class="hero-display" aria-label="It's Fun O'Clock!">
+      <div class="hero-line">
+        <span class="hl c-rojo"  style="--r:-2deg">I</span><span class="hl c-azul"  style="--r:3deg">T</span><span class="hl c-rosa"  style="--r:-1deg">'</span><span class="hl c-verde" style="--r:2deg">S</span><span class="hl-gap"></span><span class="hl c-rosa"  style="--r:-3deg">F</span><span class="hl c-rojo"  style="--r:4deg">U</span><span class="hl c-azul"  style="--r:-2deg">N</span>
       </div>
-
-      <div class="timefor-scroll-hint" aria-hidden="true">
-        <div class="scroll-line"></div> scroll
-      </div>
-    </section>
-
-    <!-- ── BLOQUE 1: MANIFIESTO PINNED ────────────────────────────── -->
-    <section id="block-one" class="block-one" data-section="EL ALEGATO" data-index="02">
-      <div class="block-one-grid" aria-hidden="true"></div>
-
-      <div class="rushed-container">
-        <h1 class="rushed-text">NO TENGO TIEMPO PARA NADA · VOY TARDE · NO LLEGO · NO TENGO TIEMPO PARA NADA · VOY TARDE · NO LLEGO</h1>
-      </div>
-
-      <div class="stop-text">Para.</div>
-
-      <div class="manifesto-p1">
-        Divertirse por <br class="br-mobile">
-        <span class="text-azul">divertirse.</span>
-      </div>
-
-      <div class="manifesto-p2">
-        Hacer algo simplemente porque te apetece.<br class="br-desktop">
-        Esté en tu calendario o no.<br>
-        <span class="manifesto-p2-strong">Sea productivo o no.</span>
-      </div>
-
-      <div class="manifesto-p3">
-        El tiempo no se tiene.<br>
-        <span class="text-rojo manifesto-p3-strong">El tiempo se hace.</span>
-      </div>
-    </section>
-
-    <!-- ── BANDA TIPOGRÁFICA 1 ────────────────────────────────────── -->
-    <div class="marquee marquee--negro" aria-hidden="true">
-      <div class="marquee-track">
-        <span>HAZ COSAS INÚTILES&nbsp;·&nbsp;HAZLAS BIEN&nbsp;·&nbsp;</span>
-        <span>HAZ COSAS INÚTILES&nbsp;·&nbsp;HAZLAS BIEN&nbsp;·&nbsp;</span>
-        <span>HAZ COSAS INÚTILES&nbsp;·&nbsp;HAZLAS BIEN&nbsp;·&nbsp;</span>
+      <div class="hero-line">
+        <span class="hl c-verde" style="--r:2deg">O</span><span class="hl c-rojo"  style="--r:-3deg">'</span><span class="hl c-rosa"  style="--r:1deg">C</span><span class="hl c-azul"  style="--r:-2deg">L</span><span class="hl c-verde" style="--r:3deg">O</span><span class="hl c-rojo"  style="--r:-1deg">C</span><span class="hl c-azul"  style="--r:2deg">K</span><span class="hl c-rosa"  style="--r:-2deg">!</span>
       </div>
     </div>
 
-    <!-- ── BLOQUE 2: ANATOMÍA / BLUEPRINT PINNED ──────────────────── -->
-    <section id="block-two" class="block-two" data-section="ANATOMÍA" data-index="03">
-      <span class="sec-label">[ 03 — DESPIECE TÉCNICO ]</span>
-      <div class="block-two-inner">
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
 
-        <div class="blueprint-wrap">
-          <svg viewBox="0 0 500 600" class="blueprint-svg" fill="none" stroke="var(--color-negro)" stroke-width="2" stroke-dasharray="6 6">
-            <line x1="250" y1="50" x2="250" y2="550" stroke-dasharray="4 4" opacity="0.3" stroke="var(--color-negro)"/>
 
-            <g class="layer-base" transform="translate(250, 420)">
-              <g transform="scale(1, 0.5) rotate(45)">
-                <circle cx="0" cy="0" r="160"/>
-                <circle cx="0" cy="0" r="140"/>
-                <circle cx="0" cy="0" r="15"/>
-              </g>
-              <line x1="-200" y1="0" x2="-140" y2="-40" stroke-linecap="round" opacity="0.5"/>
-              <text x="-210" y="10" text-anchor="end" font-size="14" font-family="var(--font-titulo)" stroke="none" fill="var(--color-negro)">Base (24cm Ø)</text>
-            </g>
+  <!-- ══════════════════════════════════════════════════════════════
+       WAVE CTA — frase animada con scroll
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="section-wave">
+    <p class="wave-text" aria-label="Si no te gusta perder el tiempo, encuéntralo aquí">
+      <span class="wave-word">si</span>
+      <span class="wave-word">no</span>
+      <span class="wave-word">te</span>
+      <span class="wave-word">gusta</span>
+      <span class="wave-word">perder</span>
+      <span class="wave-word">el</span>
+      <span class="wave-word">tiempo,</span>
+      <span class="wave-word wave-accent">encuéntralo</span>
+      <span class="wave-word wave-accent wave-cta-link"><a href="index.html">aquí →</a></span>
+    </p>
+  </section>
 
-            <g class="layer-magnet" transform="translate(250, 310)">
-              <g transform="scale(1, 0.5) rotate(45)">
-                <rect x="-80" y="-80" width="160" height="160" rx="30"/>
-                <circle cx="-60" cy="-60" r="12"/>
-                <circle cx="60" cy="-60" r="12"/>
-                <circle cx="-60" cy="60" r="12"/>
-                <circle cx="60" cy="60" r="12"/>
-              </g>
-              <line x1="100" y1="0" x2="160" y2="-30" stroke-linecap="round" opacity="0.5"/>
-              <text x="170" y="-35" font-size="14" font-family="var(--font-titulo)" stroke="none" fill="var(--color-negro)">Sistema de imanes</text>
-            </g>
 
-            <g class="layer-mechanism" transform="translate(250, 200)">
-              <g transform="scale(1, 0.5) rotate(45)">
-                <rect x="-40" y="-40" width="80" height="80" rx="8"/>
-                <circle cx="0" cy="0" r="20"/>
-                <rect x="-60" y="-15" width="20" height="50" rx="4"/>
-              </g>
-              <line x1="-100" y1="0" x2="-160" y2="-30" stroke-linecap="round" opacity="0.5"/>
-              <text x="-170" y="-35" text-anchor="end" font-size="14" font-family="var(--font-titulo)" stroke="none" fill="var(--color-negro)">Mecanismo &amp; energía</text>
-            </g>
+  <!-- ══════════════════════════════════════════════════════════════
+       BLOQUE 1 — MANIFESTO
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="manifesto" aria-label="Manifesto">
 
-            <g class="layer-hands" transform="translate(250, 90)">
-              <g transform="scale(1, 0.5) rotate(45)">
-                <path d="M -8 -8 L 8 -8 L 0 -120 Z"/>
-                <path d="M -8 8 L 8 8 L 0 90 Z"/>
-                <circle cx="0" cy="0" r="12" fill="var(--color-negro)" stroke="none"/>
-              </g>
-              <line x1="60" y1="0" x2="120" y2="-20" stroke-linecap="round" opacity="0.5"/>
-              <text x="130" y="-25" font-size="14" font-family="var(--font-titulo)" stroke="none" fill="var(--color-negro)">Manecillas ligeras</text>
-            </g>
-          </svg>
-        </div>
+    <div class="manifesto-panel" id="panel-1">
+      <p class="manifesto-text">
+        <span class="word"><span>It's</span></span>
+        <span class="word"><span>&nbsp;time&nbsp;</span></span>
+        <span class="word"><span>for</span></span>
+        <br>
+        <span class="word"><span style="color:var(--color-amarillo)" id="rotating-word">nada.</span></span>
+      </p>
+    </div>
 
-        <div class="blueprint-text">
-          <div>
-            <h2 class="block-two-title">Anatomía del <br><span class="text-azul">tiempo</span></h2>
-            <p class="block-two-lead">Diseñado pieza a pieza. Sin pantallas, sin notificaciones. Solo un mecanismo preciso.</p>
-          </div>
+    <div class="manifesto-panel" id="panel-2">
+      <p class="manifesto-text">
+        <span class="word"><span>Divertirse</span></span>
+        <br>
+        <span class="word"><span>no</span></span>
+        <span class="word"><span>&nbsp;necesita</span></span>
+        <br>
+        <span class="word"><span>&nbsp;</span></span>
+        <span class="word"><span><em>justificación.</em></span></span>
+      </p>
+      <p class="manifesto-aside">
+        Vivimos convencidos de que el tiempo libre tiene que ser productivo.
+        Que si no aprendemos algo, creamos algo o avanzamos algo,
+        lo hemos malgastado. Mentira.
+      </p>
+    </div>
 
-          <div class="tech-list">
-            <div class="tech-text-1">
-              <h3 class="text-rosa">⬡ Fijación magnética</h3>
-              <p>Hemos eliminado los tornillos. Monta, desmonta y personaliza las manecillas en segundos, sin herramientas.</p>
-            </div>
-            <div class="tech-text-2">
-              <h3 class="text-amarillo">⚙ Movimiento continuo</h3>
-              <p>Sistema quartz de alta precisión, completamente silencioso. Cero "tic-tac".</p>
-            </div>
-            <div class="tech-text-3">
-              <h3 class="text-verde">▮ Energía eficiente</h3>
-              <p>Una sola pila AA para más de un año de autonomía. Nada de cables ni adaptadores.</p>
-            </div>
-          </div>
-        </div>
+    <div class="manifesto-panel manifesto-panel--accent" id="panel-3">
+      <p class="manifesto-text">
+        Haz cosas<br><em>inútiles.</em><br>Hazlas bien.
+      </p>
+    </div>
 
+    <div class="manifesto-panel manifesto-panel--rojo" id="panel-4">
+      <p class="manifesto-text">
+        <em>It's fun</em><br>o'clock.
+      </p>
+      <p class="manifesto-aside" style="color:rgba(255,255,255,0.5)">
+        Un reloj que recuerda que el tiempo también puede usarse
+        para no hacer absolutamente nada de provecho.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       BLOQUE 2 — ONBOARDING / PRODUCTO
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="onboarding" aria-label="Cómo funciona">
+
+    <div class="onboarding-intro">
+      <h2>Un reloj.<br>Tu reloj.</h2>
+      <p>
+        Tres capas de personalización. Infinitas combinaciones.
+        Cada pieza se imprime en 3D en PLA+ y encaja con un sistema de imanes.
+      </p>
+    </div>
+
+    <div class="onboarding-steps">
+      <img src="img/home/steps.svg" alt="Tres pasos: base, manecillas, add-ons">
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <span class="spec-label">Diámetro</span>
+        <span class="spec-value">24 <em>cm</em></span>
       </div>
-    </section>
-
-    <!-- ── BLOQUE: SPECS ──────────────────────────────────────────── -->
-    <section id="block-specs" class="block-specs" data-section="SPECS" data-index="04">
-      <span class="sec-label">[ 04 — FICHA TÉCNICA ]</span>
-      <div class="block-wrap">
-        <h2 class="block-heading" data-reveal>Especificaciones <br class="br-mobile">técnicas</h2>
-
-        <div class="specs-cards">
-          <div class="spec-card" data-reveal>
-            <span class="spec-card-idx">01</span>
-            <span class="spec-icon text-azul">📐</span>
-            <h4>Dimensiones</h4>
-            <ul>
-              <li>Diámetro: 24 cm</li>
-              <li>Grosor: 2.5 cm</li>
-              <li>Peso: ~300 g</li>
-            </ul>
-          </div>
-          <div class="spec-card" data-reveal>
-            <span class="spec-card-idx">02</span>
-            <span class="spec-icon text-rojo">⬡</span>
-            <h4>Materiales</h4>
-            <ul>
-              <li>Base: PLA+</li>
-              <li>Manecillas: PLA+</li>
-              <li>Impresión FDM 3D</li>
-            </ul>
-          </div>
-          <div class="spec-card" data-reveal>
-            <span class="spec-card-idx">03</span>
-            <span class="spec-icon text-verde">⚙</span>
-            <h4>Mecanismo</h4>
-            <ul>
-              <li>Quartz de precisión</li>
-              <li>Movimiento continuo</li>
-              <li>Silencioso (sin tic-tac)</li>
-            </ul>
-          </div>
-          <div class="spec-card" data-reveal>
-            <span class="spec-card-idx">04</span>
-            <span class="spec-icon text-amarillo">▮</span>
-            <h4>Energía</h4>
-            <ul>
-              <li>1× pila AA (incluida)</li>
-              <li>Autonomía: ~18 meses</li>
-              <li>Cambio magnético fácil</li>
-            </ul>
-          </div>
-        </div>
+      <div class="spec-item">
+        <span class="spec-label">Peso</span>
+        <span class="spec-value">~300 <em>g</em></span>
       </div>
-    </section>
-
-    <!-- ── BANDA TIPOGRÁFICA 2 ────────────────────────────────────── -->
-    <div class="marquee marquee--rojo" aria-hidden="true">
-      <div class="marquee-track">
-        <span>EL TIEMPO NO SE TIENE&nbsp;·&nbsp;EL TIEMPO SE HACE&nbsp;·&nbsp;</span>
-        <span>EL TIEMPO NO SE TIENE&nbsp;·&nbsp;EL TIEMPO SE HACE&nbsp;·&nbsp;</span>
-        <span>EL TIEMPO NO SE TIENE&nbsp;·&nbsp;EL TIEMPO SE HACE&nbsp;·&nbsp;</span>
+      <div class="spec-item">
+        <span class="spec-label">Material</span>
+        <span class="spec-value" style="font-size:1.25rem">PLA+</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Fabricación</span>
+        <span class="spec-value" style="font-size:1.1rem">FDM<br><em>impresión 3D</em></span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Mecanismo</span>
+        <span class="spec-value" style="font-size:1.1rem">Quartz<br><em>pila AA</em></span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Add-ons</span>
+        <span class="spec-value">12 <em>slots</em></span>
       </div>
     </div>
 
-    <!-- ── BLOQUE: ONBOARDING ─────────────────────────────────────── -->
-    <section id="block-onboarding" class="block-onboarding" data-section="ONBOARDING" data-index="05">
-      <span class="sec-label">[ 05 — CÓMO FUNCIONA ]</span>
-      <div class="block-wrap">
-        <h2 class="block-heading" data-reveal>Cómo configurar <br class="br-mobile">tu tiempo</h2>
-
-        <div class="steps-grid">
-          <div class="steps-line" aria-hidden="true"></div>
-
-          <div class="step-item" data-reveal>
-            <div class="step-num bg-amarillo">1</div>
-            <h3>Elige tu base</h3>
-            <p>Tres formas distintas. Elige la que mejor encaje en tu espacio y dale tu color favorito.</p>
-          </div>
-          <div class="step-item" data-reveal>
-            <div class="step-num bg-rosa">2</div>
-            <h3>Añade color</h3>
-            <p>Selecciona el estilo de manecillas y los marcadores. ¿Contraste atrevido o minimalismo total?</p>
-          </div>
-          <div class="step-item" data-reveal>
-            <div class="step-num bg-verde">3</div>
-            <h3>Haz clic</h3>
-            <p>Recíbelo en casa y móntalo en segundos gracias al sistema de fijación magnética. Sin herramientas.</p>
-          </div>
-        </div>
+    <div class="schematic-section">
+      <img src="img/home/clock-schematic.svg" alt="Plano técnico del reloj con medidas">
+      <div class="schematic-text">
+        <h3>Diseñado para<br>durar.</h3>
+        <p>
+          La base y las manecillas se imprimen en PLA+,
+          un bioplástico resistente y ligero derivado del almidón de maíz.
+        </p>
+        <p>
+          El mecanismo es estándar quartz de 1 pila AA,
+          silencioso y con una autonomía de más de un año.
+        </p>
       </div>
-    </section>
+    </div>
 
-    <!-- ── BLOQUE: CTA CONFIGURADOR ───────────────────────────────── -->
-    <section id="block-three" class="block-three" data-section="CONFIGURADOR" data-index="06">
-      <span class="sec-label">[ 06 — EMPIEZA ]</span>
-      <div class="cta-inner">
-        <h2 class="cta-title" data-reveal>¿Listo para<br>hacer el tiempo?</h2>
-        <p class="cta-sub">Diseña tu reloj pieza a pieza. Infinitas combinaciones, una sola que es tuya.</p>
-        <a href="index.html" class="cta-link" data-transition>Abre el configurador →</a>
+    <div class="magnet-section">
+      <img src="img/home/magnet-system.svg" alt="Sistema de imanes para los add-ons">
+      <div class="magnet-text">
+        <h3>Clic.<br>Sin herramientas.</h3>
+        <p>
+          Los 12 marcadores de hora se sujetan mediante imanes integrados
+          en la base y en cada add-on.
+        </p>
+        <p>
+          Cambia el estilo en segundos. Mezcla y combina como quieras.
+        </p>
       </div>
-    </section>
+    </div>
 
-  </main>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       BLOQUE 3 — CTA CONFIGURADOR
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="section-cta" aria-label="Ir al configurador">
+    <h2 class="cta-title">
+      ¿Listo?
+      <span class="big-arrow">↓</span>
+    </h2>
+    <a href="index.html" class="cta-link">
+      Configura tu reloj →
+    </a>
+  </section>
 
 
   <!-- Scripts -->
