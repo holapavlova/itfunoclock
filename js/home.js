@@ -24,12 +24,65 @@ function initLoader(onComplete) {
   tl.to(handMinuto, { rotation: 360 * 4, transformOrigin: '50px 50px', duration: 2.5, ease: 'power3.inOut' }, 0)
     .to(handHora,   { rotation: 360,     transformOrigin: '50px 50px', duration: 2.5, ease: 'power3.inOut' }, 0);
 
-  // Fallback: si algo falla, revela igualmente tras 4.5s
   gsap.delayedCall(4.5, () => {
     if (loaderEl && !loaderEl.dataset.done) {
       gsap.set(loaderEl, { yPercent: -100 });
       onComplete();
     }
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// TRANSICIÓN ENTRE PÁGINAS — cortina al navegar a otro .html
+// ════════════════════════════════════════════════════════════════
+function initPageTransition() {
+  const curtain = document.getElementById('page-transition');
+  const label   = curtain.querySelector('.pt-label');
+
+  document.querySelectorAll('a[data-transition]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#')) return;
+      e.preventDefault();
+
+      const tl = gsap.timeline({
+        onComplete: () => { window.location.href = href; }
+      });
+      tl.set(curtain, { y: '100%' })
+        .to(curtain, { y: '0%', duration: 0.6, ease: 'power4.inOut' })
+        .to(label,   { opacity: 1, duration: 0.3 }, '-=0.25');
+    });
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// HUD — reloj en vivo + índice de sección
+// ════════════════════════════════════════════════════════════════
+function initHud() {
+  const clockEl   = document.getElementById('hud-clock');
+  const indexEl   = document.getElementById('hud-index');
+  const sectionEl = document.getElementById('hud-section');
+
+  function tick() {
+    const n = new Date();
+    const p = (v) => String(v).padStart(2, '0');
+    clockEl.textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  document.querySelectorAll('[data-section]').forEach(sec => {
+    ScrollTrigger.create({
+      trigger: sec,
+      start: 'top 50%',
+      end: 'bottom 50%',
+      onToggle: (self) => {
+        if (self.isActive) {
+          indexEl.textContent   = sec.dataset.index;
+          sectionEl.textContent = sec.dataset.section;
+        }
+      }
+    });
   });
 }
 
@@ -54,6 +107,42 @@ function initBackgroundTransitions() {
       end: 'bottom 50%',
       onEnter:     () => gsap.to(main, { backgroundColor: color, duration: 0.8, overwrite: 'auto' }),
       onEnterBack: () => gsap.to(main, { backgroundColor: color, duration: 0.8, overwrite: 'auto' }),
+    });
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// BANDAS TIPOGRÁFICAS — desplazamiento horizontal con scroll
+// ════════════════════════════════════════════════════════════════
+function initMarquees() {
+  gsap.utils.toArray('.marquee').forEach(strip => {
+    const track = strip.querySelector('.marquee-track');
+    gsap.fromTo(track,
+      { xPercent: 0 },
+      {
+        xPercent: -50,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: strip,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        }
+      }
+    );
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// REVELADOS CON MÁSCARA (clip-path)
+// ════════════════════════════════════════════════════════════════
+function initReveals() {
+  gsap.utils.toArray('[data-reveal]').forEach(el => {
+    gsap.to(el, {
+      clipPath: 'inset(0 0% 0 0)',
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' },
     });
   });
 }
@@ -98,7 +187,6 @@ function initTimeFor() {
   document.getElementById('timefor-next').addEventListener('click', () => cambiar(1));
   document.getElementById('timefor-prev').addEventListener('click', () => cambiar(-1));
 
-  // Auto-rotación suave hasta que el usuario interactúe
   let auto = setInterval(() => cambiar(1), 2600);
   ['timefor-next', 'timefor-prev'].forEach(id =>
     document.getElementById(id).addEventListener('click', () => clearInterval(auto))
@@ -110,13 +198,7 @@ function initTimeFor() {
 // ════════════════════════════════════════════════════════════════
 function initBlockOne() {
   const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#block-one',
-      start: 'top top',
-      end: '+=4000',
-      scrub: 1,
-      pin: true,
-    }
+    scrollTrigger: { trigger: '#block-one', start: 'top top', end: '+=4000', scrub: 1, pin: true }
   });
 
   gsap.set('.stop-text', { opacity: 0, scale: 0.5 });
@@ -143,13 +225,7 @@ function initBlockOne() {
 // ════════════════════════════════════════════════════════════════
 function initBlockTwo() {
   const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#block-two',
-      start: 'top top',
-      end: '+=3000',
-      scrub: 1,
-      pin: true,
-    }
+    scrollTrigger: { trigger: '#block-two', start: 'top top', end: '+=3000', scrub: 1, pin: true }
   });
 
   tl.from('.layer-base',      { y: 100, opacity: 0, duration: 1 })
@@ -169,33 +245,16 @@ function initBlockTwo() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// BLOQUES estáticos — reveal al entrar en viewport
+// CTA final — reveal
 // ════════════════════════════════════════════════════════════════
-function initReveals() {
-  gsap.fromTo('.spec-card',
-    { y: 50, opacity: 0 },
-    {
-      scrollTrigger: { trigger: '.block-specs', start: 'top 80%' },
-      y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.2)',
-    }
-  );
-
-  gsap.fromTo('.step-item',
-    { y: 50, opacity: 0 },
-    {
-      scrollTrigger: { trigger: '.block-onboarding', start: 'top 65%' },
-      y: 0, opacity: 1, duration: 0.6, stagger: 0.2, ease: 'back.out(1.2)',
-    }
-  );
-
+function initCta() {
   ScrollTrigger.create({
     trigger: '#block-three',
     start: 'top 70%',
     once: true,
     onEnter: () => {
-      gsap.from('.cta-title', { scale: 0.7, opacity: 0, duration: 1, ease: 'back.out(1.2)' });
-      gsap.from('.cta-sub',   { y: 30, opacity: 0, duration: 0.6, delay: 0.3 });
-      gsap.from('.cta-link',  { y: 30, opacity: 0, duration: 0.6, delay: 0.45 });
+      gsap.from('.cta-sub',  { y: 30, opacity: 0, duration: 0.6, delay: 0.3 });
+      gsap.from('.cta-link', { y: 30, opacity: 0, duration: 0.6, delay: 0.45 });
     }
   });
 }
@@ -205,13 +264,16 @@ function initReveals() {
 // ════════════════════════════════════════════════════════════════
 function startApp() {
   document.body.style.overflow = '';
+  initPageTransition();
+  initHud();
   initTimeFor();
+  initMarquees();
+  initReveals();
   initBlockOne();
   initBlockTwo();
-  initReveals();
+  initCta();
   initBackgroundTransitions();
 
-  // Recalcular tras pintar los pines
   setTimeout(() => { ScrollTrigger.sort(); ScrollTrigger.refresh(); }, 300);
 }
 

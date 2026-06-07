@@ -16,6 +16,13 @@
 <body class="home-body">
 
   <!-- ══════════════════════════════════════════════════════════════
+       CORTINA DE TRANSICIÓN ENTRE PÁGINAS
+  ══════════════════════════════════════════════════════════════════ -->
+  <div id="page-transition" aria-hidden="true">
+    <span class="pt-label">It's Fun o'clock</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
        LOADER — reloj que gira y desliza hacia arriba
   ══════════════════════════════════════════════════════════════════ -->
   <div id="loader">
@@ -32,6 +39,21 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════════════════════════════
+       HUD INDUSTRIAL — marco de esquinas + reloj en vivo + índice
+  ══════════════════════════════════════════════════════════════════ -->
+  <div class="tech-frame" aria-hidden="true">
+    <span class="corner corner--tl"></span>
+    <span class="corner corner--tr"></span>
+    <span class="corner corner--bl"></span>
+    <span class="corner corner--br"></span>
+  </div>
+  <div class="tech-hud" aria-hidden="true">
+    <span class="hud-left">IFO · BCN · 41.3851°N</span>
+    <span class="hud-clock" id="hud-clock">00:00:00</span>
+    <span class="hud-right"><b id="hud-index">01</b> / 06 — <span id="hud-section">INICIO</span></span>
+  </div>
+
 
   <!-- ══════════════════════════════════════════════════════════════
        CONTENIDO PRINCIPAL — el fondo cambia de color con el scroll
@@ -41,11 +63,12 @@
     <!-- NAV -->
     <nav class="nav-home" aria-label="Navegación principal">
       <a href="home.html" class="nav-logo">Hola·Pavlova</a>
-      <a href="index.html" class="nav-pill">Personalizador →</a>
+      <a href="index.html" class="nav-pill" data-transition>Personalizador →</a>
     </nav>
 
     <!-- ── BLOQUE: ES HORA DE [palabra] ───────────────────────────── -->
-    <section id="block-timefor" class="block-timefor">
+    <section id="block-timefor" class="block-timefor" data-section="ES HORA DE" data-index="01">
+      <span class="sec-label">[ 01 — MANIFIESTO / ÍNDICE ]</span>
       <div class="timefor-ring" aria-hidden="true"></div>
 
       <div class="timefor-inner">
@@ -72,7 +95,7 @@
     </section>
 
     <!-- ── BLOQUE 1: MANIFIESTO PINNED ────────────────────────────── -->
-    <section id="block-one" class="block-one">
+    <section id="block-one" class="block-one" data-section="EL ALEGATO" data-index="02">
       <div class="block-one-grid" aria-hidden="true"></div>
 
       <div class="rushed-container">
@@ -98,8 +121,18 @@
       </div>
     </section>
 
+    <!-- ── BANDA TIPOGRÁFICA 1 ────────────────────────────────────── -->
+    <div class="marquee marquee--negro" aria-hidden="true">
+      <div class="marquee-track">
+        <span>HAZ COSAS INÚTILES&nbsp;·&nbsp;HAZLAS BIEN&nbsp;·&nbsp;</span>
+        <span>HAZ COSAS INÚTILES&nbsp;·&nbsp;HAZLAS BIEN&nbsp;·&nbsp;</span>
+        <span>HAZ COSAS INÚTILES&nbsp;·&nbsp;HAZLAS BIEN&nbsp;·&nbsp;</span>
+      </div>
+    </div>
+
     <!-- ── BLOQUE 2: ANATOMÍA / BLUEPRINT PINNED ──────────────────── -->
-    <section id="block-two" class="block-two">
+    <section id="block-two" class="block-two" data-section="ANATOMÍA" data-index="03">
+      <span class="sec-label">[ 03 — DESPIECE TÉCNICO ]</span>
       <div class="block-two-inner">
 
         <div class="blueprint-wrap">
@@ -176,12 +209,14 @@
     </section>
 
     <!-- ── BLOQUE: SPECS ──────────────────────────────────────────── -->
-    <section id="block-specs" class="block-specs">
+    <section id="block-specs" class="block-specs" data-section="SPECS" data-index="04">
+      <span class="sec-label">[ 04 — FICHA TÉCNICA ]</span>
       <div class="block-wrap">
-        <h2 class="block-heading">Especificaciones <br class="br-mobile">técnicas</h2>
+        <h2 class="block-heading" data-reveal>Especificaciones <br class="br-mobile">técnicas</h2>
 
         <div class="specs-cards">
-          <div class="spec-card">
+          <div class="spec-card" data-reveal>
+            <span class="spec-card-idx">01</span>
             <span class="spec-icon text-azul">📐</span>
             <h4>Dimensiones</h4>
             <ul>
@@ -190,7 +225,8 @@
               <li>Peso: ~300 g</li>
             </ul>
           </div>
-          <div class="spec-card">
+          <div class="spec-card" data-reveal>
+            <span class="spec-card-idx">02</span>
             <span class="spec-icon text-rojo">⬡</span>
             <h4>Materiales</h4>
             <ul>
@@ -199,7 +235,8 @@
               <li>Impresión FDM 3D</li>
             </ul>
           </div>
-          <div class="spec-card">
+          <div class="spec-card" data-reveal>
+            <span class="spec-card-idx">03</span>
             <span class="spec-icon text-verde">⚙</span>
             <h4>Mecanismo</h4>
             <ul>
@@ -208,7 +245,8 @@
               <li>Silencioso (sin tic-tac)</li>
             </ul>
           </div>
-          <div class="spec-card">
+          <div class="spec-card" data-reveal>
+            <span class="spec-card-idx">04</span>
             <span class="spec-icon text-amarillo">▮</span>
             <h4>Energía</h4>
             <ul>
@@ -221,25 +259,35 @@
       </div>
     </section>
 
+    <!-- ── BANDA TIPOGRÁFICA 2 ────────────────────────────────────── -->
+    <div class="marquee marquee--rojo" aria-hidden="true">
+      <div class="marquee-track">
+        <span>EL TIEMPO NO SE TIENE&nbsp;·&nbsp;EL TIEMPO SE HACE&nbsp;·&nbsp;</span>
+        <span>EL TIEMPO NO SE TIENE&nbsp;·&nbsp;EL TIEMPO SE HACE&nbsp;·&nbsp;</span>
+        <span>EL TIEMPO NO SE TIENE&nbsp;·&nbsp;EL TIEMPO SE HACE&nbsp;·&nbsp;</span>
+      </div>
+    </div>
+
     <!-- ── BLOQUE: ONBOARDING ─────────────────────────────────────── -->
-    <section id="block-onboarding" class="block-onboarding">
+    <section id="block-onboarding" class="block-onboarding" data-section="ONBOARDING" data-index="05">
+      <span class="sec-label">[ 05 — CÓMO FUNCIONA ]</span>
       <div class="block-wrap">
-        <h2 class="block-heading">Cómo configurar <br class="br-mobile">tu tiempo</h2>
+        <h2 class="block-heading" data-reveal>Cómo configurar <br class="br-mobile">tu tiempo</h2>
 
         <div class="steps-grid">
           <div class="steps-line" aria-hidden="true"></div>
 
-          <div class="step-item">
+          <div class="step-item" data-reveal>
             <div class="step-num bg-amarillo">1</div>
             <h3>Elige tu base</h3>
             <p>Tres formas distintas. Elige la que mejor encaje en tu espacio y dale tu color favorito.</p>
           </div>
-          <div class="step-item">
+          <div class="step-item" data-reveal>
             <div class="step-num bg-rosa">2</div>
             <h3>Añade color</h3>
             <p>Selecciona el estilo de manecillas y los marcadores. ¿Contraste atrevido o minimalismo total?</p>
           </div>
-          <div class="step-item">
+          <div class="step-item" data-reveal>
             <div class="step-num bg-verde">3</div>
             <h3>Haz clic</h3>
             <p>Recíbelo en casa y móntalo en segundos gracias al sistema de fijación magnética. Sin herramientas.</p>
@@ -249,11 +297,12 @@
     </section>
 
     <!-- ── BLOQUE: CTA CONFIGURADOR ───────────────────────────────── -->
-    <section id="block-three" class="block-three">
+    <section id="block-three" class="block-three" data-section="CONFIGURADOR" data-index="06">
+      <span class="sec-label">[ 06 — EMPIEZA ]</span>
       <div class="cta-inner">
-        <h2 class="cta-title">¿Listo para<br>hacer el tiempo?</h2>
+        <h2 class="cta-title" data-reveal>¿Listo para<br>hacer el tiempo?</h2>
         <p class="cta-sub">Diseña tu reloj pieza a pieza. Infinitas combinaciones, una sola que es tuya.</p>
-        <a href="index.html" class="cta-link">Abre el configurador →</a>
+        <a href="index.html" class="cta-link" data-transition>Abre el configurador →</a>
       </div>
     </section>
 
