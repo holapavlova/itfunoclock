@@ -1,0 +1,458 @@
+/* ── Loader ─────────────────────────────────────────────────────── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--color-negro);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1000;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#loader-clock {
+  width: 72px;
+  height: 72px;
+}
+
+#loader-label {
+  font-family: var(--font-titulo);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-blanco);
+  opacity: 0.5;
+}
+
+/* ── Layout general de la home ─────────────────────────────────── */
+.home-body {
+  overflow-x: hidden;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--spacing-xl);
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 90vh);
+  height: min(90vw, 90vh);
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-titulo);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-amarillo);
+  margin-bottom: var(--spacing-lg);
+  opacity: 0;
+}
+
+.hero-title {
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--color-blanco);
+  margin-bottom: var(--spacing-xl);
+  overflow: hidden;
+}
+
+.hero-title .line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title .line span {
+  display: block;
+  transform: translateY(110%);
+}
+
+.hero-sub {
+  font-family: var(--font-cuerpo);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  max-width: 480px;
+  opacity: 0;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: var(--spacing-xl);
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--color-amarillo);
+  color: var(--color-negro);
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  opacity: 0;
+  transition: filter 0.2s ease, transform 0.2s ease;
+  width: fit-content;
+}
+
+.hero-cta:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-titulo);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  opacity: 0;
+}
+
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+  transform-origin: left;
+  animation: scrollLineAnim 2s ease-in-out infinite;
+}
+
+@keyframes scrollLineAnim {
+  0%   { scaleX: 0; opacity: 0; }
+  50%  { scaleX: 1; opacity: 1; }
+  100% { scaleX: 0; opacity: 0; }
+}
+
+/* ── Manifesto ──────────────────────────────────────────────────── */
+.manifesto {
+  background: var(--color-negro);
+  color: var(--color-blanco);
+}
+
+.manifesto-panel {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  position: relative;
+}
+
+.manifesto-panel--accent {
+  background: var(--color-amarillo);
+  color: var(--color-negro);
+}
+
+.manifesto-panel--rojo {
+  background: var(--color-rojo);
+  color: var(--color-blanco);
+}
+
+.manifesto-text {
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-align: center;
+  max-width: 14ch;
+}
+
+.manifesto-text .word {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.manifesto-text .word span {
+  display: inline-block;
+}
+
+.manifesto-text em {
+  font-style: normal;
+  color: var(--color-amarillo);
+}
+
+.manifesto-panel--accent .manifesto-text em {
+  color: var(--color-negro);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.manifesto-panel--rojo .manifesto-text em {
+  color: var(--color-amarillo);
+}
+
+/* Palabra rotante */
+.rotating-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  min-width: 4ch;
+}
+
+.rotating-word-inner {
+  display: block;
+}
+
+/* Texto pequeño en manifesto */
+.manifesto-aside {
+  position: absolute;
+  bottom: var(--spacing-xl);
+  right: var(--spacing-xl);
+  font-family: var(--font-cuerpo);
+  font-size: 0.8125rem;
+  max-width: 280px;
+  line-height: 1.6;
+  opacity: 0.5;
+  text-align: right;
+}
+
+/* ── Onboarding ─────────────────────────────────────────────────── */
+.onboarding {
+  background: var(--color-blanco-roto);
+  color: var(--color-negro);
+}
+
+.onboarding-intro {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.onboarding-intro h2 {
+  font-size: clamp(2rem, 6vw, 5rem);
+  margin-bottom: var(--spacing-lg);
+}
+
+.onboarding-intro p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  max-width: 560px;
+  opacity: 0.6;
+  line-height: 1.7;
+}
+
+/* Steps */
+.onboarding-steps {
+  padding: var(--spacing-xl);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.onboarding-steps img {
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Specs */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2px;
+  background: rgba(26,26,26,0.1);
+  margin: 0 var(--spacing-xl) var(--spacing-xl);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.spec-item {
+  background: var(--color-blanco-roto);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.spec-label {
+  font-family: var(--font-titulo);
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+
+.spec-value {
+  font-family: var(--font-titulo);
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.spec-value em {
+  font-style: normal;
+  font-size: 0.75em;
+  opacity: 0.5;
+}
+
+/* Schematic */
+.schematic-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  padding: var(--spacing-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.schematic-section img {
+  width: 100%;
+}
+
+.schematic-text h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: var(--spacing-md);
+}
+
+.schematic-text p {
+  font-size: 1rem;
+  line-height: 1.7;
+  opacity: 0.65;
+  max-width: 42ch;
+}
+
+.schematic-text p + p {
+  margin-top: var(--spacing-md);
+}
+
+/* Magnet section */
+.magnet-section {
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  padding: var(--spacing-xl);
+  min-height: 60vh;
+}
+
+.magnet-section img {
+  width: 100%;
+  max-width: 500px;
+  justify-self: center;
+}
+
+.magnet-text h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: var(--spacing-md);
+}
+
+.magnet-text p {
+  font-size: 1rem;
+  line-height: 1.7;
+  opacity: 0.6;
+  max-width: 42ch;
+}
+
+/* ── CTA Final ──────────────────────────────────────────────────── */
+.section-cta {
+  min-height: 100vh;
+  background: var(--color-amarillo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xl);
+  gap: var(--spacing-lg);
+}
+
+.cta-title {
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 8rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--color-negro);
+  max-width: 10ch;
+}
+
+.cta-title .big-arrow {
+  display: block;
+  font-size: 0.6em;
+  opacity: 0.3;
+  margin-top: 0.2em;
+}
+
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cta-link:hover {
+  background: var(--color-azul);
+  transform: translateY(-3px);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--spacing-lg);
+  }
+
+  .schematic-section,
+  .magnet-section {
+    grid-template-columns: 1fr;
+  }
+
+  .magnet-section {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .manifesto-aside {
+    display: none;
+  }
+}
+
+/* ── Print (ocultar home elements) ─────────────────────────────── */
+@media print {
+  #loader, .hero, .manifesto, .onboarding, .section-cta { display: none; }
+}

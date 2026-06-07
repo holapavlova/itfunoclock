@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" fill="none">
+  <!-- Clock slot -->
+  <rect x="60" y="80" width="120" height="120" rx="12" fill="#F5F0E8" stroke="#1A1A1A" stroke-width="2"/>
+  <text x="120" y="148" text-anchor="middle" font-family="'Martian Mono',monospace" font-size="11" fill="#1A1A1A">BASE</text>
+  <!-- Magnet in slot -->
+  <circle cx="120" cy="200" r="14" fill="#1A6EFF" opacity="0.15" stroke="#1A6EFF" stroke-width="2"/>
+  <text x="120" y="205" text-anchor="middle" font-family="'Martian Mono',monospace" font-size="9" fill="#1A6EFF">N</text>
+  <!-- Arrow -->
+  <path d="M200 140 Q240 110 280 140" stroke="#FF2D00" stroke-width="2" stroke-dasharray="5 4"/>
+  <polygon points="278,133 286,143 270,145" fill="#FF2D00"/>
+  <!-- Add-on -->
+  <rect x="300" y="80" width="120" height="120" rx="12" fill="#F5B800" opacity="0.15" stroke="#F5B800" stroke-width="2"/>
+  <text x="360" y="135" text-anchor="middle" font-family="'Martian Mono',monospace" font-size="11" fill="#1A1A1A">ADD-ON</text>
+  <!-- Magnet in addon -->
+  <circle cx="360" cy="165" r="14" fill="#FF2D00" opacity="0.15" stroke="#FF2D00" stroke-width="2"/>
+  <text x="360" y="170" text-anchor="middle" font-family="'Martian Mono',monospace" font-size="9" fill="#FF2D00">S</text>
+  <!-- Labels -->
+  <text x="120" y="230" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" fill="#1A1A1A" opacity="0.5">imán en la base</text>
+  <text x="360" y="230" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" fill="#1A1A1A" opacity="0.5">imán en el add-on</text>
+  <!-- Click/snap indicator -->
+  <text x="240" y="260" text-anchor="middle" font-family="'Martian Mono',monospace" font-size="13" fill="#1A1A1A" font-weight="800">clic.</text>
+</svg>

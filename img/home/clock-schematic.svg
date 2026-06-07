@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <!-- Outer ring with dashes -->
+  <circle cx="200" cy="200" r="175" stroke="#1A1A1A" stroke-width="1.5" stroke-dasharray="4 6"/>
+  <!-- Main circle -->
+  <circle cx="200" cy="200" r="155" stroke="#1A1A1A" stroke-width="2"/>
+  <!-- Tick marks -->
+  <line x1="200" y1="50" x2="200" y2="68" stroke="#1A1A1A" stroke-width="2.5"/>
+  <line x1="278" y1="67" x2="269" y2="82" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="333" y1="122" x2="318" y2="131" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="350" y1="200" x2="332" y2="200" stroke="#1A1A1A" stroke-width="2.5"/>
+  <line x1="333" y1="278" x2="318" y2="269" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="278" y1="333" x2="269" y2="318" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="200" y1="350" x2="200" y2="332" stroke="#1A1A1A" stroke-width="2.5"/>
+  <line x1="122" y1="333" x2="131" y2="318" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="67" y1="278" x2="82" y2="269" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="50" y1="200" x2="68" y2="200" stroke="#1A1A1A" stroke-width="2.5"/>
+  <line x1="67" y1="122" x2="82" y2="131" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="122" y1="67" x2="131" y2="82" stroke="#1A1A1A" stroke-width="1.5"/>
+  <!-- Hour hand -->
+  <line x1="200" y1="200" x2="200" y2="105" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round"/>
+  <!-- Minute hand -->
+  <line x1="200" y1="200" x2="255" y2="148" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Center dot -->
+  <circle cx="200" cy="200" r="6" fill="#1A1A1A"/>
+  <circle cx="200" cy="200" r="3" fill="white"/>
+  <!-- Dimension arrow: diameter -->
+  <line x1="40" y1="370" x2="360" y2="370" stroke="#1A6EFF" stroke-width="1.5"/>
+  <polygon points="40,366 40,374 28,370" fill="#1A6EFF"/>
+  <polygon points="360,366 360,374 372,370" fill="#1A6EFF"/>
+  <text x="200" y="365" text-anchor="middle" font-family="'Martian Mono', monospace" font-size="12" fill="#1A6EFF">Ø 24 cm</text>
+</svg>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>It's Fun o'clock — Relojes 3D personalizados</title>
+  <meta name="description" content="Relojes de pared 3D personalizados, impresos en PLA+. Elige la base, las manecillas y los marcadores. Hecho a mano en Barcelona.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Martian+Mono:wght@800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="home-body">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       LOADER — relojito SVG con manecillas en tiempo real
+  ══════════════════════════════════════════════════════════════════ -->
+  <div id="loader" role="status" aria-label="Cargando">
+    <svg id="loader-clock" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Cara -->
+      <circle cx="36" cy="36" r="33" stroke="white" stroke-width="2" opacity="0.2"/>
+      <circle cx="36" cy="36" r="30" stroke="white" stroke-width="1.5"/>
+      <!-- Ticks -->
+      <line x1="36" y1="7"  x2="36" y2="11" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="36" y1="61" x2="36" y2="65" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="7"  y1="36" x2="11" y2="36" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="61" y1="36" x2="65" y2="36" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Manecilla horas — pivote en centro (36,36) -->
+      <g id="loader-hand-hora" style="transform-origin:36px 36px">
+        <line x1="36" y1="36" x2="36" y2="17" stroke="white" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <!-- Manecilla minutos -->
+      <g id="loader-hand-minuto" style="transform-origin:36px 36px">
+        <line x1="36" y1="36" x2="36" y2="11" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+      </g>
+      <!-- Centro -->
+      <circle cx="36" cy="36" r="3" fill="white"/>
+    </svg>
+    <span id="loader-label">Cargando</span>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="hero">
+
+    <!-- Reloj grande decorativo de fondo -->
+    <svg class="hero-bg-clock" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+      <circle cx="200" cy="200" r="195" stroke="white" stroke-width="1"/>
+      <line x1="200" y1="10"  x2="200" y2="30"  stroke="white" stroke-width="3"/>
+      <line x1="200" y1="370" x2="200" y2="390" stroke="white" stroke-width="3"/>
+      <line x1="10"  y1="200" x2="30"  y2="200" stroke="white" stroke-width="3"/>
+      <line x1="370" y1="200" x2="390" y2="200" stroke="white" stroke-width="3"/>
+      <line x1="200" y1="200" x2="200" y2="70"  stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <line x1="200" y1="200" x2="270" y2="150" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="200" cy="200" r="8" fill="white"/>
+    </svg>
+
+    <span class="hero-eyebrow">It's Fun o'clock</span>
+
+    <h1 class="hero-title">
+      <span class="line"><span>Relojes</span></span>
+      <span class="line"><span>que no</span></span>
+      <span class="line"><span>pierden</span></span>
+      <span class="line"><span>el tiempo.</span></span>
+    </h1>
+
+    <p class="hero-sub">
+      Relojes de pared 3D personalizados, impresos en PLA+.
+      Cada reloj es único porque tú lo diseñas.
+    </p>
+
+    <a href="index.html" class="hero-cta">
+      Configura el tuyo →
+    </a>
+
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       BLOQUE 1 — MANIFESTO
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="manifesto" aria-label="Manifesto">
+
+    <!-- Panel 1: "It's time for nada." -->
+    <div class="manifesto-panel" id="panel-1">
+      <p class="manifesto-text">
+        <span class="word"><span>It's</span></span>
+        <span class="word"><span>&nbsp;time&nbsp;</span></span>
+        <span class="word"><span>for</span></span>
+        <br>
+        <span class="word"><span style="color:var(--color-amarillo)" id="rotating-word">nada.</span></span>
+      </p>
+    </div>
+
+    <!-- Panel 2: el alegato -->
+    <div class="manifesto-panel" id="panel-2">
+      <p class="manifesto-text">
+        <span class="word"><span>Divertirse</span></span>
+        <br>
+        <span class="word"><span>no</span></span>
+        <span class="word"><span>&nbsp;necesita</span></span>
+        <br>
+        <span class="word"><span>&nbsp;</span></span>
+        <span class="word"><span><em>justificación.</em></span></span>
+      </p>
+      <p class="manifesto-aside">
+        Vivimos convencidos de que el tiempo libre tiene que ser productivo.
+        Que si no aprendemos algo, creamos algo o avanzamos algo,
+        lo hemos malgastado. Mentira.
+      </p>
+    </div>
+
+    <!-- Panel 3: fondo amarillo -->
+    <div class="manifesto-panel manifesto-panel--accent" id="panel-3">
+      <p class="manifesto-text">
+        Haz cosas<br><em>inútiles.</em><br>Hazlas bien.
+      </p>
+    </div>
+
+    <!-- Panel 4: fondo rojo -->
+    <div class="manifesto-panel manifesto-panel--rojo" id="panel-4">
+      <p class="manifesto-text">
+        <em>It's fun</em><br>o'clock.
+      </p>
+      <p class="manifesto-aside" style="color:rgba(255,255,255,0.5)">
+        Un reloj que recuerda que el tiempo también puede usarse
+        para no hacer absolutamente nada de provecho.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       BLOQUE 2 — ONBOARDING / PRODUCTO
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="onboarding" aria-label="Cómo funciona">
+
+    <!-- Intro -->
+    <div class="onboarding-intro">
+      <h2>Un reloj.<br>Tu reloj.</h2>
+      <p>
+        Tres capas de personalización. Infinitas combinaciones.
+        Cada pieza se imprime en 3D en PLA+ y encaja con un sistema de imanes.
+      </p>
+    </div>
+
+    <!-- Pasos -->
+    <div class="onboarding-steps">
+      <img src="img/home/steps.svg" alt="Tres pasos: base, manecillas, add-ons">
+    </div>
+
+    <!-- Especificaciones técnicas -->
+    <div class="specs-grid">
+      <div class="spec-item">
+        <span class="spec-label">Diámetro</span>
+        <span class="spec-value">24 <em>cm</em></span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Peso</span>
+        <span class="spec-value">~300 <em>g</em></span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Material</span>
+        <span class="spec-value" style="font-size:1.25rem">PLA+</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Fabricación</span>
+        <span class="spec-value" style="font-size:1.1rem">FDM<br><em>impresión 3D</em></span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Mecanismo</span>
+        <span class="spec-value" style="font-size:1.1rem">Quartz<br><em>pila AA</em></span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-label">Add-ons</span>
+        <span class="spec-value">12 <em>slots</em></span>
+      </div>
+    </div>
+
+    <!-- Esquemático técnico -->
+    <div class="schematic-section">
+      <img src="img/home/clock-schematic.svg" alt="Plano técnico del reloj con medidas">
+      <div class="schematic-text">
+        <h3>Diseñado para<br>durar.</h3>
+        <p>
+          La base y las manecillas se imprimen en PLA+,
+          un bioplástico resistente y ligero derivado del almidón de maíz.
+        </p>
+        <p>
+          El mecanismo es estándar quartz de 1 pila AA,
+          silencioso y con una autonomía de más de un año.
+        </p>
+      </div>
+    </div>
+
+    <!-- Sistema de imanes -->
+    <div class="magnet-section">
+      <img src="img/home/magnet-system.svg" alt="Sistema de imanes para los add-ons">
+      <div class="magnet-text">
+        <h3>Clic.<br>Sin herramientas.</h3>
+        <p>
+          Los 12 marcadores de hora se sujetan mediante imanes integrados
+          en la base y en cada add-on.
+        </p>
+        <p>
+          Cambia el estilo en segundos. Mezcla y combina como quieras.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       BLOQUE 3 — CTA CONFIGURADOR
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="section-cta" aria-label="Ir al configurador">
+    <h2 class="cta-title">
+      ¿Listo?
+      <span class="big-arrow">↓</span>
+    </h2>
+    <a href="index.html" class="cta-link">
+      Configura tu reloj →
+    </a>
+  </section>
+
+
+  <!-- Scripts -->
+  <script src="js/vendors/gsap.min.js"></script>
+  <script src="js/vendors/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/home.js"></script>
+
+</body>
+</html>
