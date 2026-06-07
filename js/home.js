@@ -283,7 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initLoader();
 
   // Estado inicial antes de animar
-  gsap.set('.hl', { y: 60, opacity: 0 });
   gsap.set('.hero-scroll-hint', { opacity: 0 });
   gsap.set('.word span', { y: '110%', opacity: 0 });
 });

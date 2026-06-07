@@ -115,7 +115,7 @@
   font-weight: 800;
   font-size: clamp(3.5rem, 12vw, 11rem);
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: max(2px, 0.35vw) currentColor;
+  -webkit-text-stroke: 4px currentColor;
   transform: rotate(var(--r, 0deg));
   letter-spacing: -0.01em;
   line-height: 1;
