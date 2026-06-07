@@ -114,17 +114,17 @@
   font-family: var(--font-titulo);
   font-weight: 800;
   font-size: clamp(3.5rem, 12vw, 11rem);
-  color: transparent;
-  -webkit-text-stroke-width: max(2px, 0.35vw);
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: max(2px, 0.35vw) currentColor;
   transform: rotate(var(--r, 0deg));
   letter-spacing: -0.01em;
   line-height: 1;
 }
 
-.hl.c-rojo  { -webkit-text-stroke-color: var(--color-rojo); }
-.hl.c-azul  { -webkit-text-stroke-color: var(--color-azul); }
-.hl.c-verde { -webkit-text-stroke-color: var(--color-verde); }
-.hl.c-rosa  { -webkit-text-stroke-color: var(--color-rosa); }
+.hl.c-rojo  { color: var(--color-rojo); }
+.hl.c-azul  { color: var(--color-azul); }
+.hl.c-verde { color: var(--color-verde); }
+.hl.c-rosa  { color: var(--color-rosa); }
 
 .hl-gap {
   display: inline-block;
