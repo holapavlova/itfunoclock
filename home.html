@@ -16,27 +16,31 @@
 <body class="home-body">
 
   <!-- ══════════════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════════════════ -->
+  <nav class="nav-home" aria-label="Navegación principal">
+    <a href="home.html" class="nav-logo">Hola·Pavlova</a>
+    <a href="index.html" class="nav-pill">Personalizador →</a>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
        LOADER — relojito SVG con manecillas en tiempo real
   ══════════════════════════════════════════════════════════════════ -->
   <div id="loader" role="status" aria-label="Cargando">
     <svg id="loader-clock" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Cara -->
       <circle cx="36" cy="36" r="33" stroke="white" stroke-width="2" opacity="0.2"/>
       <circle cx="36" cy="36" r="30" stroke="white" stroke-width="1.5"/>
-      <!-- Ticks -->
       <line x1="36" y1="7"  x2="36" y2="11" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
       <line x1="36" y1="61" x2="36" y2="65" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
       <line x1="7"  y1="36" x2="11" y2="36" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
       <line x1="61" y1="36" x2="65" y2="36" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- Manecilla horas — pivote en centro (36,36) -->
       <g id="loader-hand-hora" style="transform-origin:36px 36px">
         <line x1="36" y1="36" x2="36" y2="17" stroke="white" stroke-width="3" stroke-linecap="round"/>
       </g>
-      <!-- Manecilla minutos -->
       <g id="loader-hand-minuto" style="transform-origin:36px 36px">
         <line x1="36" y1="36" x2="36" y2="11" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
       </g>
-      <!-- Centro -->
       <circle cx="36" cy="36" r="3" fill="white"/>
     </svg>
     <span id="loader-label">Cargando</span>
@@ -44,39 +48,17 @@
 
 
   <!-- ══════════════════════════════════════════════════════════════
-       HERO
+       HERO — letras outline multicolor
   ══════════════════════════════════════════════════════════════════ -->
   <section class="hero">
-
-    <!-- Reloj grande decorativo de fondo -->
-    <svg class="hero-bg-clock" viewBox="0 0 400 400" fill="none" aria-hidden="true">
-      <circle cx="200" cy="200" r="195" stroke="white" stroke-width="1"/>
-      <line x1="200" y1="10"  x2="200" y2="30"  stroke="white" stroke-width="3"/>
-      <line x1="200" y1="370" x2="200" y2="390" stroke="white" stroke-width="3"/>
-      <line x1="10"  y1="200" x2="30"  y2="200" stroke="white" stroke-width="3"/>
-      <line x1="370" y1="200" x2="390" y2="200" stroke="white" stroke-width="3"/>
-      <line x1="200" y1="200" x2="200" y2="70"  stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <line x1="200" y1="200" x2="270" y2="150" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-      <circle cx="200" cy="200" r="8" fill="white"/>
-    </svg>
-
-    <span class="hero-eyebrow">It's Fun o'clock</span>
-
-    <h1 class="hero-title">
-      <span class="line"><span>Relojes</span></span>
-      <span class="line"><span>que no</span></span>
-      <span class="line"><span>pierden</span></span>
-      <span class="line"><span>el tiempo.</span></span>
-    </h1>
-
-    <p class="hero-sub">
-      Relojes de pared 3D personalizados, impresos en PLA+.
-      Cada reloj es único porque tú lo diseñas.
-    </p>
-
-    <a href="index.html" class="hero-cta">
-      Configura el tuyo →
-    </a>
+    <div class="hero-display" aria-label="It's Fun O'Clock!">
+      <div class="hero-line">
+        <span class="hl c-rojo"  style="--r:-2deg">I</span><span class="hl c-azul"  style="--r:3deg">T</span><span class="hl c-rosa"  style="--r:-1deg">'</span><span class="hl c-verde" style="--r:2deg">S</span><span class="hl-gap"></span><span class="hl c-rosa"  style="--r:-3deg">F</span><span class="hl c-rojo"  style="--r:4deg">U</span><span class="hl c-azul"  style="--r:-2deg">N</span>
+      </div>
+      <div class="hero-line">
+        <span class="hl c-verde" style="--r:2deg">O</span><span class="hl c-rojo"  style="--r:-3deg">'</span><span class="hl c-rosa"  style="--r:1deg">C</span><span class="hl c-azul"  style="--r:-2deg">L</span><span class="hl c-verde" style="--r:3deg">O</span><span class="hl c-rojo"  style="--r:-1deg">C</span><span class="hl c-azul"  style="--r:2deg">K</span><span class="hl c-rosa"  style="--r:-2deg">!</span>
+      </div>
+    </div>
 
     <div class="hero-scroll-hint" aria-hidden="true">
       <div class="scroll-line"></div>
@@ -86,11 +68,28 @@
 
 
   <!-- ══════════════════════════════════════════════════════════════
+       WAVE CTA — frase animada con scroll
+  ══════════════════════════════════════════════════════════════════ -->
+  <section class="section-wave">
+    <p class="wave-text" aria-label="Si no te gusta perder el tiempo, encuéntralo aquí">
+      <span class="wave-word">si</span>
+      <span class="wave-word">no</span>
+      <span class="wave-word">te</span>
+      <span class="wave-word">gusta</span>
+      <span class="wave-word">perder</span>
+      <span class="wave-word">el</span>
+      <span class="wave-word">tiempo,</span>
+      <span class="wave-word wave-accent">encuéntralo</span>
+      <span class="wave-word wave-accent wave-cta-link"><a href="index.html">aquí →</a></span>
+    </p>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
        BLOQUE 1 — MANIFESTO
   ══════════════════════════════════════════════════════════════════ -->
   <section class="manifesto" aria-label="Manifesto">
 
-    <!-- Panel 1: "It's time for nada." -->
     <div class="manifesto-panel" id="panel-1">
       <p class="manifesto-text">
         <span class="word"><span>It's</span></span>
@@ -101,7 +100,6 @@
       </p>
     </div>
 
-    <!-- Panel 2: el alegato -->
     <div class="manifesto-panel" id="panel-2">
       <p class="manifesto-text">
         <span class="word"><span>Divertirse</span></span>
@@ -119,14 +117,12 @@
       </p>
     </div>
 
-    <!-- Panel 3: fondo amarillo -->
     <div class="manifesto-panel manifesto-panel--accent" id="panel-3">
       <p class="manifesto-text">
         Haz cosas<br><em>inútiles.</em><br>Hazlas bien.
       </p>
     </div>
 
-    <!-- Panel 4: fondo rojo -->
     <div class="manifesto-panel manifesto-panel--rojo" id="panel-4">
       <p class="manifesto-text">
         <em>It's fun</em><br>o'clock.
@@ -145,7 +141,6 @@
   ══════════════════════════════════════════════════════════════════ -->
   <section class="onboarding" aria-label="Cómo funciona">
 
-    <!-- Intro -->
     <div class="onboarding-intro">
       <h2>Un reloj.<br>Tu reloj.</h2>
       <p>
@@ -154,12 +149,10 @@
       </p>
     </div>
 
-    <!-- Pasos -->
     <div class="onboarding-steps">
       <img src="img/home/steps.svg" alt="Tres pasos: base, manecillas, add-ons">
     </div>
 
-    <!-- Especificaciones técnicas -->
     <div class="specs-grid">
       <div class="spec-item">
         <span class="spec-label">Diámetro</span>
@@ -187,7 +180,6 @@
       </div>
     </div>
 
-    <!-- Esquemático técnico -->
     <div class="schematic-section">
       <img src="img/home/clock-schematic.svg" alt="Plano técnico del reloj con medidas">
       <div class="schematic-text">
@@ -203,7 +195,6 @@
       </div>
     </div>
 
-    <!-- Sistema de imanes -->
     <div class="magnet-section">
       <img src="img/home/magnet-system.svg" alt="Sistema de imanes para los add-ons">
       <div class="magnet-text">

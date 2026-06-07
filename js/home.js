@@ -26,8 +26,7 @@ function initLoader() {
 
   tickLoader();
 
-  // Ocultar loader cuando la página esté lista
-  const minTime = 1200; // mínimo 1.2s para que se vea el relojito
+  const minTime  = 1200;
   const startTime = Date.now();
 
   window.addEventListener('load', () => {
@@ -45,6 +44,7 @@ function initLoader() {
 // ── Animaciones principales ───────────────────────────────────────
 function initAnimations() {
   animarHero();
+  animarWave();
   animarManifesto();
   animarOnboarding();
   animarCta();
@@ -52,31 +52,54 @@ function initAnimations() {
 
 // ── Hero ──────────────────────────────────────────────────────────
 function animarHero() {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  // Letras entran desde abajo con ligero bounce
+  gsap.from('.hl', {
+    y: 60,
+    opacity: 0,
+    duration: 0.7,
+    stagger: { each: 0.04, from: 'start' },
+    ease: 'back.out(1.3)',
+  });
 
-  // Líneas del título: cada .line span sube desde abajo
-  tl.to('.hero-title .line span', {
-    y: 0,
-    duration: 1,
-    stagger: 0.12,
-  })
-  .to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
-  .to('.hero-sub',     { opacity: 1, y: 0, duration: 0.7 }, '-=0.3')
-  .to('.hero-cta',     { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
-  .to('.hero-scroll-hint', { opacity: 1, duration: 0.5 }, '-=0.1');
+  gsap.to('.hero-scroll-hint', { opacity: 1, duration: 0.6, delay: 1 });
+}
 
-  // Reloj de fondo — rotación sutil continua
-  gsap.to('.hero-bg-clock', {
-    rotation: 360,
-    duration: 120,
-    repeat: -1,
-    ease: 'none',
+// ── Wave CTA ──────────────────────────────────────────────────────
+function animarWave() {
+  const words = gsap.utils.toArray('.wave-word');
+
+  // Aparición inicial de todo el bloque al entrar en viewport
+  ScrollTrigger.create({
+    trigger: '.section-wave',
+    start: 'top 70%',
+    once: true,
+    onEnter: () => {
+      gsap.to('.wave-text', { opacity: 1, duration: 0.6, ease: 'power2.out' });
+    }
+  });
+
+  // Efecto onda continuo con scroll (scrub)
+  words.forEach((word, i) => {
+    const phase = (i / words.length) * Math.PI * 2;
+    gsap.fromTo(
+      word,
+      { y: Math.sin(phase) * 40 },
+      {
+        y: Math.sin(phase + Math.PI) * 40,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.section-wave',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+      }
+    );
   });
 }
 
 // ── Manifesto ─────────────────────────────────────────────────────
 function animarManifesto() {
-  // Panel 1: "It's time for... [palabra rotante]"
   const palabras = ['nada.', 'jugar.', 'ti.', 'esto.'];
   let idx = 0;
   const rotatingEl = document.getElementById('rotating-word');
@@ -88,7 +111,6 @@ function animarManifesto() {
     onEnter: () => {
       animarLineas('#panel-1');
 
-      // Ciclo de palabras cada 1.2s
       if (rotatingEl) {
         gsap.delayedCall(0.8, () => {
           const ciclo = setInterval(() => {
@@ -108,7 +130,6 @@ function animarManifesto() {
             });
           }, 1200);
 
-          // Parar al salir del panel
           ScrollTrigger.create({
             trigger: '#panel-1',
             start: 'bottom top',
@@ -120,7 +141,6 @@ function animarManifesto() {
     }
   });
 
-  // Panel 2: texto aparece línea a línea
   ScrollTrigger.create({
     trigger: '#panel-2',
     start: 'top 75%',
@@ -128,7 +148,6 @@ function animarManifesto() {
     onEnter: () => animarLineas('#panel-2'),
   });
 
-  // Panel 3: fondo amarillo — texto desde el centro con scale
   ScrollTrigger.create({
     trigger: '#panel-3',
     start: 'top 75%',
@@ -143,7 +162,6 @@ function animarManifesto() {
     }
   });
 
-  // Panel 4: entrada desde izquierda
   ScrollTrigger.create({
     trigger: '#panel-4',
     start: 'top 75%',
@@ -165,7 +183,6 @@ function animarManifesto() {
   });
 }
 
-// Anima las palabras de un panel: cada palabra aparece desde abajo
 function animarLineas(selector) {
   const words = document.querySelectorAll(`${selector} .word span`);
   if (!words.length) return;
@@ -180,7 +197,6 @@ function animarLineas(selector) {
 
 // ── Onboarding ────────────────────────────────────────────────────
 function animarOnboarding() {
-  // Título intro
   ScrollTrigger.create({
     trigger: '.onboarding-intro',
     start: 'top 70%',
@@ -191,7 +207,6 @@ function animarOnboarding() {
     }
   });
 
-  // Steps SVG — aparece con un ligero bounce
   ScrollTrigger.create({
     trigger: '.onboarding-steps',
     start: 'top 75%',
@@ -201,7 +216,6 @@ function animarOnboarding() {
     }
   });
 
-  // Specs — cada item aparece en cascada
   ScrollTrigger.create({
     trigger: '.specs-grid',
     start: 'top 80%',
@@ -217,19 +231,17 @@ function animarOnboarding() {
     }
   });
 
-  // Esquemático
   ScrollTrigger.create({
     trigger: '.schematic-section',
     start: 'top 70%',
     once: true,
     onEnter: () => {
-      gsap.from('.schematic-section img',  { x: -40, opacity: 0, duration: 0.8, ease: 'power3.out' });
-      gsap.from('.schematic-text h3',      { y: 30,  opacity: 0, duration: 0.7, delay: 0.2 });
-      gsap.from('.schematic-text p',       { y: 20,  opacity: 0, duration: 0.6, stagger: 0.15, delay: 0.35 });
+      gsap.from('.schematic-section img', { x: -40, opacity: 0, duration: 0.8, ease: 'power3.out' });
+      gsap.from('.schematic-text h3',     { y: 30,  opacity: 0, duration: 0.7, delay: 0.2 });
+      gsap.from('.schematic-text p',      { y: 20,  opacity: 0, duration: 0.6, stagger: 0.15, delay: 0.35 });
     }
   });
 
-  // Magnetos
   ScrollTrigger.create({
     trigger: '.magnet-section',
     start: 'top 70%',
@@ -270,10 +282,8 @@ function animarCta() {
 document.addEventListener('DOMContentLoaded', () => {
   initLoader();
 
-  // Set initial states (antes de animar)
-  gsap.set('.hero-eyebrow', { opacity: 0, y: 20 });
-  gsap.set('.hero-sub',     { opacity: 0, y: 20 });
-  gsap.set('.hero-cta',     { opacity: 0, y: 20 });
+  // Estado inicial antes de animar
+  gsap.set('.hl', { y: 60, opacity: 0 });
   gsap.set('.hero-scroll-hint', { opacity: 0 });
   gsap.set('.word span', { y: '110%', opacity: 0 });
 });
