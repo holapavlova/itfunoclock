@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="b" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1578.21 504">
+  <defs>
+    <style>
+      .e {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="c" data-name="b">
+    <g id="d" data-name="c">
+      <g>
+        <polygon class="e" points="72 0 72 360 45 360 45 0 0 0 0 504 45 504 45 405 72 405 72 504 117 504 117 0 72 0"/>
+        <path class="e" d="M252.24,0h-108.24v504h117V0h-8.76ZM189,459V45h27v414h-27Z"/>
+        <path class="e" d="M1272.24,0h-108.24v504h117V0h-8.76ZM1209,459V45h27v414h-27Z"/>
+        <polygon class="e" points="333 459 333 0 288 0 288 504 289.15 504 333 504 378 504 378 459 333 459"/>
+        <polygon class="e" points="1092 459 1092 0 1047 0 1047 504 1048.15 504 1092 504 1137 504 1137 459 1092 459"/>
+        <path class="e" d="M702.91,0h-99.91v504h45V144h72V0h-17.09ZM648,99v-54h27v54h-27Z"/>
+        <path class="e" d="M854.91,0h-107.91v504h45V144h27v360h45V0h-9.09ZM792,99v-54h27v54h-27Z"/>
+        <path class="e" d="M1569.12,0h-107.91v504h45V144h27v360h45V0h-9.09ZM1506.21,99v-54h27v54h-27Z"/>
+        <path class="e" d="M512,0h-107v333h45V45h27v315h-72v144h117V0h-10ZM450,459v-54h27v54h-27Z"/>
+        <rect class="e" x="549" y="215.88" width="27" height="36.12"/>
+        <polygon class="e" points="1401.8 0 1371.37 347.77 1340.95 0 1295.77 0 1339.87 504 1402.87 504 1446.97 0 1401.8 0"/>
+        <polygon class="e" points="986.87 504 1030.97 0 985.8 0 955.37 347.77 924.95 0 879.77 0 923.87 504 986.87 504"/>
+      </g>
+    </g>
+  </g>
+</svg>
