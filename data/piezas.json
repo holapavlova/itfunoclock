@@ -9,7 +9,7 @@
   "manecillas": [
     { "id": "manecillas_01", "nombre": "Divertido",   "thumbnail": "img/addons/man-divertido.svg" },
     { "id": "manecillas_02", "nombre": "Moderno",     "thumbnail": "img/addons/man-moderno.svg" },
-    { "id": "manecillas_03", "nombre": "Minimalista", "thumbnail": "img/addons/man-03.svg" }
+    { "id": "manecillas_03", "nombre": "Minimalista", "thumbnail": "img/addons/man-minimalista.svg" }
   ],
   "addons": [
     { "id": "slots_arabigos",   "nombre": "Arábigos",  "thumbnail": "img/addons/addon-arabigos.svg" },

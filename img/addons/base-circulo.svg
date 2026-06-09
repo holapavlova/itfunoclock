@@ -1,4 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
-  <circle cx="40" cy="40" r="32" stroke="#1A1A1A" stroke-width="3"/>
-  <circle cx="40" cy="40" r="4" fill="#1A1A1A"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="b" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 274.3 274.3">
+  <defs>
+    <style>
+      .d {
+        fill: #1d1d1b;
+      }
+    </style>
+  </defs>
+  <g id="c" data-name="Capa 2">
+    <path class="d" d="M137.15,274.3C61.53,274.3,0,212.77,0,137.15S61.53,0,137.15,0s137.15,61.53,137.15,137.15-61.53,137.15-137.15,137.15ZM137.15,5.5C64.56,5.5,5.5,64.56,5.5,137.15s59.06,131.65,131.65,131.65,131.65-59.06,131.65-131.65S209.74,5.5,137.15,5.5Z"/>
+  </g>
 </svg>

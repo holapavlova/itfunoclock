@@ -397,13 +397,11 @@ function initTiltCards() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// RELOJ CONFIGURABLE — manecillas rotables + círculos arrastrables
+// RELOJ IMANES — fichas arrastrables con snap magnético
 // ════════════════════════════════════════════════════════════════
-function initDraggableConfig() {
-  const svg = document.getElementById('config-svg');
+function initMagnetDrag() {
+  const svg = document.getElementById('magnet-svg');
   if (!svg) return;
-
-  const CX = 338.93, CY = 338.93;
 
   function toSVGPoint(clientX, clientY) {
     const pt = svg.createSVGPoint();
@@ -411,89 +409,173 @@ function initDraggableConfig() {
     return pt.matrixTransform(svg.getScreenCTM().inverse());
   }
 
-  function getAngle(clientX, clientY) {
-    const p = toSVGPoint(clientX, clientY);
-    return Math.atan2(p.y - CY, p.x - CX) * (180 / Math.PI);
-  }
-
-  // — Manecillas: rotan alrededor del centro —
-  ['hand-hora', 'hand-minuto'].forEach(id => {
-    const hand = document.getElementById(id);
-    if (!hand) return;
-
-    let startAngle = 0;
-    let baseRot    = 0;
-    hand.style.cursor = 'grab';
-
-    hand.addEventListener('pointerdown', e => {
-      e.preventDefault();
-      hand.setPointerCapture(e.pointerId);
-      startAngle = getAngle(e.clientX, e.clientY);
-      hand.style.cursor = 'grabbing';
-    });
-
-    hand.addEventListener('pointermove', e => {
-      if (!e.buttons) return;
-      const delta = getAngle(e.clientX, e.clientY) - startAngle;
-      gsap.set(hand, { rotation: baseRot + delta, svgOrigin: `${CX} ${CY}` });
-    });
-
-    hand.addEventListener('pointerup', e => {
-      const delta = getAngle(e.clientX, e.clientY) - startAngle;
-      const snapped = Math.round((baseRot + delta) / 30) * 30;
-      baseRot = snapped;
-      gsap.to(hand, { rotation: snapped, svgOrigin: `${CX} ${CY}`, duration: 0.4, ease: 'back.out(1.5)' });
-      hand.style.cursor = 'grab';
-    });
+  // Recoger posiciones de todos los imanes
+  const imanes = [];
+  svg.querySelectorAll('[data-name^="iman_"]').forEach(g => {
+    const c = g.querySelector('circle');
+    if (!c) return;
+    imanes.push({ cx: parseFloat(c.getAttribute('cx')), cy: parseFloat(c.getAttribute('cy')), el: g });
   });
 
-  // — Círculos add-on: arrastrables libremente —
-  for (let i = 0; i < 12; i++) {
-    const circle = document.getElementById(`addon-${i}`);
-    if (!circle) continue;
+  const ATTRACT_R = 220; // radio de atracción durante el arrastre (unidades SVG)
+  const SNAP_R    = 180; // radio de snap al soltar
 
-    const origX = parseFloat(circle.getAttribute('cx'));
-    const origY = parseFloat(circle.getAttribute('cy'));
+  svg.querySelectorAll('[data-name^="ficha_"]').forEach(ficha => {
+    const circle = ficha.querySelector('circle');
+    if (!circle) return;
+
+    const origCx = parseFloat(circle.getAttribute('cx'));
+    const origCy = parseFloat(circle.getAttribute('cy'));
     let tx = 0, ty = 0, ox = 0, oy = 0;
 
-    circle.style.cursor = 'grab';
+    ficha.style.cursor = 'grab';
 
-    circle.addEventListener('pointerdown', e => {
+    ficha.addEventListener('pointerdown', e => {
       e.preventDefault();
-      circle.setPointerCapture(e.pointerId);
+      ficha.setPointerCapture(e.pointerId);
       const p = toSVGPoint(e.clientX, e.clientY);
-      ox = p.x - origX - tx;
-      oy = p.y - origY - ty;
-      circle.style.cursor = 'grabbing';
-      gsap.to(circle, { scale: 1.15, transformOrigin: `${origX + tx}px ${origY + ty}px`, duration: 0.15 });
+      ox = p.x - (origCx + tx);
+      oy = p.y - (origCy + ty);
+      ficha.style.cursor = 'grabbing';
+      svg.appendChild(ficha); // traer al frente
+      gsap.to(ficha, { scale: 1.08, transformOrigin: `${origCx + tx}px ${origCy + ty}px`, duration: 0.15 });
     });
 
-    circle.addEventListener('pointermove', e => {
+    ficha.addEventListener('pointermove', e => {
       if (!e.buttons) return;
       const p = toSVGPoint(e.clientX, e.clientY);
-      tx = p.x - origX - ox;
-      ty = p.y - origY - oy;
-      gsap.set(circle, { x: tx, y: ty });
+      let nx = p.x - origCx - ox;
+      let ny = p.y - origCy - oy;
+
+      // Buscar imán más cercano y aplicar atracción
+      const curCx = origCx + nx;
+      const curCy = origCy + ny;
+      let nearest = null, minDist = Infinity;
+      imanes.forEach(im => {
+        const d = Math.hypot(im.cx - curCx, im.cy - curCy);
+        if (d < minDist) { minDist = d; nearest = im; }
+      });
+
+      if (nearest && minDist < ATTRACT_R) {
+        const pull = Math.pow(1 - minDist / ATTRACT_R, 2) * 0.75;
+        nx += (nearest.cx - curCx) * pull;
+        ny += (nearest.cy - curCy) * pull;
+      }
+
+      tx = nx; ty = ny;
+      gsap.set(ficha, { x: tx, y: ty });
     });
 
-    circle.addEventListener('pointerup', () => {
-      circle.style.cursor = 'grab';
-      gsap.to(circle, { scale: 1, duration: 0.2 });
-    });
-  }
+    ficha.addEventListener('pointerup', () => {
+      ficha.style.cursor = 'grab';
+      gsap.to(ficha, { scale: 1, duration: 0.2 });
 
-  // — Doble clic: resetea todo —
-  svg.addEventListener('dblclick', () => {
-    ['hand-hora', 'hand-minuto'].forEach(id => {
-      const hand = document.getElementById(id);
-      if (hand) {
-        gsap.to(hand, { rotation: 0, svgOrigin: `${CX} ${CY}`, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      // Snap si está cerca de un imán
+      const curCx = origCx + tx;
+      const curCy = origCy + ty;
+      let nearest = null, minDist = Infinity;
+      imanes.forEach(im => {
+        const d = Math.hypot(im.cx - curCx, im.cy - curCy);
+        if (d < minDist) { minDist = d; nearest = im; }
+      });
+
+      if (nearest && minDist < SNAP_R) {
+        tx += nearest.cx - curCx;
+        ty += nearest.cy - curCy;
+        gsap.to(ficha, { x: tx, y: ty, duration: 0.7, ease: 'elastic.out(1.6, 0.35)' });
       }
     });
-    for (let i = 0; i < 12; i++) {
-      const c = document.getElementById(`addon-${i}`);
-      if (c) gsap.to(c, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)', delay: i * 0.03 });
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// BLOQUE ONBOARDING — pin + scroll snap: centro reloj abajo → arriba
+// ════════════════════════════════════════════════════════════════
+function initOnboardingScroll() {
+  const section   = document.getElementById('block-onboarding');
+  const demo      = section?.querySelector('.config-demo');
+  if (!section || !demo) return;
+
+  const inner     = section.querySelector('.onboarding-inner');
+  const stepsEl   = section.querySelector('.steps-grid');
+  const hintEl    = section.querySelector('.config-hint');
+  const headingEl = section.querySelector('.block-heading');
+  const ctaEl     = section.querySelector('.cta-onboarding');
+  const main      = document.getElementById('home-main');
+
+  // Calcular altura del SVG desde el viewBox (fiable antes del primer reflow)
+  const svgEl = demo.querySelector('#magnet-svg');
+  const vb    = svgEl?.viewBox?.baseVal;
+  const svgAR = (vb && vb.width > 0) ? vb.height / vb.width : 1;
+  const demoH = demo.offsetWidth * svgAR;
+
+  function getElTop(el) {
+    let top = 0, cur = el;
+    while (cur && cur !== section) { top += cur.offsetTop; cur = cur.offsetParent; }
+    return top;
+  }
+
+  const VH                 = window.innerHeight;
+  const demoTopFromSection = getElTop(demo);
+  const clockCenterFromTop = demoTopFromSection + demoH / 2;
+  const startY             = VH - clockCenterFromTop;   // reloj: centro en borde inferior
+  const endY               = -clockCenterFromTop;       // reloj: centro en borde superior
+
+  // Estado inicial: solo config-demo desplazado para centrar reloj en borde inferior
+  gsap.set(demo, { y: startY });
+
+  let snapState       = 0;
+  let lastTargetState = -1;
+
+  function snapTo(newState) {
+    if (snapState === newState) return;
+    snapState = newState;
+
+    if (newState === 1) {
+      // Texto desaparece
+      [headingEl, stepsEl, hintEl].filter(Boolean).forEach(el =>
+        gsap.to(el, { opacity: 0, duration: 0.25, ease: 'power2.inOut', overwrite: true })
+      );
+      // Mover inner completo (pasos + reloj + cta) hacia arriba;
+      // demo.y vuelve a 0 simultáneamente para mantener movimiento suave del reloj
+      if (inner) gsap.to(inner, { y: endY, duration: 0.7, ease: 'power3.inOut', overwrite: true });
+      gsap.to(demo, { y: 0, duration: 0.7, ease: 'power3.inOut', overwrite: true });
+      // CTA aparece tras la animación
+      if (ctaEl) gsap.to(ctaEl, { opacity: 1, duration: 0.4, delay: 0.5, overwrite: true });
+      // Fondo cambia a blanco roto
+      if (main) gsap.to(main, { backgroundColor: '#F5F0E8', duration: 0.5, overwrite: 'auto' });
+    } else {
+      // CTA desaparece
+      if (ctaEl) gsap.to(ctaEl, { opacity: 0, duration: 0.2, overwrite: true });
+      // Inner vuelve a 0 y demo recupera su offset inicial
+      if (inner) gsap.to(inner, { y: 0, duration: 0.7, ease: 'power3.inOut', overwrite: true });
+      gsap.to(demo, { y: startY, duration: 0.7, ease: 'power3.inOut', overwrite: true });
+      // Texto reaparece
+      if (headingEl) gsap.to(headingEl, { opacity: 1,    duration: 0.4, delay: 0.4, ease: 'power2.inOut', overwrite: true });
+      if (stepsEl)   gsap.to(stepsEl,   { opacity: 1,    duration: 0.4, delay: 0.4, ease: 'power2.inOut', overwrite: true });
+      if (hintEl)    gsap.to(hintEl,    { opacity: 0.45, duration: 0.4, delay: 0.4, overwrite: true });
+      // Fondo vuelve a azul
+      if (main) gsap.to(main, { backgroundColor: '#1A6EFF', duration: 0.5, overwrite: 'auto' });
     }
+  }
+
+  ScrollTrigger.create({
+    trigger: section,
+    start:   'top top',
+    end:     `+=${VH}`,
+    pin:     true,
+    snap: {
+      snapTo:   [0, 1],
+      duration: { min: 0.25, max: 0.45 },
+      ease:     'power3.inOut',
+    },
+    onUpdate(self) {
+      const targetState = self.progress > 0.5 ? 1 : 0;
+      if (targetState !== lastTargetState) {
+        lastTargetState = targetState;
+        snapTo(targetState);
+      }
+    },
   });
 }
 
@@ -545,7 +627,8 @@ function startApp() {
   initSpecCards();
   initMagneticButton();
   initTiltCards();
-  initDraggableConfig();
+  initMagnetDrag();
+  initOnboardingScroll();
   initCta();
   initBackgroundTransitions();
   initNavScroll();

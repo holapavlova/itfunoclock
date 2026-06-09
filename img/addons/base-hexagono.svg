@@ -1,4 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
-  <polygon points="40,8 69,24 69,56 40,72 11,56 11,24" stroke="#1A1A1A" stroke-width="3" stroke-linejoin="round"/>
-  <circle cx="40" cy="40" r="4" fill="#1A1A1A"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="b" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 281.99 244.21">
+  <defs>
+    <style>
+      .d {
+        fill: #1d1d1b;
+      }
+    </style>
+  </defs>
+  <g id="c" data-name="Capa 2">
+    <path class="d" d="M211.49,244.21H70.5L0,122.1,70.5,0h140.99l70.5,122.1-70.5,122.1ZM73.67,238.71h134.64l67.32-116.6L208.32,5.5H73.67L6.35,122.1l67.32,116.6Z"/>
+  </g>
 </svg>
