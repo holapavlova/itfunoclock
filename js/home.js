@@ -91,9 +91,21 @@ function initBackgroundTransitions() {
 }
 
 // ════════════════════════════════════════════════════════════════
+// HEADER — fondo amarillo al hacer scroll
+// ════════════════════════════════════════════════════════════════
+function initNavScroll() {
+  const nav = document.querySelector('.nav-home');
+  ScrollTrigger.create({
+    start: 'top -1px',
+    onUpdate: self => nav.classList.toggle('nav-home--scrolled', self.scroll() > 0),
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
 // BANDAS TIPOGRÁFICAS — desplazamiento horizontal con scroll
 // ════════════════════════════════════════════════════════════════
 function initMarquees() {
+  // ── traducción horizontal guiada por scroll ──
   gsap.utils.toArray('.marquee').forEach(strip => {
     const track = strip.querySelector('.marquee-track');
     gsap.fromTo(track,
@@ -109,6 +121,39 @@ function initMarquees() {
         }
       }
     );
+  });
+
+  // ── apertura desde el centro (clip-path) al entrar en viewport ──
+  const negMarquee = document.querySelector('.marquee--negro');
+  if (negMarquee) {
+    gsap.fromTo(negMarquee,
+      { clipPath: 'inset(0 38% 0 38%)' },
+      {
+        clipPath: 'inset(0 0% 0 0%)',
+        ease: 'expo.inOut',
+        duration: 1,
+        scrollTrigger: {
+          trigger: negMarquee,
+          start: 'top 88%',
+          toggleActions: 'play none none reverse',
+        }
+      }
+    );
+  }
+
+  // ── skewX proporcional a la velocidad de scroll (ticker por frame) ──
+  const clamp = gsap.utils.clamp(-14, 14);
+  const tracks = gsap.utils.toArray('.marquee-track');
+  let lastY = window.scrollY;
+  let currentSkew = 0;
+
+  gsap.ticker.add(() => {
+    const y = window.scrollY;
+    const delta = y - lastY;
+    lastY = y;
+    const target = clamp(delta * 0.9);
+    currentSkew += (target - currentSkew) * 0.12;
+    tracks.forEach(t => gsap.set(t, { skewX: currentSkew }));
   });
 }
 
@@ -193,14 +238,22 @@ function initTimeFor() {
 // ════════════════════════════════════════════════════════════════
 function initBlockOne() {
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: '#block-one', start: 'top top', end: '+=4000', scrub: 1, pin: true }
+    scrollTrigger: {
+      trigger: '#block-one', start: 'top top', end: '+=5500', scrub: 1, pin: true,
+      invalidateOnRefresh: true,
+    }
   });
 
-  gsap.set('.stop-text', { opacity: 0, scale: 0.5 });
-  gsap.set('.manifesto-p1, .manifesto-p2, .manifesto-p3', { opacity: 0, scale: 0.9, y: 50 });
+  // Estados iniciales dentro de la timeline: al scrub hacia atrás se restauran solos
+  tl.set('.rushed-container', { clipPath: 'inset(0 0 100% 0)' })
+    .set('.stop-text', { opacity: 0, scale: 0.5 })
+    .set('.manifesto-p1, .manifesto-p2, .manifesto-p3', { opacity: 0, scale: 0.9, y: 50 });
 
-  tl.to('.rushed-text', { xPercent: -150, duration: 4, ease: 'none' })
-    .to('.rushed-container', { opacity: 0, duration: 0.5 }, '-=0.5')
+  // Fase 1: el texto llena la pantalla línea a línea (clip de arriba a abajo)
+  tl.to('.rushed-container', { clipPath: 'inset(0% 0% 0% 0%)', duration: 3, ease: 'none' })
+  // Fase 2: el texto escala hasta llenar todo el viewport
+    .to('.rushed-text', { scale: 14, duration: 2, ease: 'power2.in', transformOrigin: '50% 50%' })
+    .to('.rushed-container', { opacity: 0, duration: 0.5 }, '-=0.4')
 
     .to('.stop-text', { opacity: 1, scale: 1, duration: 1, ease: 'elastic.out(1, 0.5)' })
     .to('.stop-text', { opacity: 0, scale: 1.5, duration: 1, delay: 0.5 })
@@ -452,6 +505,24 @@ function initCta() {
 }
 
 // ════════════════════════════════════════════════════════════════
+// BOTÓN VOLVER ARRIBA
+// ════════════════════════════════════════════════════════════════
+function initScrollTopBtn() {
+  const btn = document.getElementById('scroll-top');
+  if (!btn) return;
+
+  ScrollTrigger.create({
+    start: 'top -300px',
+    onEnter:     () => gsap.to(btn, { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.4, ease: 'power3.out' }),
+    onLeaveBack: () => gsap.to(btn, { opacity: 0, y: 14, pointerEvents: 'none', duration: 0.3 }),
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════════════════════
 function startApp() {
@@ -468,6 +539,8 @@ function startApp() {
   initDraggableConfig();
   initCta();
   initBackgroundTransitions();
+  initNavScroll();
+  initScrollTopBtn();
 
   setTimeout(() => { ScrollTrigger.sort(); ScrollTrigger.refresh(); }, 300);
 }

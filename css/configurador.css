@@ -1,8 +1,53 @@
+/* ── Nav del configurador ───────────────────────────────────────── */
+.nav-config {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px var(--spacing-xl);
+  background: var(--color-blanco-roto);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  height: 64px;
+  box-sizing: border-box;
+}
+
+.nav-config .nav-logo img {
+  height: 1.75rem;
+  width: auto;
+  display: block;
+}
+
+.nav-config .nav-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 2px solid var(--color-negro);
+  color: var(--color-negro);
+  font-family: var(--font-titulo);
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.nav-config .nav-pill:hover {
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  transform: translateY(-1px);
+}
+
 /* ── Layout principal ──────────────────────────────────────────── */
 .configurador {
   display: grid;
   grid-template-columns: 60fr 40fr;
-  height: 100vh;
+  height: calc(100vh - 64px);
+  margin-top: 64px;
   overflow: hidden;
 }
 
