@@ -30,12 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
 // ══════════════════════════════════════════════════════════════
 window.addEventListener("load", () => {
   gsap.to("#loader", {
-    yPercent: -100,         
-    duration: 0.8,          
-    ease: "power3.inOut",   
-    delay: 0.5,             // Medio segundo de cortesía visual
+    yPercent: -100,
+    duration: 0.8,
+    ease: "power3.inOut",
+    delay: 0.5,
     onComplete: () => {
       document.getElementById("loader").style.display = "none";
+      startApp();
     }
   });
 });
@@ -147,13 +148,19 @@ function initMarquees() {
   let lastY = window.scrollY;
   let currentSkew = 0;
 
-  gsap.ticker.add(() => {
+  const skewFn = () => {
     const y = window.scrollY;
     const delta = y - lastY;
     lastY = y;
     const target = clamp(delta * 0.9);
     currentSkew += (target - currentSkew) * 0.12;
     tracks.forEach(t => gsap.set(t, { skewX: currentSkew }));
+  };
+  gsap.ticker.add(skewFn);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) gsap.ticker.remove(skewFn);
+    else gsap.ticker.add(skewFn);
   });
 }
 
@@ -297,11 +304,12 @@ function initSpecCards() {
   const cards = gsap.utils.toArray('.spec-card');
 
   // Posición de reloj: 12h → arriba, 3h → derecha, 6h → abajo, 9h → izquierda
+  const d = Math.min(window.innerWidth, window.innerHeight) * 0.12;
   const clockOrigins = [
-    { y: -100, x:    0, rotation: -25 }, // 12h
-    { y:    0, x:  100, rotation:  25 }, // 3h
-    { y:  100, x:    0, rotation:  25 }, // 6h
-    { y:    0, x: -100, rotation: -25 }, // 9h
+    { y: -d, x:  0, rotation: -25 }, // 12h
+    { y:  0, x:  d, rotation:  25 }, // 3h
+    { y:  d, x:  0, rotation:  25 }, // 6h
+    { y:  0, x: -d, rotation: -25 }, // 9h
   ];
 
   cards.forEach((card, i) => {
@@ -527,6 +535,7 @@ function initScrollTopBtn() {
 // ════════════════════════════════════════════════════════════════
 function startApp() {
   document.body.style.overflow = '';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   initPageTransition();
   initTimeFor();
   initMarquees();
@@ -545,7 +554,3 @@ function startApp() {
   setTimeout(() => { ScrollTrigger.sort(); ScrollTrigger.refresh(); }, 300);
 }
 
-window.addEventListener('load', () => {
-  // El loader sube en 0.8s + 0.5s de delay → arrancamos la app cuando termina
-  setTimeout(startApp, 1400);
-});
