@@ -38,7 +38,8 @@ export function initEscena(container) {
   // FOV (40°): ángulo de visión. Más alto = más grande pero más distorsión.
   // near/far (0.1, 100): rango de profundidad renderizable.
   camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-  camera.position.set(0, 0, 8); // distancia inicial de la cámara al reloj
+  const isMobile = window.innerWidth <= 768;
+  camera.position.set(0, 0, isMobile ? 5 : 8); // más cerca en móvil para que el reloj llene el visor
 
   renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

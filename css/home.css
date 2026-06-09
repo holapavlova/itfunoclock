@@ -774,8 +774,29 @@
 
 @media (max-width: 767px) {
   .nav-home { padding: 16px var(--spacing-lg); }
-  .block-specs, .block-onboarding { padding: 5rem 0; }
+  .block-specs   { padding: 5rem 0; }
+  .block-onboarding { padding: 5rem 0 0; } /* sin padding inferior; height:100vh ya acota */
   .tech-list { margin-top: var(--spacing-lg); }
+
+  /* 1 — Hero: textos más grandes */
+  .timefor-static,
+  .timefor-word  { font-size: clamp(3.5rem, 14vw, 7rem); }
+  .manifesto-p1  { font-size: clamp(3.5rem, 14vw, 9rem); }
+
+  /* 2 — Blueprint: bajar el contenido para que el nav fijo no lo tape */
+  .block-two {
+    justify-content: flex-start;
+    padding-top: 68px;
+  }
+
+  /* 3 — Onboarding: más espacio entre pasos y reloj */
+  .onboarding-inner { gap: 5rem; }
+
+  /* 4 — CTA: sección más compacta en móvil */
+  .block-three {
+    min-height: auto;
+    padding: var(--spacing-xl) 0;
+  }
 }
 
 /* ── Print ───────────────────────────────────────────────────────── */

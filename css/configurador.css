@@ -87,9 +87,9 @@
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-cuerpo);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-negro);
-  opacity: 0.4;
+  opacity: 0.65;
   pointer-events: none;
   white-space: nowrap;
 }
@@ -189,22 +189,15 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-xs);
-  padding: var(--spacing-md) var(--spacing-sm);
-  background: var(--color-blanco-roto);
-  border: 2px solid transparent;
-  border-radius: var(--radius-card);
+  padding: 0;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+  transition: transform var(--transition-fast);
 }
 
 .opcion-card:hover {
-  border-color: rgba(26, 26, 26, 0.2);
   transform: translateY(-2px);
-}
-
-.opcion-card.selected {
-  border-color: var(--color-negro);
-  background: var(--color-blanco);
 }
 
 .opcion-card .thumb {
@@ -217,36 +210,45 @@
 .opcion-card .thumb-placeholder {
   width: 56px;
   height: 56px;
-  background: rgba(26,26,26,0.08);
-  border-radius: var(--radius-small);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
 }
 
+/* La caja con borde solo rodea el nombre */
 .opcion-card .opcion-nombre {
+  width: 100%;
+  padding: 5px 4px;
+  background: var(--color-blanco-roto);
+  border: 2px solid transparent;
+  border-radius: var(--radius-small);
   font-family: var(--font-titulo);
   font-weight: 800;
   font-size: 0.6875rem;
   letter-spacing: 0.04em;
   text-align: center;
   color: var(--color-negro);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.opcion-card:hover .opcion-nombre {
+  border-color: rgba(26, 26, 26, 0.2);
 }
 
 .opcion-card.selected .opcion-nombre {
-  color: var(--color-negro);
+  border-color: var(--color-negro);
+  background: var(--color-blanco);
 }
 
-/* Check indicator */
+/* Check indicator sobre la miniatura */
 .opcion-card::after {
   content: '';
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 4px;
+  right: 4px;
   width: 16px;
   height: 16px;
-  background: var(--color-negro);
   border-radius: 50%;
   opacity: 0;
   transition: opacity var(--transition-fast);
@@ -546,21 +548,55 @@
 
 /* ── Responsive — Móvil ────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Layout fijo: visor compacto arriba + panel abajo sin scroll de página */
   .configurador {
     grid-template-columns: 1fr;
-    grid-template-rows: 100vw auto;
-    height: auto;
-    overflow: visible;
+    grid-template-rows: 30vh 1fr;
+    height: calc(100vh - 64px);
+    overflow: hidden;
   }
 
   .visor {
-    height: 100vw;
+    height: 30vh;
   }
 
+  /* Panel ocupa el espacio restante con scroll interno */
   .panel {
     border-left: none;
     border-top: 1px solid rgba(26, 26, 26, 0.08);
-    overflow-y: visible;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Ocultar cabecera del panel para ganar espacio */
+  .panel-header {
+    display: none;
+  }
+
+  /* Tabs full-width, más fáciles de tocar */
+  .tabs {
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    font-size: 0.75rem;
+  }
+
+  /* El contenido del tab activo es el área que hace scroll */
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Footer siempre visible al fondo del panel */
+  .panel-footer {
+    flex-shrink: 0;
   }
 
   .opciones-grid {
@@ -569,5 +605,20 @@
 
   .opciones-grid.col-2 {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .opcion-card {
+    padding: var(--spacing-sm) 6px;
+    gap: 4px;
+  }
+
+  .opcion-card .thumb,
+  .opcion-card .thumb-placeholder {
+    width: 38px;
+    height: 38px;
+  }
+
+  .opcion-card .opcion-nombre {
+    font-size: 0.6rem;
   }
 }
