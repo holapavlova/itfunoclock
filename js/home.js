@@ -513,8 +513,8 @@ function initOnboardingScroll() {
   const demo      = section?.querySelector('.config-demo');
   if (!section || !demo) return;
 
-  // En móvil la sección fluye en scroll normal; sin pin ni snap
-  if (window.innerWidth < 768) return;
+  // Sección en scroll normal en todos los dispositivos; sin pin ni snap
+  return;
 
   const inner     = section.querySelector('.onboarding-inner');
   const stepsEl   = section.querySelector('.steps-grid');

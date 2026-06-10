@@ -570,9 +570,9 @@
 .block-onboarding {
   position: relative;
   width: 100%;
-  height: 100vh;
-  padding: 8rem 0 0;
-  overflow: hidden;
+  height: auto;
+  padding: 8rem 0 5rem;
+  overflow: visible;
   color: var(--color-blanco-roto);
 }
 
@@ -680,7 +680,7 @@
 
 /* ── CTA inline (dentro del bloque onboarding, estado 2) ────────── */
 .cta-onboarding {
-  opacity: 0;
+  opacity: 1;
   color: var(--color-negro);
   padding: var(--spacing-lg) 0 var(--spacing-xl);
 }
@@ -764,10 +764,8 @@
 @media (max-width: 767px) {
   .nav-home { padding: 16px var(--spacing-lg); }
   .block-specs   { padding: 5rem 0; }
-  /* en mobile: scroll normal, sin pin; la sección crece al contenido */
-  .block-onboarding { height: auto; overflow: visible; padding: 5rem 0 5rem; }
-  .cta-onboarding   { opacity: 1; }
-  .tech-list { margin-top: var(--spacing-lg); }
+  .block-onboarding { padding: 5rem 0 5rem; }
+.tech-list { margin-top: var(--spacing-lg); }
 
   /* 1 — Hero: textos más grandes */
   .timefor-static,
