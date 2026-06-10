@@ -369,7 +369,7 @@
   font-family: var(--font-titulo);
   font-weight: 800;
   white-space: normal;
-  color: var(--color-rojo);
+  color: var(--color-azul);
   line-height: 1.05;
   letter-spacing: -0.03em;
   font-size: min(13vw, 18vh);
@@ -390,9 +390,10 @@
 .stop-text {
   font-family: var(--font-titulo);
   font-weight: 800;
-  text-transform: uppercase;
   letter-spacing: -0.02em;
   font-size: clamp(5rem, 18vw, 12rem);
+  line-height: 1.1;
+  color: var(--color-rojo)
 }
 
 .manifesto-p1 {
@@ -562,7 +563,7 @@
   opacity: 0.35;
 }
 
-.spec-icon { display: block; font-size: 2rem; margin-bottom: var(--spacing-md); }
+.spec-icon { display: flex; align-items: flex-start; height: 2.5rem; font-size: 2rem; margin-bottom: var(--spacing-md); }
 
 .spec-card h4 {
   font-family: var(--font-titulo);
@@ -707,19 +708,19 @@
 .cta-title {
   font-family: var(--font-titulo);
   font-weight: 800;
-  text-transform: uppercase;
-  line-height: 1;
+  text-transform: none;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   margin-bottom: var(--spacing-lg);
   font-size: clamp(2.5rem, 8vw, 5.5rem);
 }
 
 .cta-sub {
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  opacity: 0.6;
+  font-size: clamp(1.25rem, 2vw, 1.3rem);
+  opacity: 0.9;
   max-width: 46ch;
   margin: 0 0 var(--spacing-xl);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .cta-link {
