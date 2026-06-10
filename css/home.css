@@ -141,9 +141,10 @@
 .text-azul     { color: var(--color-azul); }
 .text-verde    { color: var(--color-verde); }
 .text-rosa     { color: var(--color-rosa); }
-.bg-amarillo   { background: var(--color-amarillo); }
-.bg-rosa       { background: var(--color-rosa); }
-.bg-verde      { background: var(--color-verde); }
+.bg-amarillo     { background: var(--color-amarillo); }
+.bg-rosa         { background: var(--color-rosa); }
+.bg-verde        { background: var(--color-verde); }
+.bg-blanco-roto  { background: var(--color-blanco-roto); }
 
 .br-mobile  { display: none; }
 .br-desktop { display: none; }
@@ -309,7 +310,7 @@
   transform: translateX(-50%);
   width: min(28vw, 200px);
   color: var(--color-negro);
-  animation: arcRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+  transition: opacity 0.4s ease;
 }
 
 .scroll-arc-svg {
@@ -318,9 +319,23 @@
   display: block;
 }
 
-@keyframes arcRise {
-  from { transform: translateX(-50%) translateY(65%); opacity: 0; }
-  to   { transform: translateX(-50%) translateY(0);   opacity: 1; }
+.arc-path {
+  stroke-dasharray: 460;
+  stroke-dashoffset: 460;
+  animation: arcDraw 1s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+}
+
+.arc-text {
+  opacity: 0;
+  animation: arcTextFade 0.4s ease 1.65s both;
+}
+
+@keyframes arcDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes arcTextFade {
+  to { opacity: 1; }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -357,7 +372,7 @@
   color: var(--color-rojo);
   line-height: 1.05;
   letter-spacing: -0.03em;
-  font-size: clamp(5rem, 18vw, 20rem);
+  font-size: min(13vw, 18vh);
   mix-blend-mode: multiply;
   width: 100%;
   padding: 0 var(--spacing-lg);
@@ -384,8 +399,10 @@
   font-family: var(--font-titulo);
   font-weight: 800;
   line-height: 1.05;
-  max-width: 72rem;
-  font-size: clamp(2.5rem, 9vw, 9rem);
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: clamp(3rem, 12vw, 13rem);
 }
 
 .manifesto-p2 {
@@ -625,8 +642,8 @@
   gap: 3rem;
 }
 
-@media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 1024px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1024px) { .steps-grid { grid-template-columns: repeat(4, 1fr); } }
 
 .steps-line {
   display: none;
@@ -681,7 +698,7 @@
 /* ── CTA inline (dentro del bloque onboarding, estado 2) ────────── */
 .cta-onboarding {
   opacity: 1;
-  color: var(--color-negro);
+  color: var(--color-blanco);
   padding: var(--spacing-lg) 0 var(--spacing-xl);
 }
 
@@ -758,7 +775,7 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   .timefor-static,
   .timefor-word    { font-size: clamp(2rem, 6vw, 4rem); }
-  .manifesto-p1    { font-size: clamp(2rem, 7vw, 5rem); }
+  .manifesto-p1    { font-size: clamp(3rem, 9vw, 8rem); }
 }
 
 @media (max-width: 767px) {
@@ -770,7 +787,7 @@
   /* 1 — Hero: textos más grandes */
   .timefor-static,
   .timefor-word  { font-size: clamp(3.5rem, 14vw, 7rem); }
-  .manifesto-p1  { font-size: clamp(3.5rem, 14vw, 9rem); }
+  .manifesto-p1  { font-size: clamp(3.5rem, 16vw, 9rem); }
 
   /* 2 — Blueprint: bajar el contenido para que el nav fijo no lo tape */
   .block-two {

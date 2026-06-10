@@ -269,7 +269,7 @@ function initBlockOne() {
 
   // Estados iniciales dentro de la timeline: al scrub hacia atrás se restauran solos
   tl.set('.rushed-container', { clipPath: 'inset(0 0 100% 0)' })
-    .set('.stop-text', { opacity: 0, scale: 0.5 })
+    .set('.stop-text', { opacity: 0, scale: 0.2, y: -80, rotation: -8 })
     .set('.manifesto-p1, .manifesto-p2, .manifesto-p3', { opacity: 0, scale: 0.9, y: 50 });
 
   // Fase 1: el texto llena la pantalla línea a línea (clip de arriba a abajo)
@@ -278,8 +278,8 @@ function initBlockOne() {
     .to('.rushed-text', { scale: 14, duration: 2, ease: 'power2.in', transformOrigin: '50% 50%' })
     .to('.rushed-container', { opacity: 0, duration: 0.5 }, '-=0.4')
 
-    .to('.stop-text', { opacity: 1, scale: 1, duration: 1, ease: 'elastic.out(1, 0.5)' })
-    .to('.stop-text', { opacity: 0, scale: 1.5, duration: 1, delay: 0.5 })
+    .to('.stop-text', { opacity: 1, scale: 1, y: 0, rotation: 0, duration: 0.7, ease: 'back.out(2.5)' })
+    .to('.stop-text', { opacity: 0, y: -100, skewX: -12, scale: 0.85, duration: 0.6, delay: 1, ease: 'power3.in' })
 
     .to('.manifesto-p1', { opacity: 1, scale: 1, y: 0, duration: 1 })
     .to('.manifesto-p1', { opacity: 0, y: -50, duration: 1, delay: 1 })
@@ -600,7 +600,15 @@ function initOnboardingScroll() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// CTA final — reveal
+// SCROLL HINT — desaparece al primer scroll
+// ════════════════════════════════════════════════════════════════
+function initScrollHint() {
+  ScrollTrigger.create({
+    start: 'top -10px',
+    once: true,
+    onEnter: () => gsap.to('.scroll-arc-wrap', { opacity: 0, duration: 0.4 }),
+  });
+}
 
 // ════════════════════════════════════════════════════════════════
 // BOTÓN VOLVER ARRIBA
@@ -637,6 +645,7 @@ function startApp() {
   initTiltCards();
   initMagnetDrag();
   initOnboardingScroll();
+  initScrollHint();
   initBackgroundTransitions();
   initNavScroll();
   initScrollTopBtn();

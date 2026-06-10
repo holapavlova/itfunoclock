@@ -89,8 +89,8 @@
 
       <div class="scroll-arc-wrap" aria-hidden="true">
         <svg class="scroll-arc-svg" viewBox="0 0 300 168" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 166 A146 146 0 0 1 296 166" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <text x="150" y="128" text-anchor="middle" font-family="'Inter', sans-serif" font-size="18" letter-spacing="6" fill="currentColor" font-weight="600">SCROLL</text>
+          <path class="arc-path" d="M4 166 A146 146 0 0 1 296 166" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <text class="arc-text" x="150" y="128" text-anchor="middle" font-family="'Inter', sans-serif" font-size="18" letter-spacing="6" fill="currentColor" font-weight="600">SCROLL</text>
         </svg>
       </div>
     </section>
@@ -100,10 +100,10 @@
       <div class="block-one-grid" aria-hidden="true"></div>
 
       <div class="rushed-container">
-        <h1 class="rushed-text">¿SCROLLEAR = PERDER EL TIEMPO?</h1>
+        <h1 class="rushed-text">SI PIENSAS QUE SCROLLEAR ES PERDER EL TIEMPO...</h1>
       </div>
 
-      <div class="stop-text">Para.</div>
+      <div class="stop-text">Sigue, que aquí lo encuentras</div>
 
       <div class="manifesto-p1">
         <span class="manifesto-letter">I</span><span class="manifesto-letter">T</span><span class="manifesto-letter">'</span><span class="manifesto-letter">S</span> <span class="manifesto-letter">F</span><span class="manifesto-letter">U</span><span class="manifesto-letter">N</span> <br class="br-mobile">
@@ -384,16 +384,16 @@
 
           <div class="tech-list">
             <div class="tech-text-1">
-              <h3 class="text-rosa">⬡ Fijación magnética</h3>
-              <p>Hemos eliminado los tornillos. Monta, desmonta y personaliza las manecillas en segundos, sin herramientas.</p>
+              <h3 class="text-rosa">⬡ Fijación de addons magnética</h3>
+              <p>Cambia los números cuando quieras. Tanto de estilo, como de orden (si te sientes traviesx)</p>
             </div>
             <div class="tech-text-2">
-              <h3 class="text-amarillo">⚙ Movimiento continuo</h3>
-              <p>Sistema quartz de alta precisión, completamente silencioso. Cero "tic-tac".</p>
+              <h3 class="text-amarillo">⚙ Manecillas a tu gusto</h3>
+              <p>Elige las manecillas que más vayan con tu estilo. Hay varias formas y muchos colores. ¡Mix&Match!</p>
             </div>
             <div class="tech-text-3">
-              <h3 class="text-verde">▮ Energía eficiente</h3>
-              <p>Una sola pila AA para más de un año de autonomía. Nada de cables ni adaptadores.</p>
+              <h3 class="text-verde">▮ Una pila de tiempo</h3>
+              <p>Una sola pila AA. Nada de cables ni adaptadores. Mecanismo silencioso. </p>
             </div>
           </div>
         </div>
@@ -412,9 +412,10 @@
             <span class="spec-icon text-azul">📐</span>
             <h4>Dimensiones</h4>
             <ul>
-              <li>Diámetro: 24 cm</li>
-              <li>Grosor: 2.5 cm</li>
-              <li>Peso: ~300 g</li>
+              <li>Diámetro base aproximado: ∅ 24 cm</li>
+              <li>Grosor total perfil: 3.5 cm</li>
+              <li>Peso: ~300 g (depende del modelo)</li>
+              <li>Addon: ∅ 2,5 cm</li>
             </ul>
           </div>
           <div class="spec-card">
@@ -424,27 +425,27 @@
             <ul>
               <li>Base: PLA+</li>
               <li>Manecillas: PLA+</li>
-              <li>Impresión FDM 3D</li>
+              <li>Impresión 3D hecha en España a demanda</li>
             </ul>
           </div>
           <div class="spec-card">
             <span class="spec-card-idx">03</span>
             <span class="spec-icon text-verde">⚙</span>
-            <h4>Mecanismo</h4>
+            <h4>Mix&Match</h4>
             <ul>
-              <li>Quartz de precisión</li>
-              <li>Movimiento continuo</li>
-              <li>Silencioso (sin tic-tac)</li>
+              <li>Addons magnéticos para personalización</li>
+              <li>Imanes: ∅ 6 mm x 2 mm </li>
+              <li>Si tienes alguna petición, ¡contáctanos!</li>
             </ul>
           </div>
           <div class="spec-card">
             <span class="spec-card-idx">04</span>
             <span class="spec-icon text-amarillo">▮</span>
-            <h4>Energía</h4>
+            <h4>Energía y mecanismo</h4>
             <ul>
-              <li>1× pila AA (incluida)</li>
-              <li>Autonomía: ~18 meses</li>
-              <li>Cambio magnético fácil</li>
+              <li>1× pila AA (no incluida)</li>
+              <li>Mecanismo silencioso (sin tic-tac)</li>
+              <li>Cambio magnético fácil para addons</li>
             </ul>
           </div>
         </div>
@@ -454,7 +455,7 @@
 <!-- ── BLOQUE: ONBOARDING ─────────────────────────────────────── -->
     <section id="block-onboarding" class="block-onboarding">
       <div class="block-wrap">
-        <h2 class="block-heading" data-reveal>Cómo configurar <br class="br-mobile">tu tiempo</h2>
+        <h2 class="block-heading" data-reveal>CONFIGURA <br class="br-mobile">tu tiempo</h2>
 
         <div class="onboarding-inner">
 
@@ -464,21 +465,26 @@
             <div class="step-item" data-reveal>
               <div class="step-num bg-amarillo">1</div>
               <h3>Elige tu base</h3>
-              <p>Tres formas distintas. Elige la que mejor encaje en tu espacio y dale tu color favorito.</p>
+              <p>Cinco formas distintas. Elige la que mejor encaje en tu espacio y dale tu color favorito.</p>
             </div>
             <div class="step-item" data-reveal>
               <div class="step-num bg-rosa">2</div>
-              <h3>Añade color</h3>
-              <p>Selecciona el estilo de manecillas y los marcadores. ¿Contraste atrevido o minimalismo total?</p>
+              <h3>Elige las manecillas</h3>
+              <p>Selecciona el estilo de manecillas y los colores de cada una. ¿Contraste atrevido o minimalismo total?</p>
             </div>
             <div class="step-item" data-reveal>
               <div class="step-num bg-verde">3</div>
-              <h3>Haz clic</h3>
-              <p>Recíbelo en casa y móntalo en segundos gracias al sistema de fijación magnética. Sin herramientas.</p>
+              <h3>Elige los addons</h3>
+              <p>Tienes varios estilos para elegir gracias al sistema de fijación magnética. Sin herramientas. Cambia cuando quieras.</p>
             </div>
+            <div class="step-item" data-reveal>
+              <div class="step-num bg-blanco-roto">4</div>
+              <h3>Genera el pedido</h3>
+              <p>Genera tu número de pedido y tu resumen para adjuntarlo al mail. ¡Lo tendrás en casa en 2 semanas!</p>
+            </div>            
           </div>
 
-          <p class="config-hint">Arrastra los números · suéltalos cerca de un imán</p>
+          <p class="config-hint">¡JUEGA! Arrastra los números · suéltalos cerca de un imán</p>
 
           <div class="config-demo">
             <svg id="magnet-svg" data-name="reloj-imanes-drag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1576.48 1576.48">
@@ -641,7 +647,7 @@
           </div>
 
           <div class="cta-onboarding">
-            <h2 class="cta-title">¿Listo para<br>hacer el tiempo?</h2>
+            <h2 class="cta-title">¿Listo para<br>decidir sobre tu tiempo?</h2>
             <p class="cta-sub">Diseña tu reloj pieza a pieza. Infinitas combinaciones, una sola que es tuya.</p>
             <a href="configurador.html" class="cta-link" data-transition>Abre el configurador →</a>
           </div>
