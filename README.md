@@ -49,7 +49,9 @@ itsfunoclock/
 ├── fonts/
 │   └── MartianMono-NrxBd.woff2  — Fuente local estática (ExtraBold)
 │
-├── img/                    — Logos y assets estáticos
+├── img/
+│   ├── favicon/            — Set completo de favicons (ico, png, webmanifest)
+│   └── addons/             — Miniaturas SVG de componentes del reloj
 └── data/                   — Datos de configuración (JSON)
 ```
 
@@ -57,11 +59,11 @@ itsfunoclock/
 
 | Archivo            | Líneas |
 | ------------------ | ------ |
-| `home.js`          | 551    |
-| `escena3d.js`      | 222    |
+| `home.js`          | 639    |
+| `escena3d.js`      | 223    |
 | `configurador.js`  | 256    |
-| `home.css`         | 789    |
-| `configurador.css` | 573    |
+| `home.css`         | 805    |
+| `configurador.css` | 624    |
 
 ---
 
@@ -260,13 +262,10 @@ Los estilos del home (home.css, ~800 líneas) solo se cargan en index.html. El c
 - `role="tablist"` / `role="tab"` / `aria-selected` en las tabs del configurador
 - `role="status"` / `aria-live="polite"` en el overlay de carga del visor 3D
 - Texto alternativo en todos los `<img>`
-
-### Mejoras pendientes (trabajo futuro)
-
-- `prefers-reduced-motion`: deshabilitar o simplificar las animaciones para usuarios con sensibilidad al movimiento
-- `:focus-visible`: estilos de foco para navegación por teclado
-- Open Graph tags: `og:title`, `og:image` para previsualizaciones en redes sociales
-- Favicon
+- **`:focus-visible`**: outline azul de 3px en todos los elementos interactivos para navegación por teclado (`global.css`)
+- **`prefers-reduced-motion`**: doble cobertura — CSS desactiva todas las transiciones/animaciones a 0.01ms; JS comprueba la media query en `startApp()` y omite la inicialización de GSAP si está activa
+- **Open Graph tags**: `og:title`, `og:description`, `og:image`, `og:url` y `twitter:card` en ambas páginas
+- **Favicon completo**: set `.ico`, PNG 16×32, apple-touch-icon y `site.webmanifest` en `img/favicon/`
 
 ---
 
@@ -275,14 +274,13 @@ Los estilos del home (home.css, ~800 líneas) solo se cargan en index.html. El c
 El proyecto usa **Git** con repositorio en GitHub. Historial de commits relevante:
 
 ```
+ab6b7c8  Problemas de mobile arreglados
+1750984  Sección onboarding: snap dual con CTA inline, hint semicírculo y ajustes UI
+bda87be  Mejoras accesibilidad, rendimiento y SEO
 f96f4e0  Autoalojar Martian Mono, nav en configurador y mejoras UI
 5877eff  Renombrar home→index, index→configurador + README
 f67cad7  Merge branch 'feature'
 4538a8c  Añadir reloj interactivo, letras delineadas y rotador hero
-44633ef  Quitar HUD, marco de esquinas y etiquetas mono industriales
-d1196b0  Revertir home a versión con hero outline multicolor
-d8dbc82  Home: lenguaje industrial (transiciones, máscaras, marquees, HUD)
-78d5b2d  Implementar home storytelling completa
 ```
 
 ---
