@@ -23,17 +23,17 @@ const GRUPOS_MINUTO = Object.values(ESTILOS_MANECILLAS).map(([, m]) => m);
 
 // Nombres de los grupos de slots de números en el GLB
 const GRUPOS_ADDONS = [
-  'slots_arabigos',
-  'slots_romanos',
-  'slots_dislexicos',
-  'slots_emojis',
-  'slots_letras',
+  'arabigos',
+  'romanos',
+  'dislexicos',
+  'emojis',
+  'letras',
 ];
 
 // ── Init ─────────────────────────────────────────────────────────
 export function initEscena(container) {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xF5F0E8); // color de fondo del visor
+  scene.background = new THREE.Color(0xC8C1B2); // color de fondo del visor
 
   // FOV (40°): ángulo de visión. Más alto = más grande pero más distorsión.
   // near/far (0.1, 100): rango de profundidad renderizable.
@@ -50,17 +50,17 @@ export function initEscena(container) {
   container.appendChild(renderer.domElement);
 
   // Luz ambiente: ilumina todo por igual. Intensidad 0–2 aprox.
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
   scene.add(ambientLight);
 
   // Luz principal: da volumen y sombras. position(x,y,z) controla de dónde viene.
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.0); // intensidad 0–2
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.6); // intensidad 0–2
   keyLight.position.set(3, 5, 5);
   keyLight.castShadow = true;
   scene.add(keyLight);
 
   // Luz de relleno: suaviza las sombras del lado opuesto. Intensidad más baja.
-  const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+  const fillLight = new THREE.DirectionalLight(0xffffff, 0.8);
   fillLight.position.set(-3, 2, 3);
   scene.add(fillLight);
 
@@ -102,7 +102,7 @@ export function cargarModeloMaestro(ruta, onProgress) {
           o.castShadow = true;
           if (o.material) o.material.side = THREE.DoubleSide; // renderiza ambas caras
         });
-        aplicarMaterialSlots(modeloMaestro);
+
         scene.add(modeloMaestro);
         resolve(modeloMaestro);
       },
@@ -160,8 +160,8 @@ function aplicarColorGrupo(nombres, hex) {
       if (!o.material._custom) {
         o.material = o.material.clone();
         o.material.map        = null;  // elimina textura del GLB
-        o.material.roughness  = 0.4;  // 0 = espejo, 1 = mate
-        o.material.metalness  = 0.1;  // 0 = plástico, 1 = metal
+        o.material.roughness  = 0.2;  // 0 = espejo, 1 = mate
+        o.material.metalness  = 0.0;  // 0 = plástico, 1 = metal
         o.material._custom    = true;
       }
       o.material.color.set(color);
@@ -182,17 +182,6 @@ function animate() {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────
-// Asigna un material neutro (color fondo) a todos los slots de números,
-// para que hereden bien el color del reloj en lugar del material del GLB.
-function aplicarMaterialSlots(objeto) {
-  const mat = new THREE.MeshStandardMaterial({ color: 0xF5F0E8, roughness: 0.4, metalness: 0.1, side: THREE.DoubleSide });
-  GRUPOS_ADDONS.forEach(nombre => {
-    const grupo = objeto.getObjectByName(nombre);
-    if (!grupo) return;
-    grupo.traverse(o => { if (o.isMesh) o.material = mat; });
-  });
-}
-
 // Orienta y escala el modelo para que quepa centrado en el visor.
 // tamanoObjetivo = tamaño máximo en unidades Three.js (2.2 ≈ ocupa bien el visor).
 // rotation.x = Math.PI/2 corrige la orientación del GLB exportado desde Blender.

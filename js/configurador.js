@@ -53,6 +53,7 @@ export async function initConfigurador() {
   document.getElementById('btn-resumen').addEventListener('click', generarResumen);
   document.getElementById('btn-cerrar-resumen').addEventListener('click', cerrarResumen);
   document.getElementById('btn-imprimir').addEventListener('click', () => window.print());
+  // btn-email no necesita listener: su href se actualiza en generarResumen()
 }
 
 // ── Cargar JSON ───────────────────────────────────────────────────
@@ -82,12 +83,11 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
     card.dataset.categoria = categoria;  // base | manecillas | addon
 
     const thumb = item.thumbnail
-      ? `<img class="thumb" src="${item.thumbnail}" alt="${item.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      ? `<img class="thumb" src="${item.thumbnail}" alt="${item.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="thumb-placeholder" style="display:none">${getIconForItem(item)}</span>`
       : '';
 
     card.innerHTML = `
       ${thumb}
-      <span class="thumb-placeholder" style="display:${item.thumbnail ? 'none' : 'flex'}">${getIconForItem(item)}</span>
       <span class="opcion-nombre">${item.nombre}</span>
     `;
 
@@ -216,6 +216,47 @@ function generarResumen() {
 
   document.getElementById('resumen-imagen').src = capturarCanvas();
   document.getElementById('resumen-modal').classList.add('open');
+
+  const numero      = document.getElementById('resumen-numero').textContent;
+  const nombreBase  = base?.nombre       ?? '—';
+  const nombreMan   = manecillas?.nombre  ?? '—';
+  const nombreAddon = addon?.nombre       ?? '—';
+  const colorBase   = PALETA.find(c => c.hex === config.colorBase)?.nombre   ?? config.colorBase   ?? '—';
+  const colorHora   = PALETA.find(c => c.hex === config.colorHora)?.nombre   ?? config.colorHora   ?? '—';
+  const colorMin    = PALETA.find(c => c.hex === config.colorMinuto)?.nombre ?? config.colorMinuto ?? '—';
+
+  const asunto = encodeURIComponent(`¡Quiero mi reloj! ${numero}`);
+  const cuerpo = encodeURIComponent(
+`¡Hola! 👋 He configurado mi reloj en itsfunoclock y me encanta cómo ha quedado.
+
+¡Quiero pedirlo!
+
+🕐 Número de pedido: ${numero}
+
+🔩 Configuración:
+• Base: ${nombreBase}
+• Manecillas: ${nombreMan}
+• Add-on: ${nombreAddon}
+• Color base: ${colorBase}
+• Color hora: ${colorHora}
+• Color minutos: ${colorMin}
+
+💳 Método de pago: Bizum a 691 631 037 — indicar número de pedido ${numero} en el concepto
+
+📦 Dirección de entrega:
+Nombre:
+Dirección:
+Ciudad y código postal:
+Teléfono:
+
+👤 Mis datos:
+Nombre completo:
+Email:
+
+¡Gracias!`
+  );
+
+  document.getElementById('btn-email').href = `mailto:info@holapavlova.es?subject=${asunto}&body=${cuerpo}`;
 }
 
 // Rellena el chip de color y el nombre en el resumen

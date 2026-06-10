@@ -12,10 +12,10 @@
     { "id": "manecillas_03", "nombre": "Minimalista", "thumbnail": "img/addons/man-minimalista.svg" }
   ],
   "addons": [
-    { "id": "slots_arabigos",   "nombre": "Arábigos",  "thumbnail": "img/addons/addon-arabigos.svg" },
-    { "id": "slots_romanos",    "nombre": "Romanos",   "thumbnail": "img/addons/addon-romanos.svg" },
-    { "id": "slots_dislexicos", "nombre": "Dislexia",  "thumbnail": "img/addons/addon-dislexicos.svg" },
-    { "id": "slots_emojis",     "nombre": "Emojis",    "thumbnail": "img/addons/addon-emojis.svg" },
-    { "id": "slots_letras",     "nombre": "Letras",    "thumbnail": "img/addons/addon-letras.svg" }
+    { "id": "arabigos",   "nombre": "Arábigos" },
+    { "id": "romanos",    "nombre": "Romanos" },
+    { "id": "dislexicos", "nombre": "Dislexia" },
+    { "id": "emojis",     "nombre": "Emojis" },
+    { "id": "letras",     "nombre": "Letras" }
   ]
 }
