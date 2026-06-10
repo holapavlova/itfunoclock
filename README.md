@@ -59,10 +59,10 @@ itsfunoclock/
 
 | Archivo            | Líneas |
 | ------------------ | ------ |
-| `home.js`          | 639    |
+| `home.js`          | 646    |
 | `escena3d.js`      | 223    |
 | `configurador.js`  | 256    |
-| `home.css`         | 805    |
+| `home.css`         | 798    |
 | `configurador.css` | 624    |
 
 ---
@@ -253,6 +253,9 @@ Los estilos del home (home.css, ~800 líneas) solo se cargan en index.html. El c
 - **Mobile-first** en puntos clave: `@media (max-width: 767px)` para ajustes de padding y tipografía.
 - **Tablet** `@media (min-width: 768px) and (max-width: 1023px)`: reduce los tamaños tipográficos del bloque hero para que no resulten excesivos en pantallas medianas.
 - **Tipografía fluida**: todos los `font-size` usan `clamp(min, valor-fluido, max)` para escalar continuamente sin breakpoints.
+- **Nav hide-on-scroll**: en scroll hacia abajo el nav se oculta con `translateY(-100%)`; en scroll hacia arriba reaparece. Implementado con un listener `scroll` pasivo que compara `scrollY` con el frame anterior (threshold ±5px para evitar parpadeo).
+- **Sección onboarding — responsive dual**: en desktop (≥768px), la sección está pinneada con snap; el reloj arranca con su top justo bajo el viewport (`startY = VH − demoTopFromSection + 20`) para evitar solapamiento con los pasos. En mobile, la sección fluye en scroll normal (sin pin), mostrando heading → pasos con descripción → reloj → CTA.
+- **Tamaño del reloj onboarding**: `min(90vw, 85vh)` — la fórmula `85vh` garantiza que el radio del reloj nunca supere la distancia al borde inferior del viewport, previniendo overlap en cualquier resolución.
 
 ### Accesibilidad implementada
 
@@ -274,6 +277,7 @@ Los estilos del home (home.css, ~800 líneas) solo se cargan en index.html. El c
 El proyecto usa **Git** con repositorio en GitHub. Historial de commits relevante:
 
 ```
+(pending)  Nav hide-on-scroll, onboarding mobile sin snap, fixes layout y CTA
 ab6b7c8  Problemas de mobile arreglados
 1750984  Sección onboarding: snap dual con CTA inline, hint semicírculo y ajustes UI
 bda87be  Mejoras accesibilidad, rendimiento y SEO

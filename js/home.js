@@ -77,7 +77,6 @@ function initBackgroundTransitions() {
     { trigger: '#block-two',       color: 'var(--color-blanco-roto)' },
     { trigger: '#block-specs',     color: 'var(--color-blanco-roto)' },
     { trigger: '#block-onboarding',color: 'var(--color-azul)' },
-    { trigger: '#block-three',     color: 'var(--color-blanco)' },
   ];
 
   transitions.forEach(({ trigger, color }) => {
@@ -96,10 +95,27 @@ function initBackgroundTransitions() {
 // ════════════════════════════════════════════════════════════════
 function initNavScroll() {
   const nav = document.querySelector('.nav-home');
+  if (!nav) return;
+
+  // Fondo amarillo cuando no estamos en el top
   ScrollTrigger.create({
     start: 'top -1px',
     onUpdate: self => nav.classList.toggle('nav-home--scrolled', self.scroll() > 0),
   });
+
+  // Ocultar al bajar, mostrar al subir
+  let lastY = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y <= 0) {
+      nav.classList.remove('nav-home--hidden');
+    } else if (y > lastY + 5) {
+      nav.classList.add('nav-home--hidden');
+    } else if (y < lastY - 5) {
+      nav.classList.remove('nav-home--hidden');
+    }
+    lastY = y;
+  }, { passive: true });
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -283,12 +299,13 @@ function initBlockTwo() {
     scrollTrigger: { trigger: '#block-two', start: 'top top', end: '+=3000', scrub: 1, pin: true }
   });
 
-  tl.from('.layer-base',      { y: 120, autoAlpha: 0, duration: 1 })
+  tl.set('.layer-lines', { autoAlpha: 0 })
+    .from('.layer-base',      { y: 120, autoAlpha: 0, duration: 1 })
     .from('.layer-mechanism', { y: 120, autoAlpha: 0, duration: 1 }, '-=0.5')
     .from('.layer-magnet',    { y: 80,  autoAlpha: 0, duration: 0.8 }, '-=0.4')
     .from('.layer-addons',    { y: 60,  autoAlpha: 0, duration: 0.5, stagger: 0.08 }, '-=0.3')
     .from('.layer-hands',     { y: 100, autoAlpha: 0, duration: 1 }, '-=0.3')
-    .from('.layer-lines',     { autoAlpha: 0, duration: 0.5 }, '-=0.5')
+    .to('.layer-lines',       { autoAlpha: 1, duration: 0.5 }, '-=0.5')
 
     .to({}, { duration: 0.5 })
 
@@ -496,6 +513,9 @@ function initOnboardingScroll() {
   const demo      = section?.querySelector('.config-demo');
   if (!section || !demo) return;
 
+  // En móvil la sección fluye en scroll normal; sin pin ni snap
+  if (window.innerWidth < 768) return;
+
   const inner     = section.querySelector('.onboarding-inner');
   const stepsEl   = section.querySelector('.steps-grid');
   const hintEl    = section.querySelector('.config-hint');
@@ -518,8 +538,8 @@ function initOnboardingScroll() {
   const VH                 = window.innerHeight;
   const demoTopFromSection = getElTop(demo);
   const clockCenterFromTop = demoTopFromSection + demoH / 2;
-  const startY             = VH - clockCenterFromTop;   // reloj: centro en borde inferior
-  const endY               = -clockCenterFromTop;       // reloj: centro en borde superior
+  const startY             = VH - demoTopFromSection + 20; // reloj: top justo bajo el viewport
+  const endY               = -clockCenterFromTop;          // reloj: centro en borde superior
 
   // Estado inicial: solo config-demo desplazado para centrar reloj en borde inferior
   gsap.set(demo, { y: startY });
@@ -581,18 +601,6 @@ function initOnboardingScroll() {
 
 // ════════════════════════════════════════════════════════════════
 // CTA final — reveal
-// ════════════════════════════════════════════════════════════════
-function initCta() {
-  ScrollTrigger.create({
-    trigger: '#block-three',
-    start: 'top 70%',
-    once: true,
-    onEnter: () => {
-      gsap.from('.cta-sub',  { y: 30, opacity: 0, duration: 0.6, delay: 0.3 });
-      gsap.from('.cta-link', { y: 30, opacity: 0, duration: 0.6, delay: 0.45 });
-    }
-  });
-}
 
 // ════════════════════════════════════════════════════════════════
 // BOTÓN VOLVER ARRIBA
@@ -629,7 +637,6 @@ function startApp() {
   initTiltCards();
   initMagnetDrag();
   initOnboardingScroll();
-  initCta();
   initBackgroundTransitions();
   initNavScroll();
   initScrollTopBtn();

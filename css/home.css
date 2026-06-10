@@ -90,7 +90,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px var(--spacing-xl);
+  transition: transform 0.35s ease, background-color 0.3s ease;
 }
+
+.nav-home--hidden { transform: translateY(-100%); }
 
 .nav-logo {
   font-family: var(--font-titulo);
@@ -128,10 +131,7 @@
 
 .nav-pill:hover { transform: translateY(-1px); }
 
-.nav-home--scrolled {
-  background-color: var(--color-amarillo);
-  transition: background-color 0.3s ease;
-}
+.nav-home--scrolled { background-color: var(--color-amarillo); }
 
 
 
@@ -578,6 +578,7 @@
 
 /* layout columna: pasos arriba + reloj asomando abajo */
 .onboarding-inner {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -593,8 +594,8 @@
 .config-demo {
   position: relative;
   z-index: 1;
-  width: min(90vw, 1400px);
-  margin: 0 auto;
+  width: min(90vw, 85vh);
+  align-self: center;
   display: block;
 }
 
@@ -685,18 +686,6 @@
 }
 
 /* ── CTA final ───────────────────────────────────────────────────── */
-.block-three {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: var(--spacing-xl) 0;
-  color: var(--color-negro);
-}
-
-.cta-inner { max-width: 56rem; text-align: left; }
 
 .cta-title {
   font-family: var(--font-titulo);
@@ -775,7 +764,9 @@
 @media (max-width: 767px) {
   .nav-home { padding: 16px var(--spacing-lg); }
   .block-specs   { padding: 5rem 0; }
-  .block-onboarding { padding: 5rem 0 0; } /* sin padding inferior; height:100vh ya acota */
+  /* en mobile: scroll normal, sin pin; la sección crece al contenido */
+  .block-onboarding { height: auto; overflow: visible; padding: 5rem 0 5rem; }
+  .cta-onboarding   { opacity: 1; }
   .tech-list { margin-top: var(--spacing-lg); }
 
   /* 1 — Hero: textos más grandes */
@@ -788,15 +779,17 @@
     justify-content: flex-start;
     padding-top: 68px;
   }
+  .blueprint-wrap { margin-top: var(--spacing-lg); }
 
-  /* 3 — Onboarding: más espacio entre pasos y reloj */
-  .onboarding-inner { gap: 5rem; }
+  /* 3 — Onboarding: steps con descripción, columna única, centrados */
+  #block-onboarding .block-heading { margin-bottom: 2rem; }
+  .onboarding-inner { gap: 2rem; }
+  .steps-grid { width: 100%; gap: 2rem; }
+  .step-item { align-self: center; }
+  .step-num { width: 64px; height: 64px; font-size: 1.5rem; margin-bottom: 12px; box-shadow: 4px 4px 0 0 var(--color-negro); }
+  .step-item h3 { font-size: 1.125rem; margin-bottom: 8px; }
+  .step-item p { font-size: 0.875rem; }
 
-  /* 4 — CTA: sección más compacta en móvil */
-  .block-three {
-    min-height: auto;
-    padding: var(--spacing-xl) 0;
-  }
 }
 
 /* ── Print ───────────────────────────────────────────────────────── */
