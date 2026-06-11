@@ -51,7 +51,7 @@ export async function initConfigurador() {
 
   document.getElementById('btn-randomize').addEventListener('click', randomize);
   document.getElementById('btn-resumen').addEventListener('click', generarResumen);
-  document.getElementById('btn-cerrar-resumen').addEventListener('click', cerrarResumen);
+  document.getElementById('resumen-close').addEventListener('click', cerrarResumen);
   document.getElementById('btn-imprimir').addEventListener('click', () => window.print());
   // btn-email no necesita listener: su href se actualiza en generarResumen()
 }

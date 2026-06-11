@@ -440,6 +440,9 @@
   overflow-y: auto;
 }
 
+/* posicionar la cruz de cierre dentro de la tarjeta */
+.resumen-card { position: relative; }
+
 .resumen-header {
   display: flex;
   align-items: baseline;
@@ -514,6 +517,30 @@
   display: flex;
   gap: var(--spacing-sm);
 }
+
+/* Dar más espacio a los botones principales dentro del modal */
+.resumen-acciones { justify-content: flex-start; }
+.resumen-acciones .btn-primary { flex: 1; }
+
+/* Botón de cierre (cruz) en la esquina superior derecha */
+.resumen-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--color-negro);
+}
+.resumen-close:hover { background: rgba(26,26,26,0.04); }
 
 /* ── Estilos de impresión / exportar PDF ───────────────────────── */
 @media print {
