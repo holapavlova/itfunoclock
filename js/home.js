@@ -262,7 +262,7 @@ function initTimeFor() {
 function initBlockOne() {
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: '#block-one', start: 'top top', end: '+=5500', scrub: 1, pin: true,
+      trigger: '#block-one', start: 'top top', end: '+=3200', scrub: 1, pin: true,
       invalidateOnRefresh: true,
     }
   });
