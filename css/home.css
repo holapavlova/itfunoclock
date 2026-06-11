@@ -155,7 +155,7 @@
 [data-reveal] { clip-path: inset(0 100% 0 0); }
 
 /* ════════════════════════════════════════════════════════════════
-   BANDAS TIPOGRÁFICAS (marquee horizontal con scroll)
+   BANDAS TIPOGRÁFICAS (marquee autoplay infinito)
 ═══════════════════════════════════════════════════════════════════ */
 .marquee {
   width: 100%;

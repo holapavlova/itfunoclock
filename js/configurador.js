@@ -1,7 +1,6 @@
 import { initEscena, cargarModeloMaestro, cambiarBase, cambiarManecillas, cambiarAddons, cambiarColorBase, cambiarColorHora, cambiarColorMinuto, capturarCanvas } from './escena3d.js';
 
-// Paleta de colores disponibles en el configurador.
-// Para añadir o cambiar un color: añade/edita un objeto { id, nombre, hex } aquí.
+// Paleta de colores disponibles en el configurador. Añadir o cambiar color { id, nombre, hex }
 const PALETA = [
   { id: 'blanco',   nombre: 'Blanco',   hex: '#FFFFFF' },
   { id: 'negro',    nombre: 'Negro',    hex: '#1A1A1A' },
@@ -83,7 +82,7 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
     card.dataset.categoria = categoria;  // base | manecillas | addon
 
     const thumb = item.thumbnail
-      ? `<img class="thumb" src="${item.thumbnail}" alt="${item.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="thumb-placeholder" style="display:none">${getIconForItem(item)}</span>`
+      ? `<img class="thumb" src="${item.thumbnail}" alt="${item.nombre}">`
       : '';
 
     card.innerHTML = `
@@ -97,23 +96,6 @@ function renderizarGrid(containerId, items, categoria, extraClass = '') {
   });
 }
 
-// Emojis de fallback cuando no hay thumbnail — actualiza si cambias los IDs del JSON
-function getIconForItem(item) {
-  if (item.id === 'base_01')          return '⭕';
-  if (item.id === 'base_02')          return '⬡';
-  if (item.id === 'base_03')          return '✿';
-  if (item.id === 'base_04')          return '☀';
-  if (item.id === 'base_05')          return '〜';
-  if (item.id === 'manecillas_01')    return '🎯';
-  if (item.id === 'manecillas_02')    return '📐';
-  if (item.id === 'manecillas_03')    return '—';
-  if (item.id === 'slots_arabigos')   return '1';
-  if (item.id === 'slots_romanos')    return 'I';
-  if (item.id === 'slots_dislexicos') return 'p';
-  if (item.id === 'slots_emojis')     return '●';
-  if (item.id === 'slots_letras')     return 'A';
-  return '◆';
-}
 
 // ── Colores ───────────────────────────────────────────────────────
 // Renderiza los círculos de color en los contenedores del HTML.
@@ -241,7 +223,7 @@ function generarResumen() {
 • Color hora: ${colorHora}
 • Color minutos: ${colorMin}
 
-💳 Método de pago: Bizum a 691 631 037 — indicar número de pedido ${numero} en el concepto
+💳 Método de pago: Bizum a 600 000 000 — indicar número de pedido ${numero} en el concepto
 
 📦 Dirección de entrega:
 Nombre:

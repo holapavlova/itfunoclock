@@ -119,25 +119,18 @@ function initNavScroll() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// BANDAS TIPOGRÁFICAS — desplazamiento horizontal con scroll
+// BANDAS TIPOGRÁFICAS — marquee autoplay infinito
 // ════════════════════════════════════════════════════════════════
 function initMarquees() {
-  // ── traducción horizontal guiada por scroll ──
+  // ── autoplay infinito: 2 copias del texto → -50% = loop sin salto ──
   gsap.utils.toArray('.marquee').forEach(strip => {
     const track = strip.querySelector('.marquee-track');
-    gsap.fromTo(track,
-      { xPercent: 0 },
-      {
-        xPercent: -50,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: strip,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        }
-      }
-    );
+    gsap.to(track, {
+      xPercent: -50,
+      ease: 'none',
+      duration: 18,
+      repeat: -1,
+    });
   });
 
   // ── apertura desde el centro (clip-path) al entrar en viewport ──
@@ -450,8 +443,10 @@ function initMagnetDrag() {
 
     ficha.addEventListener('pointerdown', e => {
       e.preventDefault();
-      ficha.setPointerCapture(e.pointerId);
+      ficha.setPointerCapture(e.pointerId); // captura todos los eventos aunque el cursor salga del elemento
       const p = toSVGPoint(e.clientX, e.clientY);
+      // ox/oy = offset entre el cursor y el centro actual de la ficha en coords SVG.
+      // Se guarda al inicio del drag para que la ficha no "salte" al cursor.
       ox = p.x - (origCx + tx);
       oy = p.y - (origCy + ty);
       ficha.style.cursor = 'grabbing';
@@ -475,6 +470,9 @@ function initMagnetDrag() {
       });
 
       if (nearest && minDist < ATTRACT_R) {
+        // Caída cuadrática: la atracción es débil en el borde del radio y crece
+        // rápidamente al acercarse. ×0.75 para que nunca llegue al 100% (la ficha
+        // nunca se "pega" sola durante el drag, solo hace snap al soltar).
         const pull = Math.pow(1 - minDist / ATTRACT_R, 2) * 0.75;
         nx += (nearest.cx - curCx) * pull;
         ny += (nearest.cy - curCy) * pull;
@@ -514,7 +512,10 @@ function initOnboardingScroll() {
   const demo      = section?.querySelector('.config-demo');
   if (!section || !demo) return;
 
-  // Sección en scroll normal en todos los dispositivos; sin pin ni snap
+  // Sección en scroll normal en todos los dispositivos; sin pin ni snap.
+  // El código a continuación (desactivado) era el sistema de snap desktop
+  // que se eliminó en el commit 2d834cd por simplicidad de UX mobile.
+  // Se mantiene como referencia por si se quiere recuperar.
   return;
 
   const inner     = section.querySelector('.onboarding-inner');

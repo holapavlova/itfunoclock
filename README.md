@@ -1,6 +1,6 @@
 # It's Fun o'Clock — Memoria técnica del proyecto
 
-**Autora:** Paula Aner (holapavlova)  
+**Autora:** Paula Díaz (hola·pavlova)  
 **Repositorio:** github.com/holapavlova  
 **Tecnologías principales:** HTML5 · CSS3 · JavaScript ES6+ · GSAP · Three.js
 
@@ -37,33 +37,45 @@ itsfunoclock/
 │   ├── home.js             — Todas las animaciones e interacciones del home
 │   ├── configurador.js     — Lógica de UI del configurador (tabs, color pickers)
 │   ├── escena3d.js         — Motor Three.js: render, cámara, luces, modelo GLB
-│   ├── main.js             — Punto de entrada del configurador
+│   ├── main.js             — Punto de entrada ES module del configurador
 │   └── vendors/
 │       ├── gsap.min.js
 │       ├── ScrollTrigger.min.js
 │       ├── three.module.min.js
+│       ├── three.core.min.js
 │       ├── GLTFLoader.js
 │       ├── OrbitControls.js
-│       └── reloj-maestro.glb   — Modelo 3D maestro con todas las variantes
+│       └── BufferGeometryUtils.js
+│
+├── modelos/
+│   └── reloj-maestro.glb   — Modelo 3D maestro con todas las variantes
 │
 ├── fonts/
-│   └── MartianMono-NrxBd.woff2  — Fuente local estática (ExtraBold)
+│   ├── MartianMono-NrxBd.woff2  — ExtraBold (usada en producción)
+│   ├── MartianMono-NrBd.woff2   — Bold
+│   ├── MartianMono-NrMd.woff2   — Medium
+│   ├── MartianMono-NrRg.woff2   — Regular
+│   ├── MartianMono-NrLt.woff2   — Light
+│   ├── MartianMono-NrTh.woff2   — Thin
+│   └── MartianMono-NrxLt.woff2  — ExtraLight
 │
 ├── img/
 │   ├── favicon/            — Set completo de favicons (ico, png, webmanifest)
 │   └── addons/             — Miniaturas SVG de componentes del reloj
-└── data/                   — Datos de configuración (JSON)
+│
+└── data/
+    └── piezas.json         — IDs, nombres y thumbnails de bases, manecillas y add-ons
 ```
 
-**Métricas de código:** Mantener actualizado
+**Métricas de código:**
 
 | Archivo            | Líneas |
 | ------------------ | ------ |
-| `home.js`          | 646    |
-| `escena3d.js`      | 223    |
-| `configurador.js`  | 256    |
-| `home.css`         | 798    |
-| `configurador.css` | 624    |
+| `home.js`          | 668    |
+| `escena3d.js`      | 212    |
+| `configurador.js`  | 279    |
+| `home.css`         | 814    |
+| `configurador.css` | 651    |
 
 ---
 
@@ -91,19 +103,21 @@ Cargado como módulo ES (`three.module.min.js`). Se usa para:
 - Controles de órbita (rotar, zoom)
 - Gestión de materiales y cambio de color en tiempo real
 
-### 3.4 Modelo 3D — `reloj-maestro.glb`
+### 3.4 Modelo 3D — `modelos/reloj-maestro.glb`
 
-Archivo GLTF binario creado en **Blender**. Contiene todas las variantes del reloj en un solo archivo: 5 bases, 3 estilos de manecillas (hora + minuto), 6 grupos de marcadores horarios. Los objetos se muestran u ocultan desde JS según la selección del usuario.
+Archivo GLTF binario creado en **Blender**. Contiene todas las variantes del reloj en un solo archivo: 5 bases, 3 estilos de manecillas (hora + minuto), 5 grupos de marcadores horarios. Los objetos se muestran u ocultan desde JS según la selección del usuario.
+
+La ruta del modelo se resuelve de forma relativa al HTML que lo carga (`modelos/reloj-maestro.glb` en `configurador.html`).
 
 ### 3.5 Tipografía — Martian Mono ExtraBold (estática)
 
-La fuente se autoaloja desde `fonts/MartianMono-NrxBd.woff2` mediante `@font-face` en `typography.css`. Se eligió la versión **estática** (no variable) para garantizar un renderizado correcto del delineado (`-webkit-text-stroke`) en todos los navegadores, pues daba problemas con las uniones en su versión variable. Inter (cuerpo de texto) se sigue cargando desde Google Fonts.
+La fuente de títulos se autoaloja desde `fonts/MartianMono-NrxBd.woff2` mediante `@font-face` en `typography.css`. Se eligió la versión **estática** (no variable) para garantizar un renderizado correcto del delineado (`-webkit-text-stroke`) en todos los navegadores, pues daba problemas con las uniones en su versión variable. El repositorio incluye todos los pesos disponibles de Martian Mono, aunque solo ExtraBold se usa en CSS actualmente. Inter (cuerpo de texto) se sigue cargando desde Google Fonts.
 
 ---
 
 ## 4. Arquitectura CSS
 
-El CSS sigue una arquitectura modular de 7 capas importadas en cascada desde `style.css`:
+El CSS sigue una arquitectura modular de capas importadas en cascada desde `style.css`:
 
 ```
 reset → variables → typography → global → configurador
@@ -142,22 +156,22 @@ Todos los `<a>` con el atributo `data-transition` tienen un listener que interce
 
 Una sección hero con fondo amarillo y un rotador de palabras controlado por flechas. Cada letra de la palabra activa se genera dinámicamente con `wordToHTML()`: cada carácter es un `<span class="timefor-letter">` con color y rotación únicos asignados por ciclo. El cambio de palabra usa una timeline GSAP de salida (Y + fade) → swap de innerHTML → entrada (Y inversa + fade con `back.out`). Hay autoplay cada 2,6 s que se cancela al interactuar.
 
-### 5.5 Bloque 1 — Manifiesto pinneado (5.500px de scroll)
+### 5.5 Bloque 1 — Manifiesto pinneado (2.500px de scroll)
 
-La sección más compleja. `ScrollTrigger` con `pin: true` mantiene la sección fija mientras el usuario scrollea 5.500px. Ese scroll se convierte en progreso de una `gsap.timeline` con `scrub: 1`. Los estados iniciales se definen con `tl.set()` dentro de la propia timeline (no fuera) para que el scrub hacia atrás los restaure correctamente. `invalidateOnRefresh: true` recalcula posiciones en cada resize.
+La sección más compleja. `ScrollTrigger` con `pin: true` mantiene la sección fija mientras el usuario scrollea 2.500px. Ese scroll se convierte en progreso de una `gsap.timeline` con `scrub: 1`. Los estados iniciales se definen con `tl.set()` dentro de la propia timeline (no fuera) para que el scrub hacia atrás los restaure correctamente. `invalidateOnRefresh: true` recalcula posiciones en cada resize.
 
 **Secuencia de la timeline:**
 
-1. Texto "¿SCROLLEAR = PERDER EL TIEMPO?" se revela de arriba a abajo con `clip-path: inset(0 0 100% 0)` → `inset(0 0 0 0)`.
-2. El texto escala a `scale: 14` llenando todo el viewport, creando sensación de velocida¶d y colapso.
-3. Aparece "PARA." con easing elástico (`elastic.out(1, 0.5)`) — rebota al aparecer.
+1. Texto "SI PIENSAS QUE SCROLLEAR ES PERDER EL TIEMPO" se revela de arriba a abajo con `clip-path: inset(0 0 100% 0)` → `inset(0 0 0 0)`.
+2. El texto escala a `scale: 14` llenando todo el viewport, creando sensación de velocidad y colapso.
+3. Aparece "SIGUE, QUE AQUÍ LO ENCUENTRAS." con easing elástico (`back.out(2.5)`) — rebota al aparecer.
 4. Aparecen y desaparecen en secuencia tres mensajes del manifiesto con fundidos y desplazamientos verticales.
 
 ### 5.6 Banda marquee — tres efectos combinados
 
 Una banda negra con texto en loop horizontal. Tres efectos superpuestos:
 
-1. **Scroll-driven translation**: `xPercent: 0 → -50` scrubbeado con scroll. El texto se duplica tres veces — por eso el desplazamiento al -50% crea loop infinito sin salto.
+1. **Autoplay infinito**: `gsap.to` con `xPercent: -50`, `ease: none`, `repeat: -1`, duración de 18 s por ciclo. El texto se duplica dos veces — al desplazar -50% el track vuelve exactamente al punto inicial, creando loop sin salto.
 2. **Apertura con clip-path**: al entrar en viewport, se revela desde el centro hacia los extremos (`inset(0 38% 0 38%)` → `inset(0 0%)`), con `ease: expo.inOut`.
 3. **SkewX por velocidad de scroll**: `gsap.ticker` corre en cada frame (requestAnimationFrame). Calcula el delta de posición respecto al frame anterior, lo multiplica por 0.9 y lo aplica como `skewX` suavizado con lerp (12% por frame). El texto se inclina en la dirección del movimiento y se recupera al parar, dando sensación de inercia.
 
@@ -169,9 +183,11 @@ Mismo sistema de pin + scrub. Un SVG isométrico del reloj tiene sus componentes
 
 Cuatro tarjetas entran al hacer scroll desde las cuatro posiciones de un reloj analógico (12h = arriba, 3h = derecha, 6h = abajo, 9h = izquierda) con `back.out(1.4)`. En hover, cada tarjeta se inclina en 3D siguiendo el cursor: se calculan las coordenadas relativas del ratón dentro de la tarjeta y se aplican `rotateX` y `rotateY` proporcionales con `transformPerspective: 700`. Al salir, vuelve a plano con `elastic.out(1, 0.4)`.
 
-### 5.9 Reloj interactivo (bloque configurador en el home)
+### 5.9 Reloj interactivo (bloque onboarding)
 
-Un SVG inline con dos manecillas y doce círculos de color. Las manecillas se arrastran calculando el ángulo entre el cursor y el centro geométrico del SVG con `Math.atan2`. Al soltar, hacen snap al múltiplo de 30° más cercano (snap a cada hora) con `back.out(1.5)`. Los círculos son libremente arrastrables mediante la **Pointer Events API** (`setPointerCapture` para que el drag no se pierda si el cursor sale del elemento). Doble clic resetea todo con elastic escalonado.
+Un SVG inline con fichas (`ficha_*`) arrastrables que hacen snap magnético a puntos de anclaje (`iman_*`). La atracción durante el arrastre usa una **caída cuadrática** (`Math.pow(1 - dist/R, 2) × 0.75`): débil en el borde del radio, fuerte al acercarse. Al soltar, si la ficha está dentro del radio de snap (180 unidades SVG), hace snap elástico con `elastic.out(1.6, 0.35)`.
+
+El drag usa la **Pointer Events API** (`setPointerCapture`) para que el arrastre no se pierda si el cursor sale del elemento, incluyendo dispositivos táctiles.
 
 ### 5.10 Botón CTA magnético
 
@@ -197,28 +213,36 @@ Aparece (slide-up + fade) cuando el scroll supera los 300px, desaparece al volve
 
 El configurador está completamente separado del home. Carga sus propias dependencias (Three.js, configurador.js, escena3d.js) y no usa GSAP. La UI está dividida en dos columnas mediante CSS Grid: visor 3D (60%) y panel de opciones (40%).
 
+El punto de entrada es `main.js` (módulo ES): espera `DOMContentLoaded` y llama a `initConfigurador()`. Toda la lógica de UI vive en `configurador.js`; el motor de render en `escena3d.js`.
+
 ### 6.2 Motor Three.js (`escena3d.js`)
 
 - **Renderer**: `WebGLRenderer` con antialiasing y `SRGBColorSpace` para colores correctos.
 - **Cámara**: `PerspectiveCamera` con FOV 40°. `OrbitControls` permite rotar y hacer zoom.
-- **Iluminación**: tres luces — `AmbientLight` (0.7) para relleno general, `DirectionalLight` key (1.0) desde arriba-izquierda, `DirectionalLight` fill (0.4) desde el lado opuesto.
+- **Iluminación**: tres luces — `AmbientLight` (1.2) para relleno general, `DirectionalLight` key (1.6) desde arriba-derecha, `DirectionalLight` fill (0.8) desde el lado opuesto.
 - **Sombras**: `PCFSoftShadowMap` para sombras suavizadas.
-- **Modelo**: un único archivo `reloj-maestro.glb` cargado con `GLTFLoader`. Contiene todos los objetos de todas las variantes; el código los muestra/oculta por nombre.
+- **Modelo**: un único archivo `reloj-maestro.glb` (en `modelos/`) cargado con `GLTFLoader`. Contiene todos los objetos de todas las variantes; el código los muestra/oculta por nombre.
 
 ### 6.3 Lógica de personalización (`configurador.js`)
 
 El usuario puede configurar tres aspectos:
 
-| Opción         | Implementación                                                     |
-| -------------- | ------------------------------------------------------------------ |
-| **Base**       | Oculta todos los objetos `base_0X` y muestra solo el seleccionado  |
-| **Manecillas** | Oculta todos los pares hora/minuto y muestra el estilo elegido     |
-| **Marcadores** | Oculta todos los `slots_*` y muestra el grupo seleccionado         |
-| **Color**      | `material.color.set(hexColor)` sobre el material del objeto activo |
+| Opción         | Implementación                                                             |
+| -------------- | -------------------------------------------------------------------------- |
+| **Base**       | Oculta todos los objetos `base_0X` y muestra solo el seleccionado          |
+| **Manecillas** | Oculta todos los pares hora/minuto y muestra el estilo elegido             |
+| **Marcadores** | Oculta todos los grupos de add-ons y muestra el seleccionado               |
+| **Color**      | Clona el material del objeto activo y llama `material.color.set(hexColor)` |
+
+El clonado de material elimina la textura del GLB para que el color hex se vea limpio (sin interferencia de textura). Se marca con `_custom = true` para no clonar más de una vez.
+
+La configuración se guarda automáticamente en `localStorage` tras cada cambio y se restaura al recargar la página.
 
 ### 6.4 Interfaz del configurador
 
-Tabs con `role="tablist"` / `role="tab"` para accesibilidad. Color pickers implementados con `<input type="color">` nativos. Los cambios se aplican en tiempo real sin necesidad de confirmar.
+Tabs con `role="tablist"` / `role="tab"` para accesibilidad. Paleta de colores implementada con botones SVG (no `<input type="color">`), para mantener coherencia visual con la paleta definida en código. Los cambios se aplican en tiempo real sin necesidad de confirmar.
+
+El resumen del pedido genera un número único `IFO-AAAAMMDD-XXXX`, captura el canvas 3D con `renderer.domElement.toDataURL()` y prepara un enlace `mailto:` con todos los datos precargados en el cuerpo del email.
 
 ---
 
@@ -234,11 +258,11 @@ Los estados iniciales de los elementos animados (opacidad 0, posición inicial, 
 
 ### SVG inline
 
-El reloj isométrico de la sección "Anatomía del tiempo" y el reloj interactivo de la sección de configuración están embebidos como SVG inline en el HTML. Esto permite animar partes individuales desde JavaScript (grupos de capas, manecillas, círculos) sin restricciones del mismo origen. Con `<img src="archivo.svg">` no sería posible acceder al DOM interno del SVG.
+El reloj isométrico de la sección "Anatomía del tiempo" y el reloj interactivo de la sección de onboarding están embebidos como SVG inline en el HTML. Esto permite animar partes individuales desde JavaScript (grupos de capas, fichas, imanes) sin restricciones del mismo origen. Con `<img src="archivo.svg">` no sería posible acceder al DOM interno del SVG.
 
 ### Pointer Events API para drag
 
-Los elementos arrastrables (manecillas del reloj, círculos de add-on) usan `addEventListener('pointerdown/move/up')` en lugar de los eventos de ratón clásicos. La ventaja clave es `element.setPointerCapture(e.pointerId)`: hace que el elemento "capture" todos los eventos del puntero aunque el cursor se mueva fuera de él durante el drag, lo que funciona también en pantallas táctiles.
+Los elementos arrastrables (fichas del reloj interactivo) usan `addEventListener('pointerdown/move/up')` en lugar de los eventos de ratón clásicos. La ventaja clave es `element.setPointerCapture(e.pointerId)`: hace que el elemento "capture" todos los eventos del puntero aunque el cursor se mueva fuera de él durante el drag, lo que funciona también en pantallas táctiles.
 
 ### Arquitectura CSS modular
 
@@ -254,7 +278,7 @@ Los estilos del home (home.css, ~800 líneas) solo se cargan en index.html. El c
 - **Tablet** `@media (min-width: 768px) and (max-width: 1023px)`: reduce los tamaños tipográficos del bloque hero para que no resulten excesivos en pantallas medianas.
 - **Tipografía fluida**: todos los `font-size` usan `clamp(min, valor-fluido, max)` para escalar continuamente sin breakpoints.
 - **Nav hide-on-scroll**: en scroll hacia abajo el nav se oculta con `translateY(-100%)`; en scroll hacia arriba reaparece. Implementado con un listener `scroll` pasivo que compara `scrollY` con el frame anterior (threshold ±5px para evitar parpadeo).
-- **Sección onboarding — responsive dual**: en desktop (≥768px), la sección está pinneada con snap; el reloj arranca con su top justo bajo el viewport (`startY = VH − demoTopFromSection + 20`) para evitar solapamiento con los pasos. En mobile, la sección fluye en scroll normal (sin pin), mostrando heading → pasos con descripción → reloj → CTA.
+- **Sección onboarding**: actualmente usa scroll normal en todos los dispositivos (sin pin ni snap). La versión anterior tenía un sistema de snap dual desktop/mobile que fue eliminado por complejidad de UX en móvil.
 - **Tamaño del reloj onboarding**: `min(90vw, 85vh)` — la fórmula `85vh` garantiza que el radio del reloj nunca supere la distancia al borde inferior del viewport, previniendo overlap en cualquier resolución.
 
 ### Accesibilidad implementada
@@ -269,22 +293,5 @@ Los estilos del home (home.css, ~800 líneas) solo se cargan en index.html. El c
 - **`prefers-reduced-motion`**: doble cobertura — CSS desactiva todas las transiciones/animaciones a 0.01ms; JS comprueba la media query en `startApp()` y omite la inicialización de GSAP si está activa
 - **Open Graph tags**: `og:title`, `og:description`, `og:image`, `og:url` y `twitter:card` en ambas páginas
 - **Favicon completo**: set `.ico`, PNG 16×32, apple-touch-icon y `site.webmanifest` en `img/favicon/`
-
----
-
-## 9. Flujo de trabajo y control de versiones
-
-El proyecto usa **Git** con repositorio en GitHub. Historial de commits relevante:
-
-```
-(pending)  Nav hide-on-scroll, onboarding mobile sin snap, fixes layout y CTA
-ab6b7c8  Problemas de mobile arreglados
-1750984  Sección onboarding: snap dual con CTA inline, hint semicírculo y ajustes UI
-bda87be  Mejoras accesibilidad, rendimiento y SEO
-f96f4e0  Autoalojar Martian Mono, nav en configurador y mejoras UI
-5877eff  Renombrar home→index, index→configurador + README
-f67cad7  Merge branch 'feature'
-4538a8c  Añadir reloj interactivo, letras delineadas y rotador hero
-```
 
 ---
