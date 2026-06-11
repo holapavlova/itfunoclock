@@ -789,6 +789,7 @@
   .timefor-static,
   .timefor-word  { font-size: clamp(3.5rem, 14vw, 7rem); }
   .manifesto-p1  { font-size: clamp(3.5rem, 16vw, 9rem); }
+  .stop-text     { font-size: clamp(2.5rem, 10vw, 12rem); }
 
   /* 2 — Blueprint: bajar el contenido para que el nav fijo no lo tape */
   .block-two {
@@ -798,7 +799,7 @@
   .blueprint-wrap { margin-top: var(--spacing-lg); }
 
   /* 3 — Onboarding: steps con descripción, columna única, centrados */
-  #block-onboarding .block-heading { margin-bottom: 2rem; }
+  #block-onboarding .block-heading { margin-bottom: 2rem; text-align: center; }
   .onboarding-inner { gap: 2rem; }
   .steps-grid { width: 100%; gap: 2rem; }
   .step-item { align-self: center; }

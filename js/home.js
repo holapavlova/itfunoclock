@@ -213,6 +213,15 @@ function wordToHTML(text) {
   }).join('');
 }
 
+function fitWord(el) {
+  el.style.fontSize = '';
+  const avail = el.parentElement.clientWidth;
+  if (el.scrollWidth > avail) {
+    const ratio = avail / el.scrollWidth;
+    el.style.fontSize = parseFloat(getComputedStyle(el).fontSize) * ratio * 0.97 + 'px';
+  }
+}
+
 function initTimeFor() {
   const el = document.getElementById('timefor-word');
   let idx = 0;
@@ -220,6 +229,7 @@ function initTimeFor() {
 
   // render inicial
   el.innerHTML = wordToHTML(PALABRAS[0]);
+  fitWord(el);
 
   function cambiar(delta) {
     if (animando) return;
@@ -233,6 +243,7 @@ function initTimeFor() {
       onComplete: () => {
         idx = nuevo;
         el.innerHTML = wordToHTML(PALABRAS[idx]);
+        fitWord(el);
         gsap.fromTo(el,
           { y: entrada, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.3, ease: 'back.out(1.5)', onComplete: () => { animando = false; } }
@@ -248,6 +259,8 @@ function initTimeFor() {
   ['timefor-next', 'timefor-prev'].forEach(id =>
     document.getElementById(id).addEventListener('click', () => clearInterval(auto))
   );
+
+  window.addEventListener('resize', () => fitWord(el));
 }
 
 // ════════════════════════════════════════════════════════════════
