@@ -198,11 +198,12 @@ function initReveals() {
 // "ES HORA DE [palabra]" — rotador manual con flechas
 // ════════════════════════════════════════════════════════════════
 const PALABRAS = [
-  'PARAR',
-  'DIVERTIRSE',
-  'HACER NADA',
-  'EL CAFÉ',
-  'RESPIRAR',
+  'DEJAR EL TRABAJO',
+  'COMER',
+  'LA CERVEZA',
+  'RELAJARTE',
+  'LEER UN LIBRO',
+  'F*****',
 ];
 
 const LETTER_COLORS   = ['c-rojo', 'c-azul', 'c-rosa', 'c-verde'];
@@ -262,7 +263,7 @@ function initTimeFor() {
 function initBlockOne() {
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: '#block-one', start: 'top top', end: '+=3200', scrub: 1, pin: true,
+      trigger: '#block-one', start: 'top top', end: '+=2500', scrub: 1, pin: true,
       invalidateOnRefresh: true,
     }
   });
