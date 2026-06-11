@@ -5,6 +5,8 @@
 **Tecnologías principales:** HTML5 · CSS3 · JavaScript ES6+ · GSAP · Three.js
 
 ---
+## 0. Por qué esto. 
+Este es mi alegato defensivo contra la sociedad de lo productivo y el contenido. Todo tiene que servir para algo. Pues algunos de estos relojes no. Durante el tiempo desde que empezó el máster, la evolución de mi carga de trabajo fue mucho mayor de lo prevista, lo que me ha llevado a un burn out y a valorar con muchísimo celo el tiempo libre y la dedicación al "onanismo" improductivo. A parar. No hacer nada. O al menos a que nadie sepa que lo estás haciendo. En la era de la hiperconectividad, todo se comparte y hay que dar una imagen de personas cultas, listas y ocupadas para dar sensación de éxito. Pero para mí, el éxito es no tener que mirar el reloj. O al menos, que si lo miro, que sea por diversión. 
 
 ## 1. Concepto y objetivo
 
