@@ -226,7 +226,7 @@ function fitWord(el) {
   }
 }
 
-function initTimeFor() {
+function initTimeFor(reducedMotion = false) {
   const el = document.getElementById('timefor-word');
   let idx = 0;
   let animando = false;
@@ -236,33 +236,44 @@ function initTimeFor() {
   fitWord(el);
 
   function cambiar(delta) {
-    if (animando) return;
-    animando = true;
-    const nuevo = (idx + delta + PALABRAS.length) % PALABRAS.length;
-    const salida = delta > 0 ? -50 : 50;
-    const entrada = delta > 0 ? 50 : -50;
+    if (reducedMotion) {
+      // En reduced motion: cambio sin animación, inmediato
+      idx = (idx + delta + PALABRAS.length) % PALABRAS.length;
+      el.innerHTML = wordToHTML(PALABRAS[idx]);
+      fitWord(el);
+    } else {
+      // Con animación normal
+      if (animando) return;
+      animando = true;
+      const nuevo = (idx + delta + PALABRAS.length) % PALABRAS.length;
+      const salida = delta > 0 ? -50 : 50;
+      const entrada = delta > 0 ? 50 : -50;
 
-    gsap.to(el, {
-      y: salida, opacity: 0, duration: 0.2,
-      onComplete: () => {
-        idx = nuevo;
-        el.innerHTML = wordToHTML(PALABRAS[idx]);
-        fitWord(el);
-        gsap.fromTo(el,
-          { y: entrada, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.3, ease: 'back.out(1.5)', onComplete: () => { animando = false; } }
-        );
-      }
-    });
+      gsap.to(el, {
+        y: salida, opacity: 0, duration: 0.2,
+        onComplete: () => {
+          idx = nuevo;
+          el.innerHTML = wordToHTML(PALABRAS[idx]);
+          fitWord(el);
+          gsap.fromTo(el,
+            { y: entrada, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, ease: 'back.out(1.5)', onComplete: () => { animando = false; } }
+          );
+        }
+      });
+    }
   }
 
   document.getElementById('timefor-next').addEventListener('click', () => cambiar(1));
   document.getElementById('timefor-prev').addEventListener('click', () => cambiar(-1));
 
-  let auto = setInterval(() => cambiar(1), 2600);
-  ['timefor-next', 'timefor-prev'].forEach(id =>
-    document.getElementById(id).addEventListener('click', () => clearInterval(auto))
-  );
+  // Solo auto-rotación si NO está en reducedMotion
+  if (!reducedMotion) {
+    let auto = setInterval(() => cambiar(1), 2600);
+    ['timefor-next', 'timefor-prev'].forEach(id =>
+      document.getElementById(id).addEventListener('click', () => clearInterval(auto))
+    );
+  }
 
   window.addEventListener('resize', () => fitWord(el));
 }
@@ -646,7 +657,60 @@ function initScrollTopBtn() {
 // ════════════════════════════════════════════════════════════════
 function startApp() {
   document.body.style.overflow = '';
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reducedMotion) {
+    // ═════════════════════════════════════════════════════════════════
+    // REDUCED MOTION: Coloca elementos en estado visible sin animación
+    // ═════════════════════════════════════════════════════════════════
+    
+    // BLOQUE 1: Mostrar ambas partes sin animaciones, posicionadas verticalmente
+    gsap.set('.rushed-text', { fontSize: 'clamp(4rem, 11vw, 6.5rem)' }); // Tamaño aumentado
+    gsap.set('.stop-text', { fontSize: 'clamp(4rem, 11vw, 6.5rem)' }); // Tamaño aumentado
+    gsap.set('.rushed-container', { autoAlpha: 1, clipPath: 'inset(0 0% 0 0)', height: '45%' });
+    gsap.set('.stop-text', { autoAlpha: 1, scale: 1, y: 0, rotation: 0, top: '50%', bottom: 'auto' });
+    gsap.set(['.manifesto-p1', '.manifesto-p2', '.manifesto-p3'], { autoAlpha: 0 });
+    
+    // BLOQUE 2: Layer del reloj en estado visible final
+    gsap.set(['.layer-base', '.layer-mechanism', '.layer-magnet', '.layer-addons', '.layer-hands'], { autoAlpha: 1, y: 0 });
+    gsap.set('.layer-lines', { autoAlpha: 1 });
+    
+    // Tech cards en estado visible final
+    gsap.set(['.tech-text-1', '.tech-text-2', '.tech-text-3'], { autoAlpha: 1, x: 0 });
+    
+    // Reveals: mostrar todo sin clip-path
+    gsap.set('[data-reveal]', { clipPath: 'inset(0 0% 0 0)' });
+    
+    // Spec cards en estado visible final
+    gsap.set('.spec-card', { autoAlpha: 1, x: 0, y: 0, rotation: 0 });
+    
+    // Marquee visible
+    gsap.set('.marquee--negro', { clipPath: 'inset(0 0% 0 0%)' });
+    
+    // Scroll hint: mostrar sin animación
+    gsap.set('.scroll-arc-wrap', { opacity: 1, pointerEvents: 'none' });
+    
+    // Scroll top button: estado inicial oculto (sin animación)
+    gsap.set('#scroll-top', { opacity: 0, y: 14, pointerEvents: 'none' });
+    
+    // ═════════════════════════════════════════════════════════════════
+    // Inicializar SOLO funcionalidades interactivas (sin animaciones)
+    // ═════════════════════════════════════════════════════════════════
+    initPageTransition();
+    initTimeFor(true); // true = reducedMotion: deshabilita auto-rotación
+    initMagnetDrag();
+    initNavScroll();
+    // initScrollHint() y initScrollTopBtn() omitidos: sus triggers GSAP.to() no funcionan bien sin motion
+    initBackgroundTransitions();
+    
+    // Refrescar después de establecer estados iniciales
+    setTimeout(() => { ScrollTrigger.refresh(); }, 100);
+    return;
+  }
+
+  // ═════════════════════════════════════════════════════════════════
+  // NORMAL: Todas las animaciones y efectos habilitados
+  // ═════════════════════════════════════════════════════════════════
   initPageTransition();
   initTimeFor();
   initMarquees();
