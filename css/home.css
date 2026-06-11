@@ -257,7 +257,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  min-width: clamp(280px, 60vw, 520px);
+  width: clamp(280px, 60vw, 520px);
 }
 
 .timefor-word {
@@ -783,20 +783,22 @@
   .nav-home { padding: 16px var(--spacing-lg); }
   .block-specs   { padding: 5rem 0; }
   .block-onboarding { padding: 5rem 0 5rem; }
-.tech-list { margin-top: var(--spacing-lg); }
 
   /* 1 — Hero: textos más grandes */
-  .timefor-static,
-  .timefor-word  { font-size: clamp(3.5rem, 14vw, 7rem); }
+  .timefor-static { font-size: clamp(2.5rem, 11vw, 5rem); }
+  .timefor-word   { font-size: clamp(3.5rem, 14vw, 7rem); }
+  .timefor-window { width: 90vw; }
   .manifesto-p1  { font-size: clamp(3.5rem, 16vw, 9rem); }
   .stop-text     { font-size: clamp(2.5rem, 10vw, 12rem); }
 
-  /* 2 — Blueprint: bajar el contenido para que el nav fijo no lo tape */
+  /* 2 — Blueprint: reducir alturas para que los 3 apartados quepan en pantalla */
   .block-two {
     justify-content: flex-start;
     padding-top: 68px;
   }
-  .blueprint-wrap { margin-top: var(--spacing-lg); }
+  .blueprint-wrap { height: 28vh; margin-top: 0; }
+  .block-two-inner { gap: var(--spacing-md); }
+  .tech-list { margin-top: 0; gap: var(--spacing-sm); }
 
   /* 3 — Onboarding: steps con descripción, columna única, centrados */
   #block-onboarding .block-heading { margin-bottom: 2rem; text-align: center; }

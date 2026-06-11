@@ -191,6 +191,10 @@ function initReveals() {
 // "ES HORA DE [palabra]" — rotador manual con flechas
 // ════════════════════════════════════════════════════════════════
 const PALABRAS = [
+  'PARAR',
+  'DIVERTIRSE',
+  'EL CAFÉ',
+  'JUGAR',
   'DEJAR EL TRABAJO',
   'COMER',
   'LA CERVEZA',
@@ -269,7 +273,7 @@ function initTimeFor() {
 function initBlockOne() {
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: '#block-one', start: 'top top', end: '+=2500', scrub: 1, pin: true,
+      trigger: '#block-one', start: 'top top', end: '+=1200', scrub: 1, pin: true,
       invalidateOnRefresh: true,
     }
   });
@@ -277,7 +281,7 @@ function initBlockOne() {
   // Estados iniciales dentro de la timeline: al scrub hacia atrás se restauran solos
   tl.set('.rushed-container', { clipPath: 'inset(0 0 100% 0)' })
     .set('.stop-text', { opacity: 0, scale: 0.2, y: -80, rotation: -8 })
-    .set('.manifesto-p1, .manifesto-p2, .manifesto-p3', { opacity: 0, scale: 0.9, y: 50 });
+    .set('.manifesto-p1', { opacity: 0, scale: 0.9, y: 50 });
 
   // Fase 1: el texto llena la pantalla línea a línea (clip de arriba a abajo)
   tl.to('.rushed-container', { clipPath: 'inset(0% 0% 0% 0%)', duration: 3, ease: 'none' })
@@ -289,13 +293,7 @@ function initBlockOne() {
     .to('.stop-text', { opacity: 0, y: -100, skewX: -12, scale: 0.85, duration: 0.6, delay: 1, ease: 'power3.in' })
 
     .to('.manifesto-p1', { opacity: 1, scale: 1, y: 0, duration: 1 })
-    .to('.manifesto-p1', { opacity: 0, y: -50, duration: 1, delay: 1 })
-
-    .to('.manifesto-p2', { opacity: 1, scale: 1, y: 0, duration: 1 })
-    .to('.manifesto-p2', { opacity: 0, y: -50, duration: 1, delay: 1 })
-
-    .to('.manifesto-p3', { opacity: 1, scale: 1, y: 0, duration: 1 })
-    .to({}, { duration: 1 });
+    .to('.manifesto-p1', { opacity: 0, y: -50, duration: 0.8 });
 }
 
 // ════════════════════════════════════════════════════════════════
